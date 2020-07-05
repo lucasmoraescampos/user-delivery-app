@@ -1,0 +1,89 @@
+<ion-header class="ion-no-border" mode="ios">
+
+  <ion-toolbar>
+
+    <ion-buttons slot="start">
+
+      <ion-back-button text=""></ion-back-button>
+
+    </ion-buttons>
+
+    <ion-title>Ajuda</ion-title>
+
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content mode="ios">
+
+  <ion-list class="ion-margin-top">
+
+    <ion-item lines="full">
+
+      <ion-list-header>Problemas com este pedido?</ion-list-header>
+
+    </ion-item>
+
+    <ion-item lines="full" button="true" detail="true" (click)="help('Pedido não foi entregue')">
+
+      <ion-label>
+
+        <h6 class="ion-text-wrap">Pedido não foi entregue</h6>
+
+      </ion-label>
+
+    </ion-item>
+
+    <ion-item lines="full" button="true" detail="true" (click)="help('Meu pedido veio errado')">
+
+      <ion-label>
+
+        <h6 class="ion-text-wrap">Meu pedido veio errado</h6>
+
+      </ion-label>
+
+    </ion-item>
+
+    <ion-item lines="none" button="true" detail="true" (click)="help('Problema com a qualidade do pedido')">
+
+      <ion-label>
+
+        <h6 class="ion-text-wrap">Problema com a qualidade do pedido</h6>
+
+      </ion-label>
+
+    </ion-item>
+
+  </ion-list>
+
+  <ion-list class="ion-margin-top">
+
+    <ion-item lines="full">
+
+      <ion-list-header>Problemas com pagamento?</ion-list-header>
+
+    </ion-item>
+
+    <ion-item lines="full" button="true" detail="true" (click)="help('Valor foi cobrado mais de uma vez')">
+
+      <ion-label>
+
+        <h6 class="ion-text-wrap">Valor foi cobrado mais de uma vez</h6>
+
+      </ion-label>
+
+    </ion-item>
+
+    <ion-item lines="full" button="true" detail="true" (click)="help('O valor foi cobrado errado')">
+
+      <ion-label>
+
+        <h6 class="ion-text-wrap">O valor foi cobrado errado</h6>
+
+      </ion-label>
+
+    </ion-item>
+
+  </ion-list>
+
+</ion-content>

@@ -1,0 +1,43 @@
+<ion-header class="ion-no-border" mode="ios">
+
+  <ion-toolbar>
+
+    <ion-title></ion-title>
+
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content mode="ios">
+
+  <ion-grid>
+
+    <ion-row>
+
+      <ion-col class="ion-text-center" size="12">
+
+        <ion-icon class="animated fadeInDown" src="../../../assets/icon/no-signal.svg"></ion-icon>
+
+        <ion-label>
+
+          <h6 class="animated fadeIn">Parece que você está sem conexão</h6>
+
+          <p class="animated fadeIn">Verifique sua internet e tente novamente</p>
+
+        </ion-label>
+
+        <ion-button class="animated fadeInUp" expand="block" (click)="tryAgain()">
+
+          <span [hidden]="spinner">Tentar novamente</span>
+
+          <ion-spinner [hidden]="!spinner" name="crescent" mode="md"></ion-spinner>
+
+        </ion-button>
+
+      </ion-col>
+
+    </ion-row>
+
+  </ion-grid>
+
+</ion-content>

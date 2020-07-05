@@ -1,0 +1,172 @@
+<ion-header mode="ios" class="ion-no-border">
+
+  <ion-toolbar>
+
+    <ion-buttons slot="end">
+
+      <ion-button class="icon-close" (click)="dismiss()">
+
+        <ion-icon src="../../../../assets/icon/close.svg"></ion-icon>
+
+      </ion-button>
+
+    </ion-buttons>
+
+    <ion-title>
+
+      Detalhes
+
+    </ion-title>
+
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content class="animated fadeIn" [hidden]="loading">
+
+  <div class="ion-padding product">
+
+    <ion-thumbnail>
+
+      <ion-img [src]="product.photo"></ion-img>
+
+    </ion-thumbnail>
+
+    <h6>{{ product.name }}</h6>
+
+    <p>{{ product.description }}</p>
+
+    <p>
+
+      <span class="price" *ngIf="product.promotional_price">{{ product.promotional_price | money }}</span>
+
+      <span class="price" *ngIf="!product.promotional_price">{{ product.price | money }}</span>
+
+      <span class="scratched-price" *ngIf="product.promotional_price">{{ product.price | money }}</span>
+
+    </p>
+
+  </div>
+
+  <ion-list class="complement" mode="md" *ngIf="product.complements?.length > 0">
+
+    <div *ngFor="let c of product.complements">
+
+      <ion-grid class="title ion-no-padding">
+
+        <ion-row class="ion-padding">
+
+          <ion-col [size]="c.is_required ? 8 : 12" class="ion-no-padding">
+
+            <p class="title ion-no-margin">{{ c.title }}</p>
+
+            <p class="qty ion-no-margin" *ngIf="c.is_required">{{ getComplementAmount(c.id) }} de {{ c.qty_min }}</p>
+
+            <p class="qty ion-no-margin" *ngIf="!c.is_required">
+
+              Escolha até {{ c.qty_max }}
+
+              <span *ngIf="c.qty_max == 1">opção</span>
+
+              <span *ngIf="c.qty_max > 1">opções</span>
+
+            </p>
+
+          </ion-col>
+
+          <ion-col size="4" class="ion-no-padding" *ngIf="c.is_required">
+
+            <ion-badge mode="md" color="dark">Obrigatório</ion-badge>
+
+          </ion-col>
+
+        </ion-row>
+
+      </ion-grid>
+
+      <ion-radio-group>
+
+        <ion-item lines="full" *ngFor="let s of c.subcomplements">
+
+          <ion-label>
+
+            {{ s.description }}
+
+            <p *ngIf="s.price">+ {{ s.price | money }}</p>
+
+          </ion-label>
+
+          <ion-radio slot="end" value="biff" *ngIf="c.qty_max == 1"></ion-radio>
+
+          <app-quantity (changeQty)="changeSubcomplementQty($event, s)" *ngIf="c.qty_max > 1"
+            [disabled]="getComplementAmount(c.id) == c.qty_max"></app-quantity>
+
+        </ion-item>
+
+      </ion-radio-group>
+
+    </div>
+
+  </ion-list>
+
+  <div class="ion-padding" mode="ios">
+
+    <ion-label class="label-custom">Alguma observação?</ion-label>
+
+    <ion-textarea class="input-custom" rows="3" maxlength="150" [(ngModel)]="note"></ion-textarea>
+
+  </div>
+
+</ion-content>
+
+<ion-footer class="ion-no-border" [hidden]="loading">
+
+  <ion-toolbar>
+
+    <ion-grid>
+
+      <ion-row>
+
+        <ion-col size="4">
+
+          <ion-card class="ion-no-margin" mode="ios">
+
+            <ion-button class="remove" fill="clear" mode="md" (click)="changeProductQty('remove')"
+              [disabled]="qtyProduct == 1">
+
+              <ion-icon slot="icon-only" src="../../../assets/icon/remove.svg"
+                [color]="qtyProduct > 1 ? 'primary' : 'medium'"></ion-icon>
+
+            </ion-button>
+
+            <span class="qty" [hidden]="quantity == 0">{{ qty_product }}</span>
+
+            <ion-button class="add" fill="clear" mode="md" (click)="changeProductQty('add')">
+
+              <ion-icon slot="icon-only" src="../../../assets/icon/add.svg"></ion-icon>
+
+            </ion-button>
+
+          </ion-card>
+
+        </ion-col>
+
+        <ion-col size="8">
+
+          <ion-button class="ion-no-margin" expand="block" mode="ios" [disabled]="!is_valid" (click)="add()">
+
+            Adicionar {{ total_price | money }}
+
+          </ion-button>
+
+        </ion-col>
+
+      </ion-row>
+
+    </ion-grid>
+
+  </ion-toolbar>
+
+</ion-footer>
+
+<ngx-loading [show]="loading"></ngx-loading>

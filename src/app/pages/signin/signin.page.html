@@ -1,0 +1,39 @@
+<ion-header mode="ios" class="ion-no-border">
+
+  <ion-toolbar>
+
+    <ion-buttons slot="start">
+
+      <ion-back-button text=""></ion-back-button>
+
+    </ion-buttons>
+
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <form [formGroup]="formGroupPhone" class="animated bounceInDown">
+
+    <h4 class="title">Informe o número do seu celular</h4>
+
+    <ion-label class="label-custom">Celular</ion-label>
+
+    <ion-input class="input-custom" type="tel" mode="ios" formControlName="number" [brmasker]="{ phone: true }">
+    </ion-input>
+
+    <h6 class="subtitle">Enviaremos uma mensagem com o código de verificação para o seu número</h6>
+
+    <ion-button expand="block" mode="ios" (click)="send()" [disabled]="formGroupPhone.invalid"
+      [color]="formGroupPhone.valid ? 'primary' : 'dark'">
+
+      <ion-spinner name="crescent" [hidden]="!spinner"></ion-spinner>
+
+      <span [hidden]="spinner">Receber código por SMS</span>
+
+    </ion-button>
+
+  </form>
+
+</ion-content>

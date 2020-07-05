@@ -1,0 +1,171 @@
+<ion-header mode="ios" class="ion-no-border">
+
+  <ion-toolbar>
+
+    <ion-buttons slot="end">
+
+      <ion-button (click)="dismiss()" color="dark">
+
+        <ion-icon src="../../../../assets/icon/close.svg"></ion-icon>
+
+      </ion-button>
+
+    </ion-buttons>
+
+    <ion-title>Cartão de Crédito</ion-title>
+
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content mode="ios">
+
+  <ion-grid [formGroup]="formGroupCard">
+
+    <ion-row class="flags">
+
+      <ion-col class="ion-text-center">
+
+        <ion-icon src="../../../../assets/icon/amex.svg"></ion-icon>
+
+        <ion-icon src="../../../../assets/icon/elo.svg"></ion-icon>
+
+        <ion-icon src="../../../../assets/icon/hipercard.svg"></ion-icon>
+
+        <ion-icon src="../../../../assets/icon/mastercard.svg"></ion-icon>
+
+        <ion-icon src="../../../../assets/icon/visa.svg"></ion-icon>
+
+      </ion-col>
+
+    </ion-row>
+
+    <ion-row>
+
+      <ion-col size="12" *ngIf="!card">
+
+        <ion-label class="label-custom">Número do cartão</ion-label>
+
+        <ion-input class="input-custom" inputmode="numeric" formControlName="number"
+          [brmasker]="{mask: '0000 0000 0000 0000', type: 'num', len: 19}" data-checkout="cardNumber"
+          (keyup)="guessPaymentMethod()"></ion-input>
+
+      </ion-col>
+
+      <ion-col size="12" *ngIf="card">
+
+        <ion-label class="label-custom">Número do cartão</ion-label>
+
+        <p>
+
+          <ion-button class="ion-no-padding" fill="clear" color="dark" disabled="true">
+
+            <span class="flag ion-margin-end">
+
+              <ion-icon src="../../../../assets/icon/amex.svg" *ngIf="card.payment_method == 'amex'"></ion-icon>
+
+              <ion-icon src="../../../../assets/icon/elo.svg" *ngIf="card.payment_method == 'elo'"></ion-icon>
+
+              <ion-icon src="../../../../assets/icon/hipercard.svg" *ngIf="card.payment_method == 'hipercard'">
+              </ion-icon>
+
+              <ion-icon src="../../../../assets/icon/mastercard.svg" *ngIf="card.payment_method == 'master'"></ion-icon>
+
+              <ion-icon src="../../../../assets/icon/visa.svg" *ngIf="card.payment_method == 'visa'"></ion-icon>
+
+            </span>
+
+            <span class="digit ion-margin-end">
+
+              <ion-icon name="ellipse"></ion-icon>
+
+              <ion-icon name="ellipse"></ion-icon>
+
+              <ion-icon name="ellipse"></ion-icon>
+
+              <ion-icon name="ellipse"></ion-icon>
+
+            </span>
+
+            <span class="number"
+              *ngIf="card.number.length == 16">{{ card.number.slice(card.number.length-4, card.number.length) }}</span>
+
+            <span class="number"
+              *ngIf="card.number.length == 15">{{ card.number.slice(card.number.length-3, card.number.length) }}</span>
+
+          </ion-button>
+
+        </p>
+
+      </ion-col>
+
+    </ion-row>
+
+    <ion-row>
+
+      <ion-col size="6">
+
+        <ion-label class="label-custom">Validade</ion-label>
+
+        <ion-input class="input-custom" inputmode="numeric" formControlName="expiration_date"
+          [brmasker]="{mask: '00/00', type: 'num', len: 5}">
+        </ion-input>
+
+      </ion-col>
+
+      <ion-col size="6">
+
+        <ion-label class="label-custom">CVV</ion-label>
+
+        <ion-input class="input-custom" inputmode="numeric" formControlName="security_code" maxlength="4"></ion-input>
+
+      </ion-col>
+
+    </ion-row>
+
+    <ion-row>
+
+      <ion-col size="12">
+
+        <ion-label class="label-custom">Nome do titular</ion-label>
+
+        <ion-input class="input-custom" inputmode="text" formControlName="holder_name" autocapitalize="words">
+        </ion-input>
+
+      </ion-col>
+
+    </ion-row>
+
+    <ion-row>
+
+      <ion-col size="12">
+
+        <ion-label class="label-custom">CPF/CNPJ</ion-label>
+
+        <ion-input class="input-custom" inputmode="numeric" formControlName="holder_document_number"
+          [brmasker]="{person: true}"></ion-input>
+
+      </ion-col>
+
+    </ion-row>
+
+    <ion-row>
+
+      <ion-col>
+
+        <ion-button [color]="formGroupCard.valid ? 'primary' : 'dark'" [disabled]="formGroupCard.invalid" expand="block"
+          (click)="card ? update() : create()">
+
+          <ion-spinner name="crescent" *ngIf="spinner"></ion-spinner>
+
+          <span *ngIf="!spinner">Salvar</span>
+
+        </ion-button>
+
+      </ion-col>
+
+    </ion-row>
+
+  </ion-grid>
+
+</ion-content>

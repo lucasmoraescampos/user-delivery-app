@@ -1,0 +1,9 @@
+<ion-button class="ion-no-margin" expand="full" mode="ios" (click)="cart()" *ngIf="status">
+
+  <ion-icon name="cart-outline" slot="start"></ion-icon>
+
+  Ver Carrinho
+
+  <span class="price">{{ total_price | money }}</span>
+
+</ion-button>

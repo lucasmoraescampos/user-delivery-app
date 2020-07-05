@@ -1,0 +1,148 @@
+<ion-header mode="ios" class="ion-no-border">
+
+  <ion-toolbar class="image ion-no-padding animated fadeIn" [hidden]="is_menu_visible">
+
+    <img [src]="company.photo" *ngIf="company">
+
+    <ion-buttons slot="start">
+
+      <ion-back-button class="company" text=""></ion-back-button>
+
+    </ion-buttons>
+
+  </ion-toolbar>
+
+  <ion-toolbar class="company animated fadeIn" [hidden]="!is_menu_visible">
+
+    <ion-buttons slot="start">
+
+      <ion-back-button text=""></ion-back-button>
+
+    </ion-buttons>
+
+    <ion-title *ngIf="company">
+
+      {{ company.name }}
+
+      <span>Entrega em {{ company.waiting_time }} min</span>
+
+    </ion-title>
+
+  </ion-toolbar>
+
+  <ion-toolbar mode="md" class="ion-no-padding animated fadeIn" [hidden]="!is_menu_visible">
+
+    <ion-segment scrollable [value]="segment">
+
+      <ion-segment-button class="segment" [value]="session.menu_session_id" [id]="'segment' + session.menu_session_id"
+        *ngFor="let session of sessions" (click)="changeSegment(session.menu_session_id)">
+
+        <ion-label>{{ session.menu_session_name }}</ion-label>
+
+      </ion-segment-button>
+
+    </ion-segment>
+
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content [scrollEvents]="scrollEvents" (ionScroll)="sessionScroll()" forceOverscroll="true" mode="ios">
+
+  <ion-list class="company ion-margin-vertical animated fadeInDown" *ngIf="company">
+
+    <ion-list-header>{{ company.name }}</ion-list-header>
+
+    <ion-item lines="none">
+
+      <ion-label>
+
+        <p>
+
+          <span class="new" *ngIf="company.feedback == null">Novo</span>
+
+          <span class="stars" *ngIf="company.feedback != null">
+
+            <ion-icon name="star"></ion-icon> {{ company.feedback }}
+
+          </span>
+
+          <ion-icon class="ellipse" name="ellipse"></ion-icon>
+
+          {{ company.waiting_time }} min
+
+          <ion-icon class="ellipse" name="ellipse"></ion-icon>
+
+          {{ company.distance | distance }}
+
+        </p>
+
+        <p *ngIf="!company.delivery_price">
+
+          Entrega <span class="price">Grátis</span>
+
+        </p>
+
+        <p *ngIf="company.delivery_price">
+
+          Entrega <span class="price">{{ company.delivery_price | money }}</span>
+
+        </p>
+
+        <p *ngIf="!company.min_value">
+
+          Sem pedido mínimo
+
+        </p>
+
+        <p *ngIf="company.min_value">
+
+          Pedido mínimo <span class="price">{{ company.min_value | money }}</span>
+
+        </p>
+
+      </ion-label>
+
+    </ion-item>
+
+  </ion-list>
+
+  <ion-list class="session animated bounceInUp" *ngFor="let session of sessions">
+
+    <ion-item class="ion-no-padding" lines="full" [id]="'session' + session.menu_session_id">
+
+      <ion-list-header class="ion-margin-vertical animated fadeIn delay-1s">{{ session.menu_session_name }}
+      </ion-list-header>
+
+    </ion-item>
+
+    <ion-item class="ion-no-padding" button="true" detail="false" *ngFor="let product of session.products" lines="full"
+      (click)="details(product.id)">
+
+      <img [src]="product.photo">
+
+      <ion-label>
+
+        <h6 class="ion-text-wrap">{{ product.name }}</h6>
+
+        <p>{{ product.description }}</p>
+
+        <p>
+
+          <span class="price" *ngIf="product.promotional_price">{{ product.promotional_price | money }}</span>
+
+          <span class="price" *ngIf="!product.promotional_price">{{ product.price | money }}</span>
+
+          <span class="scratched-price" *ngIf="product.promotional_price">{{ product.price | money }}</span>
+
+        </p>
+
+      </ion-label>
+
+    </ion-item>
+
+  </ion-list>
+
+</ion-content>
+
+<app-button-cart></app-button-cart>

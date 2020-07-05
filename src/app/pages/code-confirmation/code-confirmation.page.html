@@ -1,0 +1,52 @@
+<ion-header mode="ios" class="ion-no-border ion-margin-top">
+
+  <ion-toolbar>
+
+    <ion-buttons slot="start">
+
+      <ion-back-button text=""></ion-back-button>
+
+    </ion-buttons>
+
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <form [formGroup]="formGroupCode" class="animated bounceInDown">
+
+    <h4 class="title">Informe o código enviado para</h4>
+
+    <h6 class="number">+55 {{ params.number }}</h6>
+
+    <div class="input-code">
+
+      <ion-input class="input-custom code" mode="md" type="number" placeholder="-" formControlName="digit1"
+        [brmasker]="{ type: 'num', len: '1' }" (keyup)="next(input2, 1)"></ion-input>
+
+      <ion-input class="input-custom code" mode="md" type="number" placeholder="-" formControlName="digit2"
+        [brmasker]="{ type: 'num', len: '1' }" (keyup)="next(input3, 2)" #input2>
+      </ion-input>
+
+      <ion-input class="input-custom code" mode="md" type="number" placeholder="-" formControlName="digit3"
+        [brmasker]="{ type: 'num', len: '1' }" (keyup)="next(input4, 3)" #input3>
+      </ion-input>
+
+      <ion-input class="input-custom code" mode="md" type="number" placeholder="-" formControlName="digit4"
+        [brmasker]="{ type: 'num', len: '1' }" (keyup)="send()" #input4></ion-input>
+
+    </div>
+
+    <ion-button expand="block" mode="ios" (click)="send()" [disabled]="formGroupCode.invalid || loading"
+      [color]="formGroupCode.valid ? 'primary' : 'dark'">
+
+      <ion-spinner name="crescent" [hidden]="!loading"></ion-spinner>
+
+      <span [hidden]="loading">Continuar</span>
+
+    </ion-button>
+
+  </form>
+
+</ion-content>

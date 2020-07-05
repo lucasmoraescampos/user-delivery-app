@@ -1,0 +1,18 @@
+<div class="content">
+
+  <ion-button class="remove" fill="clear" mode="md" (click)="remove()" [hidden]="quantity == 0">
+
+    <ion-icon slot="icon-only" src="../../../assets/icon/remove.svg"></ion-icon>
+
+  </ion-button>
+
+  <span class="qty" [hidden]="quantity == 0">{{ quantity }}</span>
+
+  <ion-button class="add" fill="clear" mode="md" (click)="add()" [disabled]="disabled"
+    [color]="disabled ? 'dark' : 'primary'">
+
+    <ion-icon slot="icon-only" src="../../../assets/icon/add.svg"></ion-icon>
+
+  </ion-button>
+
+</div>

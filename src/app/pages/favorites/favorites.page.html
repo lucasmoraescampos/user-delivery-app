@@ -1,0 +1,87 @@
+<ion-header mode="ios">
+
+  <ion-toolbar>
+
+    <ion-buttons slot="start">
+
+      <ion-back-button text=""></ion-back-button>
+
+    </ion-buttons>
+
+    <ion-title>Favoritos</ion-title>
+
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content mode="ios">
+
+  <ion-grid>
+
+    <ion-row>
+
+      <ion-col>
+
+        <ion-card class="animated bounceInUp" button="true">
+
+          <ion-card-content class="ion-no-padding">
+
+            <ion-row>
+
+              <div [ngClass]="{ 'image': true, 'close': false }">
+
+                <ion-img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y"></ion-img>
+
+                <h6 [hidden]="true">Fechado</h6>
+
+              </div>
+
+              <div class="info">
+
+                <h6>Buteco do Lucas</h6>
+
+                <p>
+
+                  <span class="new">Novo</span>
+
+                  <!-- <span class="stars" *ngIf="company.feedback != null">
+
+                    <ion-icon name="star"></ion-icon> {{ company.feedback }}
+
+                  </span> -->
+
+                  <ion-icon class="ellipse" name="ellipse"></ion-icon>
+
+                  30 min
+
+                  <ion-icon class="ellipse" name="ellipse"></ion-icon>
+
+                  5 km
+
+                </p>
+
+                <p>
+
+                  Entrega
+
+                  <span class="price">R$ 5,00</span>
+
+                  <!-- <span class="price" *ngIf="company.delivery_price == null">Grátis</span> -->
+
+                </p>
+
+              </div>
+
+            </ion-row>
+
+          </ion-card-content>
+
+        </ion-card>
+
+      </ion-col>
+
+    </ion-row>
+
+  </ion-grid>
+
+</ion-content>

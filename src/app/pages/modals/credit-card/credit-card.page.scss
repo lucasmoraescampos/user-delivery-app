@@ -1,0 +1,51 @@
+ion-header {
+    ion-toolbar {
+        ion-title {
+            font-size: 12pt;
+            text-transform: uppercase;
+            font-weight: 400;
+            padding: 0;
+        }
+
+        ion-button ion-icon {
+            font-size: 16pt;
+            margin-right: 10px;
+        }
+    }
+}
+
+ion-content {
+    ion-grid {
+        ion-row.flags {
+            ion-icon {
+                font-size: 24pt;
+                margin: 0 5px;
+            }
+        }
+
+        p {
+            border-radius: 10px;
+            height: 46px;
+            padding: 6px 15px !important;
+            margin-top: 0;
+            border: 1px solid var(--ion-color-medium);
+
+            ion-button {
+                height: 30px;
+                margin: 0;
+
+                .flag {
+                    font-size: 22pt;
+                }
+
+                .digit {
+                    font-size: 6pt;
+                }
+
+                .number {
+                    font-size: 14pt;
+                }
+            }
+        }
+    }
+}

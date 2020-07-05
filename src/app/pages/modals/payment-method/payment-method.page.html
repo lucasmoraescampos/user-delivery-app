@@ -1,0 +1,128 @@
+<ion-header mode="ios" class="ion-no-border">
+
+  <ion-toolbar>
+
+    <ion-buttons slot="end">
+
+      <ion-button (click)="dismiss()" color="dark">
+
+        <ion-icon src="../../../../assets/icon/close.svg"></ion-icon>
+
+      </ion-button>
+
+    </ion-buttons>
+
+    <ion-title>Formas de Pagamento</ion-title>
+
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content class="animated fadeIn" [hidden]="loading">
+
+  <ion-list lines="full" mode="ios" *ngIf="accept_payment_app">
+
+    <ion-item>
+
+      <h6>Pague pelo aplicativo</h6>
+
+    </ion-item>
+
+    <ion-item button="true" detail="false" (click)="addCreditCard()">
+
+      <ion-label>Cartão de crédito</ion-label>
+
+      <ion-icon slot="end" name="add" color="primary"></ion-icon>
+
+    </ion-item>
+
+    <ion-item button="true" detail="false" *ngFor="let c of cards">
+
+      <span class="card" (click)="selectCreditCard(c)">
+
+        <ion-label>
+
+          Cartão de crédito
+
+          <p>
+
+            <ion-button class="ion-no-padding" fill="clear" color="medium">
+
+              <span class="flag ion-margin-end">
+
+                <ion-icon src="../../../../assets/icon/amex.svg" *ngIf="c.payment_method == 'amex'"></ion-icon>
+
+                <ion-icon src="../../../../assets/icon/elo.svg" *ngIf="c.payment_method == 'elo'"></ion-icon>
+
+                <ion-icon src="../../../../assets/icon/hipercard.svg" *ngIf="c.payment_method == 'hipercard'">
+                </ion-icon>
+
+                <ion-icon src="../../../../assets/icon/mastercard.svg" *ngIf="c.payment_method == 'master'"></ion-icon>
+
+                <ion-icon src="../../../../assets/icon/visa.svg" *ngIf="c.payment_method == 'visa'"></ion-icon>
+
+              </span>
+
+              <span class="digit ion-margin-end">
+
+                <ion-icon name="ellipse"></ion-icon>
+
+                <ion-icon name="ellipse"></ion-icon>
+
+                <ion-icon name="ellipse"></ion-icon>
+
+                <ion-icon name="ellipse"></ion-icon>
+
+              </span>
+
+              <span class="number"
+                *ngIf="c.number.length == 16">{{ c.number.slice(c.number.length-4, c.number.length) }}</span>
+
+              <span class="number"
+                *ngIf="c.number.length == 15">{{ c.number.slice(c.number.length-3, c.number.length) }}</span>
+
+            </ion-button>
+
+          </p>
+
+          <p>{{ c.holder_name }}</p>
+
+        </ion-label>
+
+      </span>
+
+      <ion-buttons slot="end">
+
+        <ion-button fill="clear" color="primary" (click)="cardOptions($event, c)">
+
+          <ion-icon slot="icon-only" name="ellipsis-vertical"></ion-icon>
+
+        </ion-button>
+
+      </ion-buttons>
+
+    </ion-item>
+
+  </ion-list>
+
+  <ion-list lines="full" mode="ios">
+
+    <ion-item>
+
+      <h6>Pague na entrega</h6>
+
+    </ion-item>
+
+    <ion-item button="true" detail="false" *ngFor="let p of payment_methods" (click)="selectPaymentMethod(p)">
+
+      <ion-label>{{ p.name }}</ion-label>
+
+      <img [src]="p.icon">
+
+    </ion-item>
+
+  </ion-list>
+
+</ion-content>
+
+<ngx-loading [show]="loading"></ngx-loading>

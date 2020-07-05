@@ -1,0 +1,337 @@
+<ion-header mode="ios" class="ion-no-border">
+
+  <ion-toolbar>
+
+    <ion-buttons slot="end">
+
+      <ion-button class="icon-close" (click)="dismiss()" color="dark">
+
+        <ion-icon src="../../../../assets/icon/close.svg"></ion-icon>
+
+      </ion-button>
+
+    </ion-buttons>
+
+    <ion-title>
+
+      Carrinho
+
+    </ion-title>
+
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content class="animated fadeIn" [hidden]="loading">
+
+  <ion-list class="location" mode="ios">
+
+    <ion-list-header>Entregar em</ion-list-header>
+
+    <ion-item detail="true" button="true" lines="none" (click)="locations()">
+
+      <ion-icon src="../../../../assets/icon/map.svg" slot="start"></ion-icon>
+
+      <ion-label>
+
+        <h6 *ngIf="location.address.type == null">{{ this.location.address.street_name }},
+          {{ this.location.address.street_number }}</h6>
+
+        <h6 *ngIf="location.address.type == 1">Casa</h6>
+
+        <h6 *ngIf="location.address.type == 2">Trabalho</h6>
+
+        <p class="ion-text-wrap">{{ address }}</p>
+
+      </ion-label>
+
+    </ion-item>
+
+  </ion-list>
+
+  <ion-list class="order" mode="ios">
+
+    <ion-item class="company" lines="full">
+
+      <h6 *ngIf="company">{{ company.name }}</h6>
+
+    </ion-item>
+
+    <ion-item class="products" lines="full" *ngFor="let p of products">
+
+      <ion-label>
+
+        <ion-grid class="ion-no-padding">
+
+          <ion-row>
+
+            <ion-col size="1">
+
+              <h6>{{ p.qty }}x</h6>
+
+            </ion-col>
+
+            <ion-col size="8">
+
+              <h6 class="ion-text-wrap">{{ p.name }}</h6>
+
+            </ion-col>
+
+            <ion-col size="3" class="ion-text-right">
+
+              <h6>{{ p.price | money }}</h6>
+
+            </ion-col>
+
+          </ion-row>
+
+          <ion-row>
+
+            <ion-col>
+
+              <p class="ion-text-wrap">Observação: {{ p.note }}</p>
+
+            </ion-col>
+
+          </ion-row>
+
+        </ion-grid>
+
+      </ion-label>
+
+    </ion-item>
+
+    <ion-item class="add-items" lines="full">
+
+      <ion-button fill="clear" expand="full" (click)="addItems()">
+
+        <ion-icon slot="start" name="add"></ion-icon>
+
+        Adicionar mais itens
+
+      </ion-button>
+
+    </ion-item>
+
+    <ion-item class="prices" lines="none">
+
+      <ion-label>
+
+        <ion-grid class="ion-no-padding">
+
+          <ion-row>
+
+            <ion-col size="6">
+
+              <p>Subtotal</p>
+
+            </ion-col>
+
+            <ion-col size="6" class="ion-text-right">
+
+              <p>{{ subtotal | money }}</p>
+
+            </ion-col>
+
+          </ion-row>
+
+          <ion-row>
+
+            <ion-col size="6">
+
+              <p>Taxa de entrega</p>
+
+            </ion-col>
+
+            <ion-col size="6" class="ion-text-right">
+
+              <p *ngIf="company?.delivery_price">{{ company.delivery_price | money }}</p>
+
+              <p class="free">Grátis</p>
+
+            </ion-col>
+
+          </ion-row>
+
+          <ion-row>
+
+            <ion-col size="6">
+
+              <h6>Total</h6>
+
+            </ion-col>
+
+            <ion-col size="6" class="ion-text-right">
+
+              <h6>{{ total | money }}</h6>
+
+            </ion-col>
+
+          </ion-row>
+
+          <ion-row>
+
+            <ion-col>
+
+              <div class="min_value ion-margin-top" *ngIf="company && company.min_value > subtotal">
+
+                <p class="ion-text-wrap ion-text-center">
+
+                  O pedido mínimo para esta loja é de <br>
+
+                  <b>{{ company.min_value | money }}</b>, não inclusa a taxa de entrega.
+
+                </p>
+
+              </div>
+
+            </ion-col>
+
+          </ion-row>
+
+        </ion-grid>
+
+      </ion-label>
+
+    </ion-item>
+
+  </ion-list>
+
+  <ion-list class="payment" mode="ios" lines="full">
+
+    <ion-item>
+
+      <h6>Pagamento</h6>
+
+    </ion-item>
+
+    <ion-item lines="none" button="true" detail="false" *ngIf="!payment_method" (click)="selectPaymentMethod()">
+
+      Formas de pagamento
+
+      <ion-buttons slot="end">
+
+        <ion-button fill="clear">
+
+          Escolher
+
+        </ion-button>
+
+      </ion-buttons>
+
+    </ion-item>
+
+    <ion-item lines="none" button="true" detail="false" *ngIf="payment_method" (click)="selectPaymentMethod()">
+
+      <ion-label *ngIf="payment_method.type == 1">
+
+        Cartão de crédito
+
+        <p>
+
+          <ion-button class="ion-no-padding" fill="clear" color="medium">
+
+            <span class="flag ion-margin-end">
+
+              <ion-icon [src]="payment_method.icon"></ion-icon>
+
+            </span>
+
+            <span class="digit ion-margin-end">
+
+              <ion-icon name="ellipse"></ion-icon>
+
+              <ion-icon name="ellipse"></ion-icon>
+
+              <ion-icon name="ellipse"></ion-icon>
+
+              <ion-icon name="ellipse"></ion-icon>
+
+            </span>
+
+            <span class="number"
+              *ngIf="payment_method.number.length == 16">{{ payment_method.number.slice(payment_method.number.length-4, payment_method.number.length) }}</span>
+
+            <span class="number"
+              *ngIf="payment_method.number.length == 15">{{ payment_method.number.slice(payment_method.number.length-3, payment_method.number.length) }}</span>
+
+          </ion-button>
+
+        </p>
+
+        <p>{{ payment_method.holder_name }}</p>
+
+      </ion-label>
+
+      <ion-label *ngIf="payment_method.type == 2">
+
+        {{ payment_method.name }}
+
+        <p *ngIf="payment_method.id == 1 && payment_method.cashback">Troco para {{ payment_method.cashback | money }}
+        </p>
+
+        <p *ngIf="payment_method.id != 1">Pagar na entrega</p>
+
+      </ion-label>
+
+      <img [src]="payment_method.icon" width="30" *ngIf="payment_method.type == 2">
+
+      <ion-buttons slot="end">
+
+        <ion-button fill="clear">
+
+          Alterar
+
+        </ion-button>
+
+      </ion-buttons>
+
+    </ion-item>
+
+  </ion-list>
+
+  <ion-grid>
+
+    <ion-row>
+
+      <ion-col>
+
+        <ion-button mode="ios" expand="block" *ngIf="payment_method" (click)="doOrder()">
+
+          <ion-spinner name="crescent" *ngIf="spinner"></ion-spinner>
+
+          <span *ngIf="!spinner">Fazer pedido</span>
+
+        </ion-button>
+
+        <ion-button mode="ios" expand="block" *ngIf="!payment_method" (click)="selectPaymentMethod()">
+
+          Escolher forma de pagamento
+
+        </ion-button>
+
+      </ion-col>
+
+    </ion-row>
+
+    <ion-row>
+
+      <ion-col class="ion-text-center">
+
+        <ion-button mode="ios" fill="clear" (click)="emptyCart()">
+
+          <ion-icon slot="start" name="trash-outline"></ion-icon>
+
+          Esvaziar Carrinho
+
+        </ion-button>
+
+      </ion-col>
+
+    </ion-row>
+
+  </ion-grid>
+
+</ion-content>
+
+<ngx-loading [show]="loading"></ngx-loading>

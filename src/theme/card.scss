@@ -1,0 +1,6 @@
+ion-card.card-primary {
+    --color: #fff;
+    background: var(--ion-color-primary);
+    background: -webkit-linear-gradient(to right, var(--ion-color-primary-shade), var(--ion-color-primary)); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, var(--ion-color-primary-shade), var(--ion-color-primary));
+}

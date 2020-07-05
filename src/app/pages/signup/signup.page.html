@@ -1,0 +1,71 @@
+<ion-header mode="ios" class="ion-no-border">
+
+  <ion-toolbar>
+
+    <ion-buttons slot="start">
+
+      <ion-back-button text=""></ion-back-button>
+
+    </ion-buttons>
+
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content>
+
+  <h4 class="title">Informe os seguintes dados</h4>
+
+  <ion-grid [formGroup]="formGroupRegister" mode="ios">
+
+    <ion-row>
+
+      <ion-col size="12">
+
+        <ion-label class="label-custom">Nome</ion-label>
+
+        <ion-input class="input-custom" type="text" formControlName="name" placeholder="Escreva seu nome"
+          autocapitalize="on"></ion-input>
+
+      </ion-col>
+      
+      <ion-col size="12">
+
+        <ion-label class="label-custom">Sobrenome</ion-label>
+
+        <ion-input class="input-custom" type="text" formControlName="surname" placeholder="Escreva seu sobrenome"
+          autocapitalize="on"></ion-input>
+
+      </ion-col>
+
+      <ion-col size="12">
+
+        <ion-label class="label-custom">E-mail</ion-label>
+
+        <ion-input class="input-custom" type="email" formControlName="email" placeholder="Escreva seu e-mail">
+        </ion-input>
+
+      </ion-col>
+
+    </ion-row>
+
+    <ion-row>
+      
+      <ion-col size="12">
+
+        <ion-button expand="block" (click)="send()" [disabled]="formGroupRegister.invalid"
+          [color]="formGroupRegister.valid ? 'primary' : 'dark'">
+
+          <ion-spinner name="crescent" [hidden]="!spinner"></ion-spinner>
+
+          <span [hidden]="spinner">Continuar</span>
+
+        </ion-button>
+
+      </ion-col>
+
+    </ion-row>
+
+  </ion-grid>
+
+</ion-content>

@@ -1,0 +1,30 @@
+ion-content {
+    ion-list {
+        ion-item {
+            ion-label {
+                h6 {
+                    font-size: 11pt;
+                    line-height: 12pt;
+                    overflow: hidden;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 2;
+                    -webkit-box-orient: vertical;
+                }
+
+                p {
+                    font-size: 11pt;
+                    line-height: 12pt;
+                    overflow: hidden;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 2;
+                    -webkit-box-orient: vertical;
+                }
+            }
+
+            span.date {
+                padding-right: 10px;
+                font-size: 11pt;
+            }
+        }
+    }
+}

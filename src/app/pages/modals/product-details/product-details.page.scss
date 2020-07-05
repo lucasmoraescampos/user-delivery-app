@@ -1,0 +1,104 @@
+ion-content {
+    --ion-padding: 20px;
+
+    .product {
+        ion-thumbnail {
+            --border-radius: 5px;
+            --size: 100%;
+
+            ion-img {
+                object-fit: cover;
+                height: 200px;
+            }
+        }
+
+        .price {
+            color: var(--ion-color-success);
+        }
+
+        .scratched-price {
+            margin-left: 5%;
+            text-decoration: line-through;
+        }
+
+        h6 {
+            font-size: 14pt;
+            text-transform: capitalize;
+        }
+
+        p {
+            color: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.4);
+            font-size: 12pt;
+        }
+    }
+
+    ion-list.complement {
+        ion-grid.title {
+            ion-row {
+                background-color: var(--ion-color-light);
+
+                p.title {
+                    font-size: 11pt;
+                }
+
+                p.qty {
+                    font-size: 9pt;
+                    color: var(--ion-color-medium);
+                }
+
+                ion-badge {
+                    margin-top: 10px;
+                    font-size: 9pt;
+                    padding: 5px;
+                    font-weight: normal;
+                    text-transform: uppercase;
+                    float: right;
+                }
+            }
+        }
+
+        ion-item {
+            p {
+                font-size: 10pt;
+                color: var(--ion-color-medium);
+            }
+        }
+    }
+}
+
+ion-footer {
+    ion-card {
+        height: 45px;
+        width: 100%;
+
+        .qty {
+            font-size: 12pt;
+            text-align: center;
+            display: block;
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+
+        ion-button.add {
+            --border-radius: 50%;
+            zoom: 0.6;
+            position: absolute;
+            top: calc(50% - (55px / 2));
+            right: 5px;
+            width: 55px;
+            height: 55px;
+            margin: 0;
+        }
+
+        ion-button.remove {
+            --border-radius: 50%;
+            zoom: 0.6;
+            position: absolute;
+            top: calc(50% - (55px / 2));
+            left: 5px;
+            width: 55px;
+            height: 55px;
+            margin: 0;
+        }
+    }
+}

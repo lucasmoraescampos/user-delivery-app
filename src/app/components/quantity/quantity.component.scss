@@ -1,0 +1,20 @@
+.content {
+    .qty {
+        font-size: 12pt;
+        position: absolute;
+        top: calc(50% - (25px / 2));
+        transform: translate(-50%);
+    }
+
+    ion-button.add {
+        --border-radius: 50%;
+        margin-left: 25px;
+        zoom: 0.65;
+    }
+
+    ion-button.remove {
+        --border-radius: 50%;
+        margin-right: 25px;
+        zoom: 0.65;
+    }
+}

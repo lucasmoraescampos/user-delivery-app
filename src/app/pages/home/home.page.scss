@@ -1,0 +1,22 @@
+ion-content {
+    ion-card {
+        ion-card-content {
+            padding: 10px 0;
+            text-align: center;
+
+            ion-thumbnail {
+                margin: 0 auto;
+
+                img {
+                    height: 48px;
+                }
+            }
+
+            h6 {
+                font-size: 12pt;
+                font-weight: 500;
+                margin-top: 5px;
+            }
+        }
+    }
+}

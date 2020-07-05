@@ -1,0 +1,120 @@
+<ion-header mode="ios">
+
+  <ion-toolbar>
+
+    <ion-buttons slot="start">
+
+      <ion-back-button text=""></ion-back-button>
+
+    </ion-buttons>
+
+    <ion-button class="btn-location" mode="ios" fill="clear" (click)="location()">
+
+      <ion-icon slot="start" name="location-sharp" color="danger"></ion-icon>
+
+      <span class="location ion-padding-vertical">{{ address }}</span>
+
+      <ion-icon slot="end" name="chevron-down-outline" color="medium"></ion-icon>
+
+    </ion-button>
+
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content>
+
+  <ion-refresher mode="md" slot="fixed" (ionRefresh)="refresh($event)">
+
+    <ion-refresher-content></ion-refresher-content>
+
+  </ion-refresher>
+
+  <ion-list class="categories" mode="ios">
+
+    <ion-list-header class="animated fadeIn delay-1s">Categorias</ion-list-header>
+
+    <div class="scrolling">
+
+      <div class="category animated bounceInRight" *ngFor="let s of subcategories">
+
+        <ion-card mode="ios" button="true" (click)="subcategory(s.id)">
+
+          <ion-img [src]="s.image"></ion-img>
+
+        </ion-card>
+
+        <h6>{{ s.name }}</h6>
+
+      </div>
+
+    </div>
+
+  </ion-list>
+
+  <ion-list class="companies" mode="ios">
+
+    <ion-list-header class="animated fadeIn delay-1s">Lojas</ion-list-header>
+
+    <ion-card class="animated bounceInUp" mode="ios" button="true" (click)="products(company.id)"
+      *ngFor="let company of companies">
+
+      <ion-card-content class="ion-no-padding">
+
+        <ion-row>
+
+          <div [ngClass]="{ 'image': true, 'close': !company.is_open }">
+
+            <ion-img [src]="company.photo"></ion-img>
+
+            <h6 [hidden]="company.is_open">Fechado</h6>
+
+          </div>
+
+          <div class="info">
+
+            <h6>{{ company.name }}</h6>
+
+            <p>
+
+              <span class="new" *ngIf="company.feedback == null">Novo</span>
+
+              <span class="stars" *ngIf="company.feedback != null">
+
+                <ion-icon name="star"></ion-icon> {{ company.feedback }}
+
+              </span>
+
+              <ion-icon class="ellipse" name="ellipse"></ion-icon>
+
+              {{ company.waiting_time }} min
+
+              <ion-icon class="ellipse" name="ellipse"></ion-icon>
+
+              {{ company.distance | distance }}
+
+            </p>
+
+            <p>
+
+              Entrega
+
+              <span class="price" *ngIf="company.delivery_price != null">{{ company.delivery_price | money }}</span>
+
+              <span class="price" *ngIf="company.delivery_price == null">Grátis</span>
+
+            </p>
+
+          </div>
+
+        </ion-row>
+
+      </ion-card-content>
+
+    </ion-card>
+
+  </ion-list>
+
+</ion-content>
+
+<app-button-cart></app-button-cart>

@@ -1,0 +1,96 @@
+<ion-header mode="ios" class="ion-no-border">
+
+  <ion-toolbar>
+
+    <ion-buttons slot="start" [hidden]="!btnBack">
+
+      <ion-back-button text="" (click)="cart()"></ion-back-button>
+
+    </ion-buttons>
+
+    <ion-title>Endereço de Entrega</ion-title>
+
+  </ion-toolbar>
+
+  <ion-toolbar class="ion-text-center">
+
+    <ion-button fill="clear" (click)="add()">
+
+      <ion-icon slot="start" name="add-outline"></ion-icon>
+
+      Adicionar Endereço
+
+    </ion-button>
+
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content>
+
+  <ion-list mode="ios" lines="full">
+
+    <ion-radio-group value="{{ user_location_id }}">
+
+      <ion-card [class]="user_location_id == l.id ? 'active' : ''" *ngFor="let l of locations">
+
+        <ion-row>
+
+          <ion-col class="ion-no-padding" size="10">
+
+            <ion-item lines="none" (click)="select(l)">
+
+              <ion-icon class="type" slot="start" src="../../../assets/icon/history.svg" *ngIf="!l.type"></ion-icon>
+
+              <ion-icon class="type" slot="start" name="home-outline" *ngIf="l.type == 1"></ion-icon>
+
+              <ion-icon class="type" slot="start" name="business-outline" *ngIf="l.type == 2"></ion-icon>
+
+              <ion-label *ngIf="l.type">
+
+                <h6 class="ion-text-wrap" *ngIf="l.type == 1">Casa</h6>
+
+                <h6 class="ion-text-wrap" *ngIf="l.type == 2">Trabalho</h6>
+
+                <p class="address ion-text-wrap">{{ l.street_name }}, {{ l.street_number }} - {{ l.district }},
+                  {{ l.city }} - {{ l.uf }}</p>
+
+                <p class="complement" *ngIf="l.complement">{{ l.complement }}</p>
+
+              </ion-label>
+
+              <ion-label *ngIf="!l.type">
+
+                <h6 class="ion-text-wrap">{{ l.street_name }}, {{ l.street_number }}</h6>
+
+                <p class="address ion-text-wrap">{{ l.district }}, {{ l.city }} - {{ l.uf }}</p>
+
+                <p class="complement" *ngIf="l.complement">{{ l.complement }}</p>
+
+              </ion-label>
+
+              <ion-radio class="ion-no-padding" slot="end" value="{{ l.id }}"></ion-radio>
+
+            </ion-item>
+
+          </ion-col>
+
+          <ion-col class="ion-no-padding" size="2">
+
+            <ion-button fill="clear" (click)="options($event, l)" color="primary">
+
+              <ion-icon slot="icon-only" name="ellipsis-vertical"></ion-icon>
+
+            </ion-button>
+
+          </ion-col>
+
+        </ion-row>
+
+      </ion-card>
+
+    </ion-radio-group>
+
+  </ion-list>
+
+</ion-content>

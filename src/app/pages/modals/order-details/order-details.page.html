@@ -1,0 +1,391 @@
+<ion-header mode="ios" class="ion-no-border">
+
+  <ion-toolbar>
+
+    <ion-buttons slot="end">
+
+      <ion-button (click)="dismiss()" color="dark">
+
+        <ion-icon src="../../../../assets/icon/close.svg"></ion-icon>
+
+      </ion-button>
+
+    </ion-buttons>
+
+    <ion-title>
+
+      Detalhes
+
+    </ion-title>
+
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content>
+
+  <ion-list class="order" mode="ios">
+
+    <ion-item class="company" lines="none" button="true" detail="false" (click)="company(order.company_id)">
+
+      <ion-avatar>
+
+        <img [src]="order.company_photo">
+
+      </ion-avatar>
+
+      <ion-label>
+
+        <h6 class="ion-text-wrap">{{ order.company_name }}</h6>
+
+        <p class="ion-text-wrap">
+
+          <ion-text color="primary">Ver cardápio</ion-text>
+
+        </p>
+
+      </ion-label>
+
+    </ion-item>
+
+    <ion-item class="company" lines="none">
+
+      <ion-label>
+
+        <p class="ion-text-wrap">Realizado às {{ order.created_at | date:'HH:mm - d MMM yyyy' }}</p>
+
+        <h6 class="ion-text-wrap id">Pedido Nº {{ order.id }}</h6>
+
+      </ion-label>
+
+    </ion-item>
+
+    <ion-item class="company" lines="full">
+
+      <ion-label class="delivered ion-text-wrap ion-text-center" *ngIf="order.delivered_at">
+
+        <ion-icon name="checkmark-circle"></ion-icon>
+
+        <p>Pedido entregue às {{ order.created_at | date:'HH:mm' }}</p>
+
+      </ion-label>
+
+      <ion-label class="waiting" *ngIf="!order.delivered_at">
+
+        <p>Previsão de entrega</p>
+
+        <h6 class="time">{{ order.waiting_time }}</h6>
+
+        <ion-progress-bar type="indeterminate"></ion-progress-bar>
+
+        <p class="ion-text-wrap status">
+
+          <ion-icon name="ellipse"></ion-icon>
+
+          O pedido está sendo preparado
+
+        </p>
+
+      </ion-label>
+
+    </ion-item>
+
+    <ion-item class="products" lines="full" *ngFor="let p of order.products">
+
+      <ion-label>
+
+        <ion-grid class="ion-no-padding">
+
+          <ion-row>
+
+            <ion-col size="2">
+
+              <h6>
+
+                <span class="qty">{{ p.qty }}x</span>
+
+              </h6>
+
+            </ion-col>
+
+            <ion-col size="7">
+
+              <h6 class="ion-text-wrap">{{ p.name }}</h6>
+
+            </ion-col>
+
+            <ion-col size="3" class="ion-text-right">
+
+              <h6>{{ total(p.unit_price, p.qty) | money }}</h6>
+
+            </ion-col>
+
+          </ion-row>
+
+          <ion-row class="ion-padding-top" *ngFor="let s of p.subcomplements">
+
+            <ion-col size="2">
+
+              <p>
+
+                <span class="qty">{{ s.qty }}x</span>
+
+              </p>
+
+            </ion-col>
+
+            <ion-col size="7">
+
+              <p class="ion-text-wrap">{{ s.description }}</p>
+
+            </ion-col>
+
+            <ion-col size="3" class="ion-text-right">
+
+              <h6>{{ total(s.unit_price, s.qty) | money }}</h6>
+
+            </ion-col>
+
+          </ion-row>
+
+          <ion-row class="ion-padding-top" *ngIf="p.note">
+
+            <ion-col>
+
+              <p class="ion-text-wrap">Observação: {{ p.note }}</p>
+
+            </ion-col>
+
+          </ion-row>
+
+        </ion-grid>
+
+      </ion-label>
+
+    </ion-item>
+
+    <ion-item class="prices" lines="full">
+
+      <ion-label>
+
+        <ion-grid class="ion-no-padding">
+
+          <ion-row>
+
+            <ion-col size="6">
+
+              <p>Subtotal</p>
+
+            </ion-col>
+
+            <ion-col size="6" class="ion-text-right">
+
+              <p>{{ order.price | money }}</p>
+
+            </ion-col>
+
+          </ion-row>
+
+          <ion-row>
+
+            <ion-col size="6">
+
+              <p>Taxa de entrega</p>
+
+            </ion-col>
+
+            <ion-col size="6" class="ion-text-right">
+
+              <p *ngIf="order.delivery_price">{{ order.delivery_price }}</p>
+
+              <p class="free" *ngIf="!order.delivery_price">Grátis</p>
+
+            </ion-col>
+
+          </ion-row>
+
+          <ion-row>
+
+            <ion-col size="6">
+
+              <h6>Total</h6>
+
+            </ion-col>
+
+            <ion-col size="6" class="ion-text-right">
+
+              <h6>{{ order.amount | money }}</h6>
+
+            </ion-col>
+
+          </ion-row>
+
+        </ion-grid>
+
+      </ion-label>
+
+    </ion-item>
+
+    <ion-item class="payment" lines="full" *ngIf="order.payment_type == 1">
+
+      <ion-label>
+
+        Pagamento pelo aplicativo
+
+      </ion-label>
+
+      <ion-button fill="clear" color="dark" disabled="true">
+
+        <span class="flag ion-margin-end">
+
+          <ion-icon src="../../../../assets/icon/amex.svg" *ngIf="order.payment_method_id == 'amex'"></ion-icon>
+
+          <ion-icon src="../../../../assets/icon/elo.svg" *ngIf="order.payment_method_id == 'elo'"></ion-icon>
+
+          <ion-icon src="../../../../assets/icon/hipercard.svg" *ngIf="order.payment_method_id == 'hipercard'">
+          </ion-icon>
+
+          <ion-icon src="../../../../assets/icon/mastercard.svg" *ngIf="order.payment_method_id == 'master'"></ion-icon>
+
+          <ion-icon src="../../../../assets/icon/visa.svg" *ngIf="order.payment_method_id == 'visa'"></ion-icon>
+
+        </span>
+
+        <span class="digit ion-margin-end">
+
+          <ion-icon name="ellipse"></ion-icon>
+
+          <ion-icon name="ellipse"></ion-icon>
+
+          <ion-icon name="ellipse"></ion-icon>
+
+          <ion-icon name="ellipse"></ion-icon>
+
+        </span>
+
+        <span class="number"
+          *ngIf="order.card_number.length == 16">{{ order.card_number.slice(order.card_number.length-4, order.card_number.length) }}</span>
+
+        <span class="number"
+          *ngIf="order.card_number.length == 15">{{ order.card_number.slice(order.card_number.length-3, order.card_number.length) }}</span>
+
+      </ion-button>
+
+    </ion-item>
+
+    <ion-item class="payment" lines="full" *ngIf="order.payment_type == 2">
+
+      <ion-label>
+
+        <p>Pagamento na entrega</p>
+
+        <h6>{{ order.payment_method_name }}</h6>
+
+      </ion-label>
+
+      <img class="ion-margin-end" [src]="order.payment_method_icon" width="28">
+
+    </ion-item>
+
+    <ion-item class="address" lines="none">
+
+      <ion-label>
+
+        <p>Endereço de entrega</p>
+
+        <h6 class="ion-text-wrap">{{ order.address }}</h6>
+
+      </ion-label>
+
+    </ion-item>
+
+  </ion-list>
+
+  <ion-list class="feedback" mode="ios" *ngIf="order.status == 4">
+
+    <ion-item lines="none">
+
+      <ion-label class="ion-text-center">
+
+        <h6 *ngIf="order.feedback == null">Avalie o pedido</h6>
+
+        <h6 *ngIf="order.feedback != null">Avaliação do pedido</h6>
+
+        <ion-button class="ion-no-padding feedback" fill="clear"
+          [color]="order.feedback == null ? 'medium' : order.feedback >= 1 ? 'warning' : 'medium'"
+          [disabled]="order.feedback != null" (click)="feedback(order.id, 1)">
+
+          <ion-icon slot="icon-only"
+            [name]="order.feedback == null ? 'star-outline' : order.feedback >= 1 ? 'star' : 'star-outline'"></ion-icon>
+
+        </ion-button>
+
+        <ion-button class="ion-no-padding feedback" fill="clear"
+          [color]="order.feedback == null ? 'medium' : order.feedback >= 2 ? 'warning' : 'medium'"
+          [disabled]="order.feedback != null" (click)="feedback(order.id, 2)">
+
+          <ion-icon slot="icon-only"
+            [name]="order.feedback == null ? 'star-outline' : order.feedback >= 2 ? 'star' : 'star-outline'"></ion-icon>
+
+        </ion-button>
+
+        <ion-button class="ion-no-padding feedback" fill="clear"
+          [color]="order.feedback == null ? 'medium' : order.feedback >= 3 ? 'warning' : 'medium'"
+          [disabled]="order.feedback != null" (click)="feedback(order.id, 3)">
+
+          <ion-icon slot="icon-only"
+            [name]="order.feedback == null ? 'star-outline' : order.feedback >= 3 ? 'star' : 'star-outline'"></ion-icon>
+
+        </ion-button>
+
+        <ion-button class="ion-no-padding feedback" fill="clear"
+          [color]="order.feedback == null ? 'medium' : order.feedback >= 4 ? 'warning' : 'medium'"
+          [disabled]="order.feedback != null" (click)="feedback(order.id, 4)">
+
+          <ion-icon slot="icon-only"
+            [name]="order.feedback == null ? 'star-outline' : order.feedback >= 4 ? 'star' : 'star-outline'"></ion-icon>
+
+        </ion-button>
+
+        <ion-button class="ion-no-padding feedback" fill="clear"
+          [color]="order.feedback == null ? 'medium' : order.feedback == 5 ? 'warning' : 'medium'"
+          [disabled]="order.feedback != null" (click)="feedback(order.id, 5)">
+
+          <ion-icon slot="icon-only"
+            [name]="order.feedback == null ? 'star-outline' : order.feedback == 5 ? 'star' : 'star-outline'"></ion-icon>
+
+        </ion-button>
+
+      </ion-label>
+
+    </ion-item>
+
+  </ion-list>
+
+  <ion-list class="call" mode="ios" *ngIf="order.status != 4">
+
+    <ion-grid class="ion-padding">
+
+      <ion-row>
+
+        <ion-col>
+
+          <ion-button expand="block" href="tel:{{ order.company_phone }}">
+
+            <ion-icon slot="start" name="call-outline"></ion-icon>
+
+            Ligar para loja
+
+          </ion-button>
+
+        </ion-col>
+
+      </ion-row>
+
+    </ion-grid>
+
+  </ion-list>
+
+</ion-content>
+
+<ngx-loading [show]="loading"></ngx-loading>

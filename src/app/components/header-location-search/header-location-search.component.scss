@@ -1,0 +1,15 @@
+ion-header {
+    ion-button.btn-back {
+        position: absolute;
+        left: -10px;
+
+        ion-icon {
+            font-size: 24pt;
+        }
+    }
+
+    ion-searchbar {
+        margin-top: 10px;
+        --icon-color: var(--ion-color-primary);
+    }
+}
