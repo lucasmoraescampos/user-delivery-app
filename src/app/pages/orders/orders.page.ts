@@ -207,7 +207,7 @@ export class OrdersPage implements OnInit {
 
       this.current_orders[index].status = data.status;
 
-      if (data.status == 4) {
+      if (data.status == 4 || data.status == 5) {
 
         this.current_orders[index].delivered_at = new Date();
 

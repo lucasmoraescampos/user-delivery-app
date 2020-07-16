@@ -7,6 +7,8 @@ import { UserService } from 'src/app/services/user/user.service';
 import { PaymentMethodPage } from '../payment-method/payment-method.page';
 import { AlertService } from 'src/app/services/alert/alert.service';
 import { ToastService } from 'src/app/services/toast/toast.service';
+import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
+import { ConfigHelper } from 'src/app/helpers/ConfigHelper';
 
 @Component({
   selector: 'app-cart',
@@ -35,6 +37,8 @@ export class CartPage implements OnInit {
 
   public spinner: boolean = false;
 
+  private socket: WebSocketSubject<any>;
+
   constructor(
     private modalCtrl: ModalController,
     private orderSrv: OrderService,
@@ -59,6 +63,9 @@ export class CartPage implements OnInit {
     this.prepareLocation();
 
     this.preparePaymentMethod();
+
+    this.prepareSocket();
+
   }
 
   public dismiss() {
@@ -174,6 +181,8 @@ export class CartPage implements OnInit {
             }
           });
 
+          this.sendOrder(res.data);
+
           this.modalCtrl.dismiss();
 
         }
@@ -287,4 +296,27 @@ export class CartPage implements OnInit {
     this.payment_method = UserService.currentPaymentMethod();
 
   }
+
+  private prepareSocket() {
+
+    const user = UserService.auth();
+
+    this.socket = webSocket(`${ConfigHelper.Socket}/user/order?id=${user.id}`);
+
+    this.socket.subscribe();
+    
+  }
+
+  private sendOrder(order: any) {
+
+    const user = UserService.auth();
+
+    order.user_name = user.name;
+
+    order.user_surname = user.surname;
+
+    this.socket.next(order);
+
+  }
+
 }
