@@ -1,21 +1,111 @@
-ion-content {
-    ion-card {
-        ion-card-content {
-            padding: 10px 0;
-            text-align: center;
+ion-header {
+    ion-segment {
+        width: 180px;
+    }
 
-            ion-thumbnail {
-                margin: 0 auto;
+    ion-buttons {
+        ion-button.location {
+            margin-left: 5px;
+            font-size: 12pt;
+
+            .location {
+                max-width: 100%;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+            }
+
+            ion-icon:first-child {
+                font-size: 14pt;
+                padding-bottom: 2px;
+            }
+
+            ion-icon:last-child {
+                font-size: 9pt;
+            }
+        }
+    }
+}
+
+ion-content {
+    ion-searchbar {
+        --icon-color: var(--ion-color-primary);
+    }
+
+    ion-list.categories {
+        .scrolling {
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .category:not(:first-child) {
+            margin-left: -10px;
+        }
+
+        .category:first-child {
+            margin-left: 5px;
+        }
+
+        .category:last-child {
+            margin-right: 5px;
+        }
+
+        .category {
+            display: inline-block;
+            text-align: center;
+            padding: 0;
+
+            ion-card {
+                width: 140px;
+                height: 80px;
+                margin: 20px 10px;
 
                 img {
-                    height: 48px;
+                    margin-top: 10px;
+                    height: 60px;
                 }
             }
 
             h6 {
-                font-size: 12pt;
-                font-weight: 500;
-                margin-top: 5px;
+                font-size: 11pt;
+                font-weight: 400;
+                margin-top: -10px;
+            }
+        }
+    }
+
+    ion-list.slides {
+        .scrolling {
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .slide:not(:first-child) {
+            margin-left: -10px;
+        }
+
+        .slide:first-child {
+            margin-left: 5px;
+        }
+
+        .slide:last-child {
+            margin-right: 5px;
+        }
+
+        .slide {
+            display: inline-block;
+            text-align: center;
+            padding: 0;
+            width: 90%;
+
+            ion-card {
+                height: 150px;
+                margin: 20px 10px;
+
+                img {
+                    height: 150px;
+                    object-fit: cover;
+                }
             }
         }
     }

@@ -1,22 +1,60 @@
 <ion-header mode="ios">
 
-  <ion-toolbar>
+  <ion-toolbar mode="md">
 
-    <ion-button class="btn-location" mode="ios" fill="clear" (click)="location()">
+    <ion-segment value="1" (ionChange)="segmentChanged($event)">
 
-      <ion-icon slot="start" name="location-sharp" color="danger"></ion-icon>
+      <ion-segment-button value="1">
 
-      <span class="location ion-padding-vertical">{{ address }}</span>
+        <ion-label>Entrega</ion-label>
 
-      <ion-icon slot="end" name="chevron-down-outline" color="medium"></ion-icon>
+      </ion-segment-button>
 
-    </ion-button>
+      <ion-segment-button value="2">
+
+        <ion-label>Retirada</ion-label>
+
+      </ion-segment-button>
+
+    </ion-segment>
+
+    <ion-buttons slot="end">
+
+      <ion-button>
+
+        <ion-icon slot="icon-only" src="../../../assets/icon/vouchers.svg"></ion-icon>
+
+      </ion-button>
+
+    </ion-buttons>
 
   </ion-toolbar>
 
 </ion-header>
 
-<ion-content>
+<ion-header class="ion-no-margin ion-no-border" mode="ios">
+
+  <ion-toolbar>
+
+    <ion-buttons slot="start">
+
+      <ion-button class="location" color="dark" (click)="location()">
+
+        <ion-icon slot="start" name="location-sharp" color="danger"></ion-icon>
+    
+        <span class="location ion-padding-vertical">{{ address }}</span>
+    
+        <ion-icon slot="end" name="chevron-down-outline" color="medium"></ion-icon>
+    
+      </ion-button>
+
+    </ion-buttons>
+
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content mode="ios">
 
   <ion-refresher mode="md" slot="fixed" (ionRefresh)="refresh($event)">
 
@@ -24,32 +62,44 @@
 
   </ion-refresher>
 
-  <ion-grid mode="ios">
+  <ion-searchbar placeholder="O que você quer hoje?" readonly="true"></ion-searchbar>
 
-    <ion-row>
+  <ion-list class="ion-margin-top categories" mode="ios">
 
-      <ion-col size="12" *ngFor="let c of categories">
+    <div class="scrolling">
 
-        <ion-card class="card-primary animated fadeInUp" button="true" (click)="select(c.id)">
+      <div class="category animated bounceInRight" *ngFor="let c of categories">
 
-          <ion-card-content>
+        <ion-card color="primary" button="true" (click)="select(c.id)">
 
-            <ion-thumbnail>
-
-              <img [src]="'../../../assets/icon/' + c.icon">
-
-            </ion-thumbnail>
-
-            <h6>{{ c.name }}</h6>
-
-          </ion-card-content>
+          <img [src]="'../../../assets/icon/' + c.icon">
 
         </ion-card>
 
-      </ion-col>
+        <h6>{{ c.name }}</h6>
 
-    </ion-row>
+      </div>
 
-  </ion-grid>
+    </div>
+
+  </ion-list>
+
+  <ion-list class="ion-margin-top slides" mode="ios">
+
+    <div class="scrolling">
+
+      <div class="slide animated bounceInRight" *ngFor="let c of categories">
+
+        <ion-card color="primary" button="true" (click)="select(c.id)">
+
+          <img [src]="'../../../assets/icon/' + c.icon">
+
+        </ion-card>
+
+      </div>
+
+    </div>
+
+  </ion-list>
 
 </ion-content>

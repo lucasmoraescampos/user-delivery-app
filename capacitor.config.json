@@ -1,6 +1,6 @@
 {
-  "appId": "io.ionic.starter",
-  "appName": "capacitor",
+  "appId": "org.meupedido.user",
+  "appName": "Meu Pedido",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "www",

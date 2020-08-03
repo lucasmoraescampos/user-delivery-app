@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { NavController } from '@ionic/angular';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NavController, IonSearchbar } from '@ionic/angular';
 import { LocationService } from '../../services/location/location.service';
 import { LoadingService } from 'src/app/services/loading/loading.service';
 import { CategoryService } from 'src/app/services/category/category.service';
@@ -10,6 +10,8 @@ import { CategoryService } from 'src/app/services/category/category.service';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage implements OnInit {
+
+  @ViewChild(IonSearchbar) searchbar: IonSearchbar;
 
   public address: string;
 
@@ -33,6 +35,8 @@ export class HomePage implements OnInit {
     this.prepareAddress();
 
     this.prepareCategories();
+
+    this.searchAnimate();
 
   }
 
@@ -91,6 +95,26 @@ export class HomePage implements OnInit {
         this.address += location.address.street_number != undefined ? `, ${location.address.street_number}` : '';
       }
     });
+
+  }
+
+  private searchAnimate() {
+
+    const searches: any[] = [
+      'Hamburguer...', 'Almoçar...', 'Jantar...', 'Refrigerante...', 'Cerveja...', 'Açaí...', 'O que você quer hoje?'
+    ];
+
+    let i = 0;
+
+    setInterval(() => {
+
+      this.searchbar.placeholder = searches[i];
+
+      if (i == searches.length - 1) i = 0;
+
+      else i++;
+
+    }, 3000);
 
   }
 }
