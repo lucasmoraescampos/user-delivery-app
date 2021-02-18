@@ -1,0 +1,233 @@
+<ion-header class="ion-no-border" mode="ios">
+
+  <ion-toolbar>
+
+    <ion-buttons slot="start" *ngIf="slideActiveIndex > 0">
+
+      <ion-button (click)="prev()">
+  
+        <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
+  
+      </ion-button>
+  
+    </ion-buttons>
+
+    <ion-title *ngIf="slideActiveIndex == 1">Localização</ion-title>
+
+    <ion-title *ngIf="slideActiveIndex == 2">Endereço</ion-title>
+
+    <ion-buttons slot="end" *ngIf="slideActiveIndex == 0">
+
+      <ion-button class="close" fill="clear" (click)="dismiss()">
+
+        <ion-icon slot="icon-only" color="medium" name="close"></ion-icon>
+
+      </ion-button>
+
+    </ion-buttons>
+
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content mode="ios" customScroll>
+
+  <ion-slides class="swiper-no-swiping">
+
+    <ion-slide class="locations">
+
+      <ion-grid class="ion-padding-horizontal">
+
+        <ion-row>
+
+          <ion-col class="ion-text-center" size="12">
+
+            <ion-icon class="icon-map" src="../../../assets/icon/map.svg"></ion-icon>
+
+            <h5>Onde você quer receber seu pedido?</h5>
+
+          </ion-col>
+
+          <ion-col class="ion-margin-bottom ion-text-center" size="12">
+
+            <ion-button expand="true" (click)="next()">
+
+              <ion-icon slot="start" name="add-circle-outline"></ion-icon>
+
+              Adicionar endereço
+
+            </ion-button>
+
+          </ion-col>
+
+          <ion-col size="12" [hidden]="true">
+
+            <ion-card button="true">
+
+              <ion-item lines="none">
+
+                <ion-icon class="history" slot="start" src="../../../assets/icon/history.svg"></ion-icon>
+
+                <ion-label>
+
+                  <h6>Casa</h6>
+
+                  <p>R. 207, 120, Esquina com a 11ª</p>
+
+                </ion-label>
+
+              </ion-item>
+
+            </ion-card>
+
+          </ion-col>
+
+        </ion-row>
+
+        <ion-row class="auth">
+          
+          <ion-col class="ion-text-center" size="12">
+
+            <h6>Já tem um endereço salvo?</h6>
+
+            <p>Entre na sua conta para selecionar seu endereço.</p>
+
+            <ion-button fill="clear">
+
+              <b>Entrar ou cadastrar</b>
+
+            </ion-button>
+
+          </ion-col>
+
+        </ion-row>
+
+      </ion-grid>
+
+    </ion-slide>
+
+    <ion-slide class="location">
+
+      <ion-searchbar placeholder="Endereço e número" [(ngModel)]="search" (ngModelChange)="searchChanged()" *ngIf="slideActiveIndex == 1">
+      </ion-searchbar>
+
+      <ion-list class="address-complement" [hidden]="addresses?.length == 0">
+
+        <ion-item lines="full" detail="false" button="true" *ngFor="let address of addresses"
+          (click)="selectAddress(address)">
+
+          <ion-label class="ion-text-wrap">{{ address }}</ion-label>
+
+        </ion-item>
+
+      </ion-list>
+
+      <div class="map" #map [hidden]="slideActiveIndex != 1"></div>
+
+      <ion-button (click)="next()" *ngIf="slideActiveIndex == 1">
+
+        Confirmar Localização
+
+      </ion-button>
+
+      <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="slideActiveIndex == 1">
+
+        <ion-fab-button color="light" (click)="locate()">
+
+          <ion-icon name="locate-outline"></ion-icon>
+
+        </ion-fab-button>
+
+      </ion-fab>
+
+    </ion-slide>
+
+    <ion-slide class="address">
+
+      <ion-grid class="ion-padding" *ngIf="slideActiveIndex == 2" [formGroup]="formGroup">
+
+        <ion-row>
+
+          <ion-col size-xs="12" size-sm="9">
+
+            <ion-label [class.invalid]="submitAttempt && formControl.street_name.errors" class="stacked">Rua</ion-label>
+
+            <ion-input [class.invalid]="submitAttempt && formControl.street_name.errors" formControlName="street_name" maxlength="255" enterkeyhint="go" (keyup.enter)="street_number.setFocus()"></ion-input>
+            
+            <ion-note class="validation-error" *ngIf="submitAttempt && formControl.street_name.errors?.required">
+
+              <ion-icon name="information-circle-outline"></ion-icon>
+                  
+              Informar o nome da rua.
+
+            </ion-note>
+
+          </ion-col>
+
+          <ion-col size-xs="12" size-sm="3">
+
+            <ion-label [class.invalid]="formControl.street_number.errors" class="stacked">Número</ion-label>
+
+            <ion-input [class.invalid]="formControl.street_number.errors" formControlName="street_number" maxlength="20" enterkeyhint="go" (keyup.enter)="district.setFocus()" #street_number></ion-input>
+            
+            <ion-note class="validation-error" *ngIf="submitAttempt && formControl.street_number.errors?.required">
+
+              <ion-icon name="information-circle-outline"></ion-icon>
+                  
+              Informar o número da rua.
+
+            </ion-note>
+
+          </ion-col>
+
+          <ion-col size-xs="12" size-sm="6">
+
+            <ion-label [class.invalid]="submitAttempt && formControl.district.errors" class="stacked">Bairro</ion-label>
+
+            <ion-input [class.invalid]="submitAttempt && formControl.district.errors" formControlName="district" maxlength="100" enterkeyhint="go" (keyup.enter)="complement.setFocus()" #district></ion-input>
+            
+            <ion-note class="validation-error" *ngIf="submitAttempt && formControl.district.errors?.required">
+
+              <ion-icon name="information-circle-outline"></ion-icon>
+                  
+              Informar o nome do bairro.
+
+            </ion-note>
+            
+          </ion-col>
+
+          <ion-col size-xs="12" size-sm="6">
+
+            <ion-label class="stacked">Complemento</ion-label>
+
+            <ion-input formControlName="complement" maxlength="255" enterkeyhint="done" (keyup.enter)="save()" #complement></ion-input>
+            
+          </ion-col>
+
+        </ion-row>
+
+      </ion-grid>
+
+    </ion-slide>
+
+  </ion-slides>
+
+</ion-content>
+
+<ion-footer mode="ios" *ngIf="slideActiveIndex == 2">
+
+  <ion-grid class="ion-padding">
+
+    <ion-row>
+
+      <ion-col size="12">
+
+        <ion-button expand="block" (click)="save()">Salvar Endereço</ion-button>
+
+      </ion-col>
+
+    </ion-row>
+
+  </ion-grid>
+
+</ion-footer>

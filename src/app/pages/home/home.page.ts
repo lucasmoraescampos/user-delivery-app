@@ -1,120 +1,139 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { NavController, IonSearchbar } from '@ionic/angular';
-import { LocationService } from '../../services/location/location.service';
-import { LoadingService } from 'src/app/services/loading/loading.service';
-import { CategoryService } from 'src/app/services/category/category.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { ModalController } from '@ionic/angular';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { ModalAuthComponent } from 'src/app/components/modal-auth/modal-auth.component';
+import { ModalChooseLocationComponent } from 'src/app/components/modal-choose-location/modal-choose-location.component';
+import { ModalProductComponent } from 'src/app/components/modal-product/modal-product.component';
+import { CurrentOrder } from 'src/app/models/current-order.model';
+import { AlertService } from 'src/app/services/alert.service';
+import { AuthService } from 'src/app/services/auth.service';
+import { CompanyService } from 'src/app/services/company.service';
+import { LoadingService } from 'src/app/services/loading.service';
+import { OrderService } from 'src/app/services/order.service';
 
 @Component({
   selector: 'app-home',
-  templateUrl: 'home.page.html',
-  styleUrls: ['home.page.scss'],
+  templateUrl: './home.page.html',
+  styleUrls: ['./home.page.scss'],
 })
-export class HomePage implements OnInit {
+export class HomePage implements OnInit, OnDestroy {
 
-  @ViewChild(IonSearchbar) searchbar: IonSearchbar;
+  public company: any;
 
-  public address: string;
+  public user: any;
 
-  public categories: Array<any>;
+  public menu: any;
+
+  public order: CurrentOrder;
+
+  public products = [1,1,1,1,1,1];
+
+  public unsubscribe = new Subject();
 
   constructor(
-    private navCtrl: NavController,
-    private locationSrv: LocationService,
-    private categorySrv: CategoryService,
-    private loadingSrv: LoadingService
-  ) {
-
-    if (this.locationSrv.getDeliveryLocation() == null) {
-      this.navCtrl.navigateForward('locations');
-    }
-
-  }
+    private modalCtrl: ModalController,
+    private alertSrv: AlertService,
+    private loadingSrv: LoadingService,
+    private companySrv: CompanyService,
+    private route: ActivatedRoute,
+    private orderSrv: OrderService,
+    private authSrv: AuthService
+  ) { }
 
   ngOnInit() {
 
-    this.prepareAddress();
+    this.initCompany();
 
-    this.prepareCategories();
+    this.initOrder();
 
-    this.searchAnimate();
-
-  }
-
-  public refresh(event: any) {
-
-    this.categorySrv.get()
-      .subscribe(res => {
-
-        event.target.complete();
-
-        if (res.success) {
-
-          this.categories = res.data;
-
-        }
-      });
+    this.initUser();
 
   }
 
-  public location() {
-    this.navCtrl.navigateForward('/locations', {
-      queryParams: {
-        btnBack: true
-      }
-    })
+  ngOnDestroy() {
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 
-  public select(category: number) {
-    this.navCtrl.navigateForward('companies', {
-      queryParams: {
-        category: category
+  public segmentChanged() {
+
+  }
+
+  public async location() {
+
+    const modal = await this.modalCtrl.create({
+      component: ModalChooseLocationComponent,
+      backdropDismiss: false
+    });
+
+    return await modal.present();
+
+  }
+
+  public async signin() {
+
+    const modal = await this.modalCtrl.create({
+      component: ModalAuthComponent,
+      backdropDismiss: false,
+      cssClass: 'modal-sm'
+    });
+  
+    return await modal.present();
+    
+  }
+
+  public async modalProduct(product: any) {
+
+    const modal = await this.modalCtrl.create({
+      component: ModalProductComponent,
+      backdropDismiss: false,
+      cssClass: 'modal-lg',
+      componentProps: {
+        product: product
       }
     });
+
+    return await modal.present();
+
   }
 
-  private prepareCategories() {
+  private initCompany() {
 
     this.loadingSrv.show();
 
-    this.categorySrv.get()
-      .subscribe(res => {
+    const slug = this.route.snapshot.paramMap.get('slug');
 
+    this.companySrv.getBySlug(slug)
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe(res => {
+        
         this.loadingSrv.hide();
 
         if (res.success) {
-          this.categories = res.data;
+
+          this.company = res.data.company;
+
+          this.menu = res.data.menu;
+
         }
+
+      });
+
+  }
+
+  private initOrder() {
+    this.orderSrv.currentOrder.pipe(takeUntil(this.unsubscribe))
+      .subscribe(order => {
+        this.order = order;
       });
   }
 
-  private prepareAddress() {
-
-    this.locationSrv.deliveryLocation.subscribe(location => {
-      if (location) {
-        this.address = location.address.street_name;
-        this.address += location.address.street_number != undefined ? `, ${location.address.street_number}` : '';
-      }
-    });
-
-  }
-
-  private searchAnimate() {
-
-    const searches: any[] = [
-      'Hamburguer...', 'Almoçar...', 'Jantar...', 'Refrigerante...', 'Cerveja...', 'Açaí...', 'O que você quer hoje?'
-    ];
-
-    let i = 0;
-
-    setInterval(() => {
-
-      this.searchbar.placeholder = searches[i];
-
-      if (i == searches.length - 1) i = 0;
-
-      else i++;
-
-    }, 3000);
-
+  private initUser() {
+    this.authSrv.currentUser.pipe(takeUntil(this.unsubscribe))
+      .subscribe(user => {
+        this.user = user;
+      });
   }
 }

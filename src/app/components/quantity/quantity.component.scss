@@ -1,20 +1,27 @@
-.content {
-    .qty {
-        font-size: 12pt;
-        position: absolute;
-        top: calc(50% - (25px / 2));
-        transform: translate(-50%);
+ion-card {
+    --background: transparent;
+    box-shadow: none;
+    border: 0.55px solid #c8c7cc;
+    margin: 0;
+    height: 44.8px;
+
+    ion-label {
+        float: left;
+        width: calc(100% - 84px);
+        text-align: center;
+        font-size: 22px;
+        margin: 9.4px 0;
     }
 
-    ion-button.add {
-        --border-radius: 50%;
-        margin-left: 25px;
-        zoom: 0.65;
-    }
+    ion-fab-button {
+        float: left;
+        width: 26px;
+        height: 26px;
+        margin-top: 9.4px;
+        margin-bottom: 9.4px;
 
-    ion-button.remove {
-        --border-radius: 50%;
-        margin-right: 25px;
-        zoom: 0.65;
+        ion-icon {
+            font-size: 16px;
+        }
     }
 }

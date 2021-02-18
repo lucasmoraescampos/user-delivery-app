@@ -1,6 +1,6 @@
 {
-  "appId": "org.meupedido.user",
-  "appName": "Meu Pedido",
+  "appId": "io.ionic.starter",
+  "appName": "menu",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "www",

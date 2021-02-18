@@ -1,0 +1,119 @@
+<ion-header class="ion-no-border" mode="ios">
+
+  <ion-toolbar>
+
+    <h6 class="ion-text-wrap">{{ product.name }}</h6>
+
+    <ion-buttons slot="end">
+
+      <ion-button class="close" fill="clear" (click)="dismiss()">
+
+        <ion-icon slot="icon-only" color="medium" name="close"></ion-icon>
+
+      </ion-button>
+
+    </ion-buttons>
+
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content customScroll>
+
+  <ion-grid class="ion-padding-horizontal">
+
+    <ion-row>
+
+      <ion-col class="image" size="12" size-md="6">
+
+        <div>
+
+          <img [src]="product?.image">
+
+        </div>
+
+      </ion-col>
+
+      <ion-col size="12" size-md="6">
+
+        <ion-grid class="ion-no-padding">
+
+          <ion-row>
+
+            <ion-col size="12">
+
+              <p>{{ product?.description }}</p>
+
+              <h6>{{ product?.price - product?.rebate | money }}</h6>
+    
+            </ion-col>
+
+            <ion-col size="12">
+
+              <ion-thumbnail>
+
+                <img [src]="product?.image">
+      
+              </ion-thumbnail>
+
+            </ion-col>
+
+            <ion-col size="12">
+
+              <ion-label class="stacked">Algum comentário?</ion-label>
+
+              <ion-textarea placeholder="Ex: Adicionar ou retirar algo" maxlength="200" [(ngModel)]="note"></ion-textarea>
+
+            </ion-col>
+
+          </ion-row>
+
+        </ion-grid>
+
+      </ion-col>
+
+    </ion-row>
+
+  </ion-grid>
+
+</ion-content>
+
+<ion-footer mode="md">
+
+  <ion-grid class="ion-padding" mode="ios">
+
+    <ion-row>
+
+      <ion-col size="4">
+
+        <app-quantity min="1" [value]="qty" (changeQty)="changeQty($event)"></app-quantity>
+
+      </ion-col>
+
+      <ion-col size="8">
+
+        <ion-card class="add" color="primary" button="true" (click)="isEdit ? update() : add()">
+
+          <ion-card-content>
+
+            <div>
+
+              <span *ngIf="isEdit">Atualizar</span>
+
+              <span *ngIf="!isEdit">Adicionar</span>
+              
+              <span class="total">{{ (product.price - product.rebate) * qty | money }}</span>
+
+            </div>
+
+          </ion-card-content>
+
+        </ion-card>
+
+      </ion-col>
+
+    </ion-row>
+
+  </ion-grid>
+
+</ion-footer>

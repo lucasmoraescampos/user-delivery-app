@@ -1,49 +1,35 @@
-import { Component } from '@angular/core';
-import { Platform, NavController } from '@ionic/angular';
-import { LoadingService } from './services/loading/loading.service';
-import { Network } from '@ionic-native/network/ngx';
+import { Component, OnInit } from '@angular/core';
+import { LoadingService } from './services/loading.service';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
-  styleUrls: ['app.component.scss']
+  styleUrls: ['app.component.scss'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
 
-  public loading: boolean = false;
+  public loading: boolean;
 
+  private unsubscribe = new Subject();
+  
   constructor(
-    private platform: Platform,
-    private loadingSrv: LoadingService,
-    public network: Network,
-    private navCtrl: NavController
-  ) {
-    this.initializeApp();
-  }
+    private loadingSrv: LoadingService
+  ) {}
 
-  initializeApp() {
-    this.platform.ready().then(() => {
-      this.prepareLoading();
-      this.prepareConnection();
-    });
-  }
+  ngOnInit() {
 
-  private prepareLoading() {
-
-    this.loadingSrv.status.subscribe(status => {
-      this.loading = status;
-    });
+    this.loadingSrv.status.pipe(takeUntil(this.unsubscribe))
+      .subscribe(status => {
+        this.loading = status;
+      });
 
   }
 
-  private prepareConnection() {
-
-    this.network.onDisconnect().subscribe(() => {
-      this.navCtrl.navigateForward('/disconnected');
-    });
-
-    this.network.onConnect().subscribe(() => {
-      this.navCtrl.back();
-    });
+  ngOnDestroy() {
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
+
 }

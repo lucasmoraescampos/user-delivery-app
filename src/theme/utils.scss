@@ -1,0 +1,21 @@
+ion-popover.popover-dropdown .popover-wrapper {
+    .popover-arrow.sc-ion-popover-ios {
+        display: none;
+    }
+
+    .popover-content.sc-ion-popover-ios {
+        --box-shadow: 0 0 10px var(--ion-color-medium);
+        border-radius: 2px;
+    }
+}
+
+ion-modal.modal-lg .modal-wrapper {
+    min-width: calc(100% - 200px);
+}
+
+@media (min-width: 768px) {
+    ion-modal.modal-sm .modal-wrapper {
+        width: 500px;
+        height: 400px;
+    }
+}

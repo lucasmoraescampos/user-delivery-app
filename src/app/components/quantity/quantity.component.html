@@ -1,18 +1,17 @@
-<div class="content">
+<ion-card>
 
-  <ion-button class="remove" fill="clear" mode="md" (click)="remove()" [hidden]="quantity == 0">
+  <ion-fab-button size="small" (click)="remove()">
 
-    <ion-icon slot="icon-only" src="../../../assets/icon/remove.svg"></ion-icon>
+    <ion-icon name="remove"></ion-icon>
 
-  </ion-button>
+  </ion-fab-button>
 
-  <span class="qty" [hidden]="quantity == 0">{{ quantity }}</span>
+  <ion-label>{{ value }}</ion-label>
 
-  <ion-button class="add" fill="clear" mode="md" (click)="add()" [disabled]="disabled"
-    [color]="disabled ? 'dark' : 'primary'">
+  <ion-fab-button size="small" (click)="add()">
 
-    <ion-icon slot="icon-only" src="../../../assets/icon/add.svg"></ion-icon>
+    <ion-icon name="add"></ion-icon>
 
-  </ion-button>
+  </ion-fab-button>
 
-</div>
+</ion-card>

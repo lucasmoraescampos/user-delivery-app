@@ -1,111 +1,293 @@
 ion-header {
-    ion-segment {
-        width: 180px;
+    ion-toolbar {
+        --min-height: 60px;
     }
 
-    ion-buttons {
-        ion-button.location {
-            margin-left: 5px;
-            font-size: 12pt;
+    ion-button {
+        --color: var(--ion-color-dark);
 
-            .location {
-                max-width: 100%;
+        &.location {
+            p {
+                margin: 0;
+                font-size: 0.75rem;
+                line-height: 1rem;
+                font-weight: 500;
+                text-transform: uppercase;
+                color: var(--ion-color-medium);
+            }
+
+            ion-label {
+                font-size: 1rem;
+                line-height: 1.125rem;
+                max-width: 170px;
                 overflow: hidden;
                 white-space: nowrap;
                 text-overflow: ellipsis;
+                letter-spacing: -0.03em;
             }
 
-            ion-icon:first-child {
-                font-size: 14pt;
-                padding-bottom: 2px;
+            ion-icon.location {
+                font-size: 16px;
+                margin-right: 5px;
+                margin-bottom: -2px;
             }
 
-            ion-icon:last-child {
-                font-size: 9pt;
+            ion-icon.chevron {
+                margin-left: 5px;
+                font-size: 12px;
+                margin-bottom: -1px;
             }
+        }
+
+        &.btn-signin {
+            ion-icon {
+                margin-right: 8px;
+                font-size: 19px;
+            }
+        }
+
+        &.btn-bag {
+            display: none;
         }
     }
 }
 
 ion-content {
-    ion-searchbar {
-        --icon-color: var(--ion-color-primary);
-    }
+    ion-list.company-info {
+        ion-item {
+            --min-height: 120px;
+            --padding-start: 32px;
+            --inner-padding-end: 32px;
+            --background: rgba(0, 0, 0, 0.7);
+            background-size: cover;
+            background-position: center center;
+            background-blend-mode: overlay;
 
-    ion-list.categories {
-        .scrolling {
-            overflow-x: auto;
-            white-space: nowrap;
-        }
-
-        .category:not(:first-child) {
-            margin-left: -10px;
-        }
-
-        .category:first-child {
-            margin-left: 5px;
-        }
-
-        .category:last-child {
-            margin-right: 5px;
-        }
-
-        .category {
-            display: inline-block;
-            text-align: center;
-            padding: 0;
-
-            ion-card {
-                width: 140px;
-                height: 80px;
-                margin: 20px 10px;
-
-                img {
-                    margin-top: 10px;
-                    height: 60px;
-                }
+            ion-thumbnail {
+                --border-radius: 100%;
+                width: 56px;
+                height: 56px;
             }
 
-            h6 {
-                font-size: 11pt;
-                font-weight: 400;
-                margin-top: -10px;
+            ion-label {
+                margin: 16px 0;
+
+                h6 {
+                    color: #fff;
+                    margin: 0;
+                    font-size: 1.125rem;
+                    line-height: 24px;
+                    font-weight: 600;
+
+                    span {
+                        color: var(--ion-color-warning);
+                        font-size: 20px;
+                        line-height: 20px;
+                    }
+                }
+
+                ion-badge {
+                    margin-top: 5px;
+                    margin-right: 10px;
+                }
             }
         }
     }
 
-    ion-list.slides {
-        .scrolling {
-            overflow-x: auto;
-            white-space: nowrap;
-        }
-
-        .slide:not(:first-child) {
-            margin-left: -10px;
-        }
-
-        .slide:first-child {
-            margin-left: 5px;
-        }
-
-        .slide:last-child {
-            margin-right: 5px;
-        }
-
-        .slide {
-            display: inline-block;
-            text-align: center;
-            padding: 0;
-            width: 90%;
+    ion-col {
+        &.menu {
+            h4 {
+                font-size: 1.125rem;
+                font-weight: 600;
+            }
 
             ion-card {
-                height: 150px;
-                margin: 20px 10px;
+                margin: 16px;
 
-                img {
-                    height: 150px;
-                    object-fit: cover;
+                ion-item {
+                    --min-height: 132px;
+                    --padding-start: 16px;
+                    --inner-padding-end: 16px;
                 }
+
+                ion-thumbnail {
+                    --border-radius: 10px;
+                    width: 100px;
+                    height: 100px;
+                }
+
+                ion-label {
+                    margin: 0;
+
+                    h5 {
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        -webkit-box-orient: vertical;
+                        display: -webkit-box;
+                        -webkit-line-clamp: 2;
+                        font-size: 1rem;
+                        line-height: 1.25rem;
+                        height: 2.5rem;
+                        font-weight: 600;
+                        margin-bottom: 3px;
+                    }
+
+                    p {
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        -webkit-box-orient: vertical;
+                        display: -webkit-box;
+                        -webkit-line-clamp: 2;
+                        color: var(--ion-color-medium-shade);
+                        font-size: 0.75rem;
+                        line-height: 1rem;
+                        height: 2rem;
+                        margin-bottom: 5px;
+                    }
+
+                    h6 {
+                        font-size: 1rem;
+                        line-height: 1.25rem;
+                        font-weight: 500;
+                        color: var(--ion-color-success);
+
+                        span {
+                            font-size: 0.75rem;
+                            text-decoration: line-through;
+                            color: var(--ion-color-medium-shade);
+                            margin-left: 5px;
+                        }
+                    }
+                }
+            }
+        }
+
+        &.order {
+            display: none;
+        }
+    }
+}
+
+@media (pointer: fine) {
+    ion-header {
+        ion-toolbar.filter-mobile {
+            display: none;
+        }
+    }
+}
+
+@media (min-width: 768px) {
+    ion-content {
+        ion-list.company-info {
+            ion-item {
+                --min-height: 200px;
+
+                ion-label {
+                    h6 {
+                        font-size: 1.625rem;
+                        line-height: 32px;
+                        font-weight: bold;
+                    }
+                }
+            }
+        }
+
+        ion-col {
+            &.menu {
+                h4 {
+                    font-size: 1.125rem;
+                    font-weight: 600;
+                }
+
+                ion-card {
+                    ion-item {
+                        --min-height: 148px;
+                    }
+
+                    ion-thumbnail {
+                        width: 116px;
+                        height: 116px;
+                    }
+
+                    ion-label {
+                        h5 {
+                            font-size: 1.125rem;
+                            line-height: 1.5rem;
+                            height: 3rem;
+                        }
+
+                        p {
+                            font-size: 0.875rem;
+                            line-height: 1.25rem;
+                            height: 2.5rem;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (min-width: 992px) {
+    ion-header {
+        ion-button.btn-bag {
+            display: block;
+            margin-left: 16px;
+
+            ion-icon {
+                margin-right: 8px;
+                margin-bottom: 1px;
+                font-size: 18px;
+            }
+        }
+    }
+    
+    ion-content {
+        ion-list.company-info {
+            ion-item {
+                --min-height: 200px;
+
+                ion-thumbnail {
+                    width: 75px;
+                    height: 75px;
+                }
+
+                ion-label {
+                    h6 {
+                        font-size: 2.25rem;
+                        line-height: 44px;
+                        font-weight: bold;
+                    }
+                }
+            }
+        }
+
+        ion-col {
+            &.menu {
+                h4 {
+                    font-size: 1.5rem;
+                    font-weight: 600;
+                }
+            }
+        }
+    }
+}
+
+@media (min-width: 1200px) {
+    ion-header {
+        ion-button.btn-bag {
+            display: none;
+        }
+    }
+
+    ion-content {
+        ion-col.order {
+            display: block !important;
+        }
+
+        ion-list.company-info {
+            ion-item {
+                --min-height: 250px;
             }
         }
     }

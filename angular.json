@@ -31,14 +31,7 @@
                 "output": "./svg"
               }
             ],
-            "styles": [
-              {
-                "input": "src/theme/variables.scss"
-              },
-              {
-                "input": "src/global.scss"
-              }
-            ],
+            "styles": ["src/theme/variables.scss", "src/global.scss"],
             "scripts": []
           },
           "configurations": {
@@ -52,7 +45,6 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "aot": true,
               "extractLicenses": true,
@@ -74,7 +66,10 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "app:build"
+            "browserTarget": "app:build",
+            "ssl": true,
+            "sslCert": "d:/ssl/cert.pem",
+            "sslKey": "d:/ssl/key.pem"
           },
           "configurations": {
             "production": {
@@ -128,9 +123,7 @@
               "tsconfig.spec.json",
               "e2e/tsconfig.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         },
         "e2e": {
@@ -163,7 +156,10 @@
           "builder": "@ionic/angular-toolkit:cordova-serve",
           "options": {
             "cordovaBuildTarget": "app:ionic-cordova-build",
-            "devServerTarget": "app:serve"
+            "devServerTarget": "app:serve",
+            "ssl": true,
+            "sslCert": "d:/ssl/cert.pem",
+            "sslKey": "d:/ssl/key.pem"
           },
           "configurations": {
             "production": {
@@ -176,8 +172,7 @@
     }
   },
   "cli": {
-    "defaultCollection": "@ionic/angular-toolkit",
-    "analytics": "e637452e-5bb8-41d3-b5ce-4101f4e93370"
+    "defaultCollection": "@ionic/angular-toolkit"
   },
   "schematics": {
     "@ionic/angular-toolkit:component": {

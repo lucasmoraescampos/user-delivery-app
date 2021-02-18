@@ -1,0 +1,34 @@
+ion-card.btn-bag {
+    box-shadow: none;
+    border-radius: 0;
+    margin: 0;
+    position: absolute;
+    bottom: 57px;
+    width: 100%;
+    z-index: 9999999999;
+
+    ion-card-content {
+        padding: 7px 10px;
+    }
+
+    ion-col {
+        margin-top: 4px;
+    }
+
+    ion-icon {
+        font-size: 21px;
+    }
+}
+
+ion-tabs ion-tab-bar {
+    padding-top: 45px;
+    --color: var(--ion-color-dark);
+}
+
+@media (min-width: 992px) {
+    ion-card.btn-bag,
+    ion-tabs ion-tab-bar {
+        padding-top: 0;
+        display: none;
+    }
+}

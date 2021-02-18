@@ -1,28 +1,46 @@
 <ion-header mode="ios">
 
-  <ion-toolbar mode="md">
+  <ion-toolbar>
 
-    <ion-segment value="1" (ionChange)="segmentChanged($event)">
+    <ion-title class="ion-no-padding">
 
-      <ion-segment-button value="1">
+      <ion-button class="location" fill="clear" (click)="location()">
 
-        <ion-label>Entrega</ion-label>
+        <div>
 
-      </ion-segment-button>
+          <p>Entregar em</p>
 
-      <ion-segment-button value="2">
+          <ion-icon class="location" slot="start" name="location-sharp" color="primary"></ion-icon>
 
-        <ion-label>Retirada</ion-label>
+          <ion-label *ngIf="order.location">{{ order.location.street_name }}, {{ order.location.street_number }}</ion-label>
 
-      </ion-segment-button>
+          <ion-label *ngIf="!order.location">Escolha um endereço</ion-label>
 
-    </ion-segment>
+          <ion-icon class="chevron" slot="end" name="chevron-down-outline" color="medium"></ion-icon>
+
+        </div>
+
+      </ion-button>
+
+    </ion-title>
 
     <ion-buttons slot="end">
 
-      <ion-button>
+      <ion-menu-button></ion-menu-button>
 
-        <ion-icon slot="icon-only" src="../../../assets/icon/vouchers.svg"></ion-icon>
+      <ion-button class="btn-signin" (click)="signin()" *ngIf="!user">
+
+        <ion-icon src="../../../assets/icon/log-in.svg"></ion-icon>
+
+        Entrar
+
+      </ion-button>
+
+      <ion-button class="btn-bag">
+
+        <ion-icon src="../../../assets/icon/bag.svg"></ion-icon>
+
+        Sacola
 
       </ion-button>
 
@@ -30,76 +48,121 @@
 
   </ion-toolbar>
 
-</ion-header>
+  <ion-toolbar mode="md" class="filter-mobile">
 
-<ion-header class="ion-no-margin ion-no-border" mode="ios">
+    <ion-segment scrollable (ionChange)="segmentChanged($event)">
 
-  <ion-toolbar>
+      <ion-segment-button [value]="item.id" *ngFor="let item of menu">{{ item.name }}</ion-segment-button>
 
-    <ion-buttons slot="start">
-
-      <ion-button class="location" color="dark" (click)="location()">
-
-        <ion-icon slot="start" name="location-sharp" color="danger"></ion-icon>
-    
-        <span class="location ion-padding-vertical">{{ address }}</span>
-    
-        <ion-icon slot="end" name="chevron-down-outline" color="medium"></ion-icon>
-    
-      </ion-button>
-
-    </ion-buttons>
+    </ion-segment>
 
   </ion-toolbar>
 
 </ion-header>
 
-<ion-content mode="ios">
+<ion-content color="light" mode="ios" customScroll>
 
-  <ion-refresher mode="md" slot="fixed" (ionRefresh)="refresh($event)">
+  <ion-list class="company-info" *ngIf="company">
 
-    <ion-refresher-content></ion-refresher-content>
+    <ion-item lines="none" style="background-image: url('{{ company.image }}');">
 
-  </ion-refresher>
+      <ion-thumbnail slot="start">
 
-  <ion-searchbar placeholder="O que você quer hoje?" readonly="true"></ion-searchbar>
+        <img [src]="company.image">
 
-  <ion-list class="ion-margin-top categories" mode="ios">
+      </ion-thumbnail>
 
-    <div class="scrolling">
+      <ion-label class="ion-text-wrap">
 
-      <div class="category animated bounceInRight" *ngFor="let c of categories">
+        <h6>
 
-        <ion-card color="primary" button="true" (click)="select(c.id)">
+          {{ company.name }}
 
-          <img [src]="'../../../assets/icon/' + c.icon">
+          <span *ngIf="company.evaluation">
 
-        </ion-card>
+            <ion-icon name="star"></ion-icon> {{ company.evaluation }}
 
-        <h6>{{ c.name }}</h6>
+          </span>
 
-      </div>
+        </h6>
 
-    </div>
+        <p>
 
-  </ion-list>
+          <ion-badge color="light">6.92 km</ion-badge>
+      
+          <ion-badge color="light">{{ company.waiting_time }} min</ion-badge>
+      
+          <ion-badge color="light">Entrega {{ company.delivery_price | money }}</ion-badge>
+      
+          <ion-badge color="light">Pedido mínimo {{ company.min_order_value | money }}</ion-badge>
+      
+        </p>
 
-  <ion-list class="ion-margin-top slides" mode="ios">
+      </ion-label>
 
-    <div class="scrolling">
-
-      <div class="slide animated bounceInRight" *ngFor="let c of categories">
-
-        <ion-card color="primary" button="true" (click)="select(c.id)">
-
-          <img [src]="'../../../assets/icon/' + c.icon">
-
-        </ion-card>
-
-      </div>
-
-    </div>
+    </ion-item>
 
   </ion-list>
+
+  <ion-grid class="ion-no-padding">
+
+    <ion-row>
+
+      <ion-col class="menu" size-lg="12" size-xl="8">
+
+        <ion-grid class="ion-padding">
+
+          <ion-row *ngFor="let item of menu">
+
+            <ion-col class="ion-no-padding category-name" size="12">
+
+              <h4 class="ion-margin-horizontal">{{ item.name }}</h4>
+
+            </ion-col>
+
+            <ion-col class="ion-no-padding" size-sm="12" size-md="6" *ngFor="let product of item.products">
+
+              <ion-card button="true" (click)="modalProduct(product)">
+
+                <ion-item lines="none">
+
+                  <ion-thumbnail slot="start">
+
+                    <img [src]="product.image">
+
+                  </ion-thumbnail>
+
+                  <ion-label class="ion-text-wrap">
+
+                    <h5>{{ product.name }}</h5>
+
+                    <p>{{ product.description }}</p>
+
+                    <h6>{{ product.price - product.rebate | money }} <span *ngIf="product.rebate">{{ product.rebate |
+                        money }}</span></h6>
+
+                  </ion-label>
+
+                </ion-item>
+
+              </ion-card>
+
+            </ion-col>
+
+          </ion-row>
+
+        </ion-grid>
+
+      </ion-col>
+
+      <ion-col class="order" size="4">
+
+        <app-current-order [company]="company"></app-current-order>
+
+      </ion-col>
+
+    </ion-row>
+
+  </ion-grid>
 
 </ion-content>
