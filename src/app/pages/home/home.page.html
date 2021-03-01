@@ -62,53 +62,47 @@
 
 <ion-content color="light" mode="ios" customScroll>
 
-  <ion-list class="company-info" *ngIf="company">
-
-    <ion-item lines="none" style="background-image: url('{{ company.image }}');">
-
-      <ion-thumbnail slot="start">
-
-        <img [src]="company.image">
-
-      </ion-thumbnail>
-
-      <ion-label class="ion-text-wrap">
-
-        <h6>
-
-          {{ company.name }}
-
-          <span *ngIf="company.evaluation">
-
-            <ion-icon name="star"></ion-icon> {{ company.evaluation }}
-
-          </span>
-
-        </h6>
-
-        <p>
-
-          <ion-badge color="light">6.92 km</ion-badge>
-      
-          <ion-badge color="light">{{ company.waiting_time }} min</ion-badge>
-      
-          <ion-badge color="light">Entrega {{ company.delivery_price | money }}</ion-badge>
-      
-          <ion-badge color="light">Pedido mínimo {{ company.min_order_value | money }}</ion-badge>
-      
-        </p>
-
-      </ion-label>
-
-    </ion-item>
-
-  </ion-list>
-
-  <ion-grid class="ion-no-padding">
+  <ion-grid class="ion-no-padding" *ngIf="company">
 
     <ion-row>
 
       <ion-col class="menu" size-lg="12" size-xl="8">
+
+        <img class="banner" [src]="false ? company.banner : 'http://api.meupedido.localhost/assets/images/banner.png'">
+
+        <ion-list class="company-info">
+
+          <ion-item lines="none" color="light">
+            
+            <ion-thumbnail slot="start">
+      
+              <img [src]="company.image">
+      
+            </ion-thumbnail>
+      
+            <ion-label class="ion-text-wrap">
+      
+              <h6>
+      
+                {{ company.name }}
+      
+                <span *ngIf="company.evaluation">
+      
+                  <ion-icon name="star"></ion-icon> {{ company.evaluation }}
+      
+                </span>
+      
+              </h6>
+      
+              <p>Entrega: {{ company.waiting_time }} min <span class="ellipse"></span> {{ company.delivery_price | money }}</p>
+            
+              <p>Pedido mínimo: {{ company.min_order_value | money }}</p>
+      
+            </ion-label>
+      
+          </ion-item>
+      
+        </ion-list>
 
         <ion-grid class="ion-padding">
 

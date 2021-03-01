@@ -13,6 +13,16 @@ ion-modal.modal-lg .modal-wrapper {
     min-width: calc(100% - 200px);
 }
 
+span.ellipse {
+    margin-left: 4px;
+    margin-right: 4px;
+    font-size: 16px;
+
+    &::before {
+        content: '•';
+    }
+}
+
 @media (min-width: 768px) {
     ion-modal.modal-sm .modal-wrapper {
         width: 500px;

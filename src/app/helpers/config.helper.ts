@@ -1,5 +1,5 @@
 export class ConfigHelper {
-    public static Url = 'http://api.restaurant.localhost';
+    public static Url = 'http://api.meupedido.localhost';
     public static Storage = {
         AccessToken: 'access_token',
         CurrentUser: 'current_user',

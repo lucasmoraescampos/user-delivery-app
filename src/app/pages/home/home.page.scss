@@ -53,52 +53,50 @@ ion-header {
 }
 
 ion-content {
-    ion-list.company-info {
-        ion-item {
-            --min-height: 120px;
-            --padding-start: 32px;
-            --inner-padding-end: 32px;
-            --background: rgba(0, 0, 0, 0.7);
-            background-size: cover;
-            background-position: center center;
-            background-blend-mode: overlay;
-
-            ion-thumbnail {
-                --border-radius: 100%;
-                width: 56px;
-                height: 56px;
-            }
-
-            ion-label {
-                margin: 16px 0;
-
-                h6 {
-                    color: #fff;
-                    margin: 0;
-                    font-size: 1.125rem;
-                    line-height: 24px;
-                    font-weight: 600;
-
-                    span {
-                        color: var(--ion-color-warning);
-                        font-size: 20px;
-                        line-height: 20px;
-                    }
-                }
-
-                ion-badge {
-                    margin-top: 5px;
-                    margin-right: 10px;
-                }
-            }
-        }
-    }
-
     ion-col {
         &.menu {
+            img.banner {
+                width: 100%;
+                height: 180px;
+                object-fit: cover;
+            }
+
             h4 {
                 font-size: 1.125rem;
                 font-weight: 600;
+            }
+
+            ion-list.company-info {
+                ion-item {
+                    ion-thumbnail {
+                        --border-radius: 100%;
+                        width: 65px;
+                        height: 65px;
+                    }
+
+                    ion-label {
+                        margin: 16px 0;
+
+                        h6 {
+                            margin: 0;
+                            font-size: 1.125rem;
+                            line-height: 24px;
+                            font-weight: 600;
+
+                            span {
+                                color: var(--ion-color-warning);
+                                font-size: 20px;
+                                line-height: 20px;
+                            }
+                        }
+
+                        p {
+                            font-weight: 500;
+                            font-size: 14px;
+                            line-height: 18px;
+                        }
+                    }
+                }
             }
 
             ion-card {
@@ -163,6 +161,10 @@ ion-content {
         }
 
         &.order {
+            position: fixed;
+            top: 61px;
+            right: 0;
+            height: calc(100vh - 61px);
             display: none;
         }
     }
@@ -176,27 +178,55 @@ ion-content {
     }
 }
 
-@media (min-width: 768px) {
+@media (min-width: 576px) {
     ion-content {
-        ion-list.company-info {
-            ion-item {
-                --min-height: 200px;
+        ion-col {
+            &.menu {
+                ion-list.company-info {
+                    ion-item {
+                        ion-thumbnail {
+                            width: 70px;
+                            height: 70px;
+                        }
 
-                ion-label {
-                    h6 {
-                        font-size: 1.625rem;
-                        line-height: 32px;
-                        font-weight: bold;
+                        ion-label {
+                            h6 {
+                                font-size: 1.225rem;
+                                line-height: 30px;
+                                font-weight: bold;
+                            }
+                        }
                     }
                 }
             }
         }
+    }
+}
 
+@media (min-width: 768px) {
+    ion-content {
         ion-col {
             &.menu {
                 h4 {
                     font-size: 1.125rem;
                     font-weight: 600;
+                }
+
+                ion-list.company-info {
+                    ion-item {
+                        ion-thumbnail {
+                            width: 75px;
+                            height: 75px;
+                        }
+
+                        ion-label {
+                            h6 {
+                                font-size: 1.5rem;
+                                line-height: 32px;
+                                font-weight: bold;
+                            }
+                        }
+                    }
                 }
 
                 ion-card {
@@ -241,32 +271,30 @@ ion-content {
             }
         }
     }
-    
+
     ion-content {
-        ion-list.company-info {
-            ion-item {
-                --min-height: 200px;
-
-                ion-thumbnail {
-                    width: 75px;
-                    height: 75px;
-                }
-
-                ion-label {
-                    h6 {
-                        font-size: 2.25rem;
-                        line-height: 44px;
-                        font-weight: bold;
-                    }
-                }
-            }
-        }
-
         ion-col {
             &.menu {
                 h4 {
                     font-size: 1.5rem;
                     font-weight: 600;
+                }
+
+                ion-list.company-info {
+                    ion-item {
+                        ion-thumbnail {
+                            width: 80px;
+                            height: 80px;
+                        }
+
+                        ion-label {
+                            h6 {
+                                font-size: 1.75rem;
+                                line-height: 36px;
+                                font-weight: bold;
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -281,13 +309,9 @@ ion-content {
     }
 
     ion-content {
-        ion-col.order {
-            display: block !important;
-        }
-
-        ion-list.company-info {
-            ion-item {
-                --min-height: 250px;
+        ion-col {
+            &.order {
+                display: block !important;
             }
         }
     }
