@@ -38,21 +38,87 @@
 
             <ion-col size="8">
 
-              <ion-label class="ion-text-wrap">{{ product.qty }}x {{ product.name }}</ion-label>
+              <ion-label class="ion-text-wrap">
+                
+                <h6>{{ product.qty }}x {{ product.name }}</h6>
+              
+              </ion-label>
 
             </ion-col>
 
             <ion-col size="4">
 
-              <ion-label class="price">{{ (product.price - product.rebate) * product.qty | money }}</ion-label>
+              <ion-label class="ion-text-wrap ion-text-end">
+
+                <h6>{{ (product.price - product.rebate) * product.qty | money }}</h6>
+              
+              </ion-label>
 
             </ion-col>
+
+          </ion-row>
+
+          <ion-row class="complements" *ngIf="product.complements.length > 0">
+
+            <ion-col size="8">
+
+              <ion-label class="ion-text-wrap">
+
+                <ng-container *ngFor="let complement of product.complements; let i=index">
+
+                  <ng-container *ngFor="let subcomplement of complement.subcomplements; let j=index">
+                                          
+                    <p>{{ subcomplement.qty }}x {{ subcomplement.description }}</p>
+                  
+                  </ng-container>
+                  
+                </ng-container>
+
+              </ion-label>
+
+            </ion-col>
+
+            <ion-col size="4">
+
+              <ion-label class="ion-text-wrap ion-text-end">
+
+                <ng-container *ngFor="let complement of product.complements; let i=index">
+
+                  <ng-container *ngFor="let subcomplement of complement.subcomplements; let j=index">
+                                          
+                    <p>{{ subcomplement.price * subcomplement.qty | money }}</p>
+                  
+                  </ng-container>
+                  
+                </ng-container>
+
+              </ion-label>
+              
+            </ion-col>
+
+          </ion-row>
+
+          <ion-row class="note" *ngIf="product.note">
+
+            <ion-col size="12">
+
+              <ion-label class="ion-text-wrap">
+
+                <p>Obs.: {{ product.note }}</p>
+
+              </ion-label>
+
+            </ion-col>
+
+          </ion-row>
+
+          <ion-row>
 
             <ion-col size="12">
 
               <ion-button class="edit" color="primary" fill="clear" (click)="edit(i)">Editar</ion-button>
 
-              <ion-button class="remove" color="medium" fill="clear" (click)="remove(i)">Remover</ion-button>
+              <ion-button class="remove" color="primary" fill="clear" (click)="remove(i)">Remover</ion-button>
 
             </ion-col>
 
@@ -62,7 +128,7 @@
         
       </ion-item>
 
-      <ion-item class="prices" lines="none">
+      <ion-item lines="none">
 
         <ion-grid class="ion-no-padding">
 
@@ -70,37 +136,29 @@
 
             <ion-col size="8">
 
-              <ion-label class="ion-text-wrap">Subtotal</ion-label>
+              <ion-label class="ion-text-wrap">
+
+                <p>Subtotal</p>
+
+                <p>Taxa de entrega</p>
+
+                <h6>Total</h6>
+
+              </ion-label>
 
             </ion-col>
 
             <ion-col size="4">
 
-              <ion-label class="ion-text-end">{{ subtotal | money }}</ion-label>
+              <ion-label class="ion-text-wrap ion-text-end">
 
-            </ion-col>
+                <p>{{ subtotal | money }}</p>
 
-            <ion-col size="8">
-
-              <ion-label class="ion-text-wrap">Taxa de entrega</ion-label>
-
-            </ion-col>
-
-            <ion-col size="4">
-
-              <ion-label class="ion-text-end">{{ company?.delivery_price | money }}</ion-label>
-
-            </ion-col>
-
-            <ion-col size="8">
-
-              <ion-label class="total">Total</ion-label>
-
-            </ion-col>
-
-            <ion-col size="4">
-
-              <ion-label class="price">{{ subtotal + company?.delivery_price | money }}</ion-label>
+                <p>{{ company?.delivery_price | money }}</p>
+                
+                <h6>{{ subtotal + company?.delivery_price | money }}</h6>
+              
+              </ion-label>
 
             </ion-col>
 

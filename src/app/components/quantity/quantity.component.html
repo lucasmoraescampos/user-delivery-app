@@ -1,17 +1,17 @@
-<ion-card>
+<ion-item [class.lines]="lines" lines="none">
 
-  <ion-fab-button size="small" (click)="remove()">
+  <ion-button fill="clear" size="small" [hidden]="value == 0" (click)="remove()">
 
-    <ion-icon name="remove"></ion-icon>
+    <ion-icon slot="icon-only" src="../../../assets/icon/remove.svg"></ion-icon>
 
-  </ion-fab-button>
+  </ion-button>
 
-  <ion-label>{{ value }}</ion-label>
+  <ion-label [hidden]="value == 0">{{ value }}</ion-label>
 
-  <ion-fab-button size="small" (click)="add()">
+  <ion-button slot="end" fill="clear" size="small" (click)="add()">
 
-    <ion-icon name="add"></ion-icon>
+    <ion-icon slot="icon-only" src="../../../assets/icon/add.svg"></ion-icon>
 
-  </ion-fab-button>
+  </ion-button>
 
-</ion-card>
+</ion-item>

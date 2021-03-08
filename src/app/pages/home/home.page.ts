@@ -28,9 +28,9 @@ export class HomePage implements OnInit, OnDestroy {
 
   public order: CurrentOrder;
 
-  public products = [1,1,1,1,1,1];
+  public products: any[] = [];
 
-  public unsubscribe = new Subject();
+  private unsubscribe = new Subject();
 
   constructor(
     private modalCtrl: ModalController,
@@ -116,6 +116,12 @@ export class HomePage implements OnInit, OnDestroy {
           this.company = res.data.company;
 
           this.menu = res.data.menu;
+
+          this.menu.forEach((category: any) => {
+            category.products.forEach((product: any) => {
+              this.products.push(product);
+            });
+          });
 
         }
 

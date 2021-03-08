@@ -25,6 +25,10 @@ export class OrderService {
     this.initCurrentOrder();
   }
 
+  public getCurrentOrder() {
+    return JSON.parse(localStorage.getItem(ConfigHelper.Storage.CurrentOrder));
+  }
+
   public addProductCurrentOrder(product: ProductOrder) {
     const order = this.currentOrderSubject.value;
     order.products.push(product);

@@ -9,9 +9,11 @@ export class QuantityComponent implements OnInit {
 
   public max: number = 999;
 
-  @Input() min: number = null;
+  @Input() min: number = 0;
 
-  @Input() value: number = 1;
+  @Input() value: number = 0;
+
+  @Input() lines: boolean = false;
 
   @Output() changeQty = new EventEmitter();
 

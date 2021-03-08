@@ -2,6 +2,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { ArrayHelper } from 'src/app/helpers/array.helper';
 import { CurrentOrder } from 'src/app/models/current-order.model';
 import { OrderService } from 'src/app/services/order.service';
 import { ModalAuthComponent } from '../modal-auth/modal-auth.component';
@@ -17,9 +18,11 @@ export class CurrentOrderComponent implements OnInit, OnDestroy {
 
   @Input() company: any;
 
+  @Input() products: any[];
+
   public order: CurrentOrder;
 
-  public subtotal: number;
+  public subtotal: number = 0;
 
   private unsubscribe = new Subject();
 
@@ -72,24 +75,19 @@ export class CurrentOrderComponent implements OnInit, OnDestroy {
 
   public async edit(index: number) {
 
-    const product = this.order.products[index];
+    const productOrder = this.order.products[index];
+
+    const productIndex = ArrayHelper.getIndexByKey(this.products, 'id', productOrder.id);
 
     const modal = await this.modalCtrl.create({
       component: ModalProductComponent,
       backdropDismiss: false,
       cssClass: 'modal-lg',
       componentProps: {
-        product: product,
-        isEdit: true 
+        productOrderIndex: index,
+        product: this.products[productIndex]
       }
     });
-
-    modal.onWillDismiss()
-      .then(res => {
-        if (res.data) {
-          this.orderSrv.updateProductCurrentOrder(index, res.data);
-        }
-      });
 
     return await modal.present();
 
@@ -100,13 +98,34 @@ export class CurrentOrderComponent implements OnInit, OnDestroy {
   }
 
   private initOrder() {
+
     this.orderSrv.currentOrder.pipe(takeUntil(this.unsubscribe))
       .subscribe(order => {
+
         this.order = order;
+
         this.subtotal = 0;
+
         this.order.products.forEach((product: any) => {
-          this.subtotal += (product.price * product.qty)
+
+          this.subtotal += product.price;
+
+          product.complements.forEach((complement: any) => {
+
+            complement.subcomplements.forEach((subcomplement: any) => {
+
+              this.subtotal += (subcomplement.price * subcomplement.qty);
+            
+            });
+
+          });
+
+          this.subtotal *= product.qty;
+
         });
+
       });
+
   }
+
 }

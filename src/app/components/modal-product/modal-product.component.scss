@@ -10,6 +10,21 @@ ion-header {
 }
 
 ion-content {
+    h6 {
+        font-size: 1rem;
+        line-height: 1.125rem;
+
+        &.price {
+            color: var(--ion-color-success);
+        }
+    }
+
+    p {
+        font-size: 0.875rem;
+        line-height: 1.22rem;
+        color: var(--ion-color-medium-shade);
+    }
+
     ion-grid {
         ion-grid {
             padding-bottom: 16px;
@@ -29,22 +44,57 @@ ion-content {
         }
     }
 
-    h6 {
-        font-size: 1rem;
-        line-height: 1.125rem;
-        color: var(--ion-color-success);
-    }
+    ion-list {
+        ion-item {
+            --border-color: var(--ion-color-light);
 
-    p {
-        font-size: 0.875rem;
-        line-height: 1.22rem;
-        color: var(--ion-color-medium-shade);
+            &:last-child {
+                --border-width: 0;
+            }
+
+            &.complement {
+                --min-height: 60px;
+                position: sticky;
+                top: 0;
+                z-index: 99999;
+
+                h6 {
+                    font-weight: 600;
+                }
+
+                ion-badge {
+                    font-size: 0.7rem;
+                    line-height: 1;
+                    font-weight: 500;
+                    text-transform: uppercase;
+                    padding: 5px;
+                }
+            }
+
+            &.subcomplement {
+                --min-height: 60px;
+
+                p {
+                    color: var(--ion-color-primary);
+                    font-weight: 600;
+                }
+
+                ion-radio {
+                    --border-width: 1px;
+                }
+            }
+
+            app-quantity {
+                min-width: 115px;
+            }
+        }
     }
 }
 
 ion-footer {
     ion-card.add {
         margin: 0;
+        border-radius: 5px;
 
         ion-card-content {
             padding: 12.75px;
@@ -112,7 +162,7 @@ ion-footer {
             }
         }
     }
-    
+
     ion-footer {
         ion-grid {
             width: 80%;
