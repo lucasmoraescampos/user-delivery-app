@@ -4,9 +4,11 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ArrayHelper } from 'src/app/helpers/array.helper';
 import { CurrentOrder } from 'src/app/models/current-order.model';
+import { AuthService } from 'src/app/services/auth.service';
 import { OrderService } from 'src/app/services/order.service';
 import { ModalAuthComponent } from '../modal-auth/modal-auth.component';
 import { ModalChooseLocationComponent } from '../modal-choose-location/modal-choose-location.component';
+import { ModalChoosePaymentMethodComponent } from '../modal-choose-payment-method/modal-choose-payment-method.component';
 import { ModalProductComponent } from '../modal-product/modal-product.component';
 
 @Component({
@@ -20,6 +22,8 @@ export class CurrentOrderComponent implements OnInit, OnDestroy {
 
   @Input() products: any[];
 
+  public user: any;
+
   public order: CurrentOrder;
 
   public subtotal: number = 0;
@@ -28,10 +32,12 @@ export class CurrentOrderComponent implements OnInit, OnDestroy {
 
   constructor(
     private orderSrv: OrderService,
+    private authSrv: AuthService,
     private modalCtrl: ModalController
   ) { }
 
   ngOnInit() {
+    this.initUser();
     this.initOrder();
   }
 
@@ -45,32 +51,47 @@ export class CurrentOrderComponent implements OnInit, OnDestroy {
       component: ModalChooseLocationComponent,
       backdropDismiss: false
     });
-    
+
     return await modal.present();
   }
 
   public async choosePaymentMethod() {
-    if (!this.order.user_id) {
-      
+
+    if (!this.user) {
+
       const modal = await this.modalCtrl.create({
         component: ModalAuthComponent,
         backdropDismiss: false,
         cssClass: 'modal-sm'
       });
-  
+
       modal.onDidDismiss()
         .then(res => {
           if (res.data) {
             this.choosePaymentMethod();
           }
         });
-  
-      modal.present();
+
+      return await modal.present();
 
     }
+
     else {
 
+      const modal = await this.modalCtrl.create({
+        component: ModalChoosePaymentMethodComponent,
+        backdropDismiss: false,
+        cssClass: 'modal-sm',
+        componentProps: {
+          user: this.user,
+          company: this.company
+        }
+      });
+
+      return await modal.present();
+
     }
+
   }
 
   public async edit(index: number) {
@@ -97,6 +118,13 @@ export class CurrentOrderComponent implements OnInit, OnDestroy {
     this.orderSrv.removeProductCurrentOrder(index);
   }
 
+  private initUser() {
+    this.authSrv.currentUser.pipe(takeUntil(this.unsubscribe))
+      .subscribe(user => {
+        this.user = user;
+      });
+  }
+
   private initOrder() {
 
     this.orderSrv.currentOrder.pipe(takeUntil(this.unsubscribe))
@@ -115,7 +143,7 @@ export class CurrentOrderComponent implements OnInit, OnDestroy {
             complement.subcomplements.forEach((subcomplement: any) => {
 
               this.subtotal += (subcomplement.price * subcomplement.qty);
-            
+
             });
 
           });

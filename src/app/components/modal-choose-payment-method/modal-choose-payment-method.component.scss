@@ -1,0 +1,19 @@
+ion-content {
+    ion-slides {
+        height: initial;
+
+        ion-slide {
+            text-align: left;
+
+            ion-list {
+                width: 100%;
+
+                ion-item {
+                    ion-radio {
+                        --border-width: 1px;
+                    }
+                }
+            }
+        }
+    }
+}

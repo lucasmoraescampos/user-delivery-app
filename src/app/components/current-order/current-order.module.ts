@@ -5,6 +5,7 @@ import { CurrentOrderComponent } from './current-order.component';
 import { MoneyModule } from 'src/app/pipes/money.module';
 import { ModalChooseLocationModule } from '../modal-choose-location/modal-choose-location.module';
 import { ModalProductModule } from '../modal-product/modal-product.module';
+import { ModalChoosePaymentMethodModule } from '../modal-choose-payment-method/modal-choose-payment-method.module';
 
 @NgModule({
   declarations: [CurrentOrderComponent],
@@ -13,7 +14,8 @@ import { ModalProductModule } from '../modal-product/modal-product.module';
     IonicModule,
     MoneyModule,
     ModalChooseLocationModule,
-    ModalProductModule
+    ModalProductModule,
+    ModalChoosePaymentMethodModule
   ],
   exports: [CurrentOrderComponent]
 })

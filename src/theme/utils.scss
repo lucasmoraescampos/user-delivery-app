@@ -24,6 +24,11 @@ span.ellipse {
     }
 }
 
+ion-segment-button {
+    letter-spacing: -0.03em;
+    border: none;
+}
+
 @media (min-width: 768px) {
     ion-modal.modal-sm .modal-wrapper {
         width: 500px;

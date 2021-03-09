@@ -1,3 +1,105 @@
-<p>
-  modal-choose-payment-method works!
-</p>
+<ion-header>
+
+  <ion-toolbar>
+
+    <ion-title>Método de pagamento</ion-title>
+
+    <ion-buttons slot="end">
+
+      <ion-button class="close" fill="clear" (click)="dismiss()">
+
+        <ion-icon slot="icon-only" color="medium" name="close"></ion-icon>
+
+      </ion-button>
+
+    </ion-buttons>
+
+  </ion-toolbar>
+
+  <ion-toolbar mode="md">
+
+    <ion-segment [(ngModel)]="segment" scrollable (ionChange)="segmentChanged($event)">
+
+      <ion-segment-button value="0">
+
+        <ion-label>Pague online</ion-label>
+
+      </ion-segment-button>
+
+      <ion-segment-button value="1">
+
+        <ion-label>Pague na entrega</ion-label>
+
+      </ion-segment-button>
+
+    </ion-segment>
+
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content customScroll>
+
+  <ion-slides [options]="options">
+
+    <ion-slide>
+
+      <ion-list>
+
+        <ion-item lines="full" button="true" detail="true">
+
+          <ion-label class="ion-text-wrap">
+
+            <h6>Adicione um cartão no iFood</h6>
+
+            <p>É prático, seguro e você não perde nenhum minuto a mais quando seu pedido chegar.</p>
+
+          </ion-label>
+
+        </ion-item>
+
+        <ion-radio-group>
+
+          <ion-item lines="full" *ngFor="let card of user.cards">
+
+            <ion-radio slot="start" [value]="card.id" mode="md"></ion-radio>
+
+            <ion-label class="ion-text-wrap">{{ card.number }}</ion-label>
+
+          </ion-item>
+
+        </ion-radio-group>
+
+      </ion-list>
+
+    </ion-slide>
+
+    <ion-slide>
+
+      <ion-list>
+
+        <ion-radio-group>
+
+          <ion-item lines="full" *ngFor="let paymentMethod of company.payment_methods">
+
+            <ion-radio slot="start" [value]="paymentMethod.id" mode="md"></ion-radio>
+
+            <ion-label class="ion-text-wrap">{{ paymentMethod.name }}</ion-label>
+
+          </ion-item>
+
+        </ion-radio-group>
+
+      </ion-list>
+
+    </ion-slide>
+
+  </ion-slides>
+
+</ion-content>
+
+<ion-footer class="ion-padding" *ngIf="(segment == 0 && user.cards.length > 0) || segment == 1">
+
+  <ion-button expand="block">Confirmar</ion-button>
+
+</ion-footer>
