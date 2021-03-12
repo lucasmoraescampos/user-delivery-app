@@ -9,8 +9,25 @@ ion-content {
                 width: 100%;
 
                 ion-item {
+                    --detail-icon-color: var(--ion-color-primary);
+                    --detail-icon-opacity: 1;
+                    
                     ion-radio {
                         --border-width: 1px;
+                    }
+
+                    ion-label {
+                        h6 {
+                            font-weight: 600;
+                            font-size: 1rem;
+                            line-height: 1.375em;
+                        }
+
+                        p {
+                            font-size: 0.875rem;
+                            line-height: 1.25em;
+                            color: var(--ion-color-dark-light);
+                        }
                     }
                 }
             }

@@ -92,7 +92,7 @@
 
                     <ion-radio slot="end" mode="md" [value]="subcomplement" *ngIf="complement.qty_max == 1"></ion-radio>
 
-                    <app-quantity min="0" [value]="subcomplementQty(subcomplement)" *ngIf="complement.qty_max > 1" (changeQty)="changeSubcomplement(subcomplement, $event)"></app-quantity>
+                    <app-quantity [min]="0" [value]="subcomplementQty(subcomplement)" *ngIf="complement.qty_max > 1" (changeQty)="changeSubcomplement(subcomplement, $event)"></app-quantity>
 
                   </ion-item>
 
@@ -130,7 +130,7 @@
 
       <ion-col size="4">
 
-        <app-quantity [lines]="true" min="1" [value]="qty" (changeQty)="changeQty($event)"></app-quantity>
+        <app-quantity [lines]="true" [min]="1" [value]="qty" (changeQty)="changeQty($event)"></app-quantity>
 
       </ion-col>
 

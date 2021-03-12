@@ -1,11 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { ArrayHelper } from '../helpers/array.helper';
 import { ConfigHelper } from '../helpers/config.helper';
 import { CurrentLocation } from '../models/current-location.model';
 import { CurrentOrder } from '../models/current-order.model';
-import { HttpResult } from '../models/http-result.model';
 import { ProductOrder } from '../models/product-order.model';
 
 @Injectable({
@@ -13,7 +13,7 @@ import { ProductOrder } from '../models/product-order.model';
 })
 export class OrderService {
 
-  private url: string = ConfigHelper.Url;
+  private url: string = environment.apiUrl;
 
   private currentOrderSubject: BehaviorSubject<CurrentOrder>;
 

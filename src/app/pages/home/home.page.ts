@@ -12,6 +12,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { CompanyService } from 'src/app/services/company.service';
 import { LoadingService } from 'src/app/services/loading.service';
 import { OrderService } from 'src/app/services/order.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-home',
@@ -19,6 +20,8 @@ import { OrderService } from 'src/app/services/order.service';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit, OnDestroy {
+
+  public bannerDefault: string;
 
   public company: any;
 
@@ -50,6 +53,8 @@ export class HomePage implements OnInit, OnDestroy {
 
     this.initUser();
 
+    this.bannerDefault = environment.imagesUrl + '/banner.png';
+
   }
 
   ngOnDestroy() {
@@ -57,7 +62,7 @@ export class HomePage implements OnInit, OnDestroy {
     this.unsubscribe.complete();
   }
 
-  public segmentChanged() {
+  public segmentChanged(event: any) {
 
   }
 

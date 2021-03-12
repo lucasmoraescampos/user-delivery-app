@@ -60,15 +60,15 @@
 
 </ion-header>
 
-<ion-content color="light" mode="ios" customScroll>
+<ion-content mode="ios" color="light" scrollY="false">
 
   <ion-grid class="ion-no-padding" *ngIf="company">
 
     <ion-row>
 
-      <ion-col class="menu" size-lg="12" size-xl="8">
+      <ion-col class="ion-no-padding menu" size-lg="12" size-xl="8">
 
-        <img class="banner" [src]="false ? company.banner : 'http://api.meupedido.localhost/assets/images/banner.png'">
+        <img class="banner" [src]="company?.banner ? company.banner : bannerDefault">
 
         <ion-list class="company-info">
 
@@ -104,17 +104,17 @@
       
         </ion-list>
 
-        <ion-grid class="ion-padding">
+        <ion-grid>
 
           <ion-row *ngFor="let item of menu">
 
-            <ion-col class="ion-no-padding category-name" size="12">
+            <ion-col size="12">
 
-              <h4 class="ion-margin-horizontal">{{ item.name }}</h4>
+              <h4>{{ item.name }}</h4>
 
             </ion-col>
 
-            <ion-col class="ion-no-padding" size-sm="12" size-md="6" *ngFor="let product of item.products">
+            <ion-col size-sm="12" size-md="6" *ngFor="let product of item.products">
 
               <ion-card button="true" (click)="modalProduct(product)">
 
@@ -149,7 +149,7 @@
 
       </ion-col>
 
-      <ion-col class="order" size="4">
+      <ion-col class="ion-no-padding order" size="4">
 
         <app-current-order [company]="company" [products]="products"></app-current-order>
 

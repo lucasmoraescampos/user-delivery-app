@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ConfigHelper } from '../helpers/config.helper';
+import { environment } from 'src/environments/environment';
 import { HttpResult } from '../models/http-result.model';
 
 @Injectable({
@@ -8,7 +8,7 @@ import { HttpResult } from '../models/http-result.model';
 })
 export class CompanyService {
 
-  private url: string = ConfigHelper.Url;
+  private url: string = environment.apiUrl;
 
   constructor(
     private http: HttpClient

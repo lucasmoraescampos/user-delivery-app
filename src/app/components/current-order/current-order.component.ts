@@ -81,7 +81,6 @@ export class CurrentOrderComponent implements OnInit, OnDestroy {
       const modal = await this.modalCtrl.create({
         component: ModalChoosePaymentMethodComponent,
         backdropDismiss: false,
-        cssClass: 'modal-sm',
         componentProps: {
           user: this.user,
           company: this.company

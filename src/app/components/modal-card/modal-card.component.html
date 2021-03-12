@@ -1,0 +1,71 @@
+<ion-header class="ion-no-border">
+
+  <ion-toolbar>
+
+    <ion-title>Cartão de crédito</ion-title>
+
+    <ion-buttons slot="end">
+
+      <ion-button class="close" fill="clear" (click)="dismiss()">
+
+        <ion-icon slot="icon-only" color="medium" name="close"></ion-icon>
+
+      </ion-button>
+
+    </ion-buttons>
+
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content>
+
+  <ion-grid>
+
+    <ion-row>
+
+      <ion-col size="12">
+
+        <ion-label class="stacked">Número do cartão</ion-label>
+
+        <ion-input></ion-input>
+
+      </ion-col>
+
+      <ion-col size="6">
+
+        <ion-label class="stacked">Validade</ion-label>
+
+        <ion-input placeholder="MM/AAAA"></ion-input>
+
+      </ion-col>
+
+      <ion-col size="6">
+
+        <ion-label class="stacked">CVV</ion-label>
+
+        <ion-input></ion-input>
+
+      </ion-col>
+
+      <ion-col size="12">
+
+        <ion-label class="stacked">Nome do titular</ion-label>
+
+        <ion-input></ion-input>
+
+      </ion-col>
+
+      <ion-col size="12">
+
+        <ion-label class="stacked">CPF/CNPJ do titular</ion-label>
+
+        <ion-input></ion-input>
+
+      </ion-col>
+
+    </ion-row>
+
+  </ion-grid>
+
+</ion-content>

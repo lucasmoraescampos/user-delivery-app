@@ -6,6 +6,7 @@ import { HttpResult } from '../models/http-result.model';
 import { map } from 'rxjs/operators';
 import { AngularFireAuth } from "@angular/fire/auth";
 import firebase from 'firebase/app';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class AuthService {
 
   public user: any;
 
-  private url: string = ConfigHelper.Url;
+  private url: string = environment.apiUrl;
 
   private currentUserSubject: BehaviorSubject<any>;
 

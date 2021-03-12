@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { IonSlides, ModalController } from '@ionic/angular';
+import { ModalCardComponent } from '../modal-card/modal-card.component';
 
 @Component({
   selector: 'app-modal-choose-payment-method',
@@ -45,8 +46,19 @@ export class ModalChoosePaymentMethodComponent implements OnInit {
     this.modalCtrl.dismiss();
   }
 
-  public segmentChanged(ev: CustomEvent) {
+  public segmentChanged(ev: any) {
     this.slides.slideTo(ev.detail.value);
   }
 
+  public async modalCard() {
+
+    const modal = await this.modalCtrl.create({
+      component: ModalCardComponent,
+      backdropDismiss: false,
+      cssClass: 'modal-sm'
+    });
+
+    return await modal.present();
+
+  }
 }
