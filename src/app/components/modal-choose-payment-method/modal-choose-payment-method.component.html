@@ -40,7 +40,7 @@
 
 <ion-content customScroll>
 
-  <ion-slides [options]="options">
+  <ion-slides class="swiper-no-swiping" [options]="options">
 
     <ion-slide>
 
@@ -58,13 +58,33 @@
 
         </ion-item>
 
-        <ion-radio-group>
+        <ion-item lines="full" color="light">
 
-          <ion-item lines="full" *ngFor="let card of user.cards">
+          <ion-label class="ion-text-wrap">
 
-            <ion-radio slot="start" [value]="card.id" mode="md"></ion-radio>
+            <h6>Cartões cadastrados</h6>
 
-            <ion-label class="ion-text-wrap">{{ card.number }}</ion-label>
+            <p>Escolha um cartão para o pagamento.</p>
+
+          </ion-label>
+
+        </ion-item>
+
+        <ion-radio-group [(ngModel)]="selectedPaymentMethod" [allowEmptySelection]="true">
+
+          <ion-item lines="full" *ngFor="let card of cards">
+
+            <img slot="start" [src]="card.icon">
+
+            <ion-label class="ion-text-wrap">
+              
+              <h6>{{ card.number | slice:0:4 }} {{ card.number | slice:4:8 }} {{ card.number | slice:8:12 }} {{ card.number | slice:12 }}</h6>
+
+              <p>{{ card.holder_name }}</p>
+            
+            </ion-label>
+
+            <ion-radio slot="end" [value]="card" mode="md"></ion-radio>
 
           </ion-item>
 
@@ -78,13 +98,15 @@
 
       <ion-list>
 
-        <ion-radio-group>
+        <ion-radio-group [(ngModel)]="selectedPaymentMethod" [allowEmptySelection]="true">
 
           <ion-item lines="full" *ngFor="let paymentMethod of company.payment_methods">
 
-            <ion-radio slot="start" [value]="paymentMethod.id" mode="md"></ion-radio>
+            <img slot="start" [src]="paymentMethod.icon">
 
             <ion-label class="ion-text-wrap">{{ paymentMethod.name }}</ion-label>
+
+            <ion-radio slot="end" [value]="paymentMethod" mode="md"></ion-radio>
 
           </ion-item>
 
@@ -98,8 +120,10 @@
 
 </ion-content>
 
-<ion-footer class="ion-padding" *ngIf="(segment == 0 && user.cards.length > 0) || segment == 1">
+<ion-footer class="ion-padding" *ngIf="(segment == 0 && cards?.length > 0) || segment == 1">
 
-  <ion-button expand="block">Confirmar</ion-button>
+  <ion-button expand="block" (click)="confirmPaymentMethod()" [disabled]="!selectedPaymentMethod">Confirmar</ion-button>
 
 </ion-footer>
+
+<ngx-loading [show]="loading"></ngx-loading>

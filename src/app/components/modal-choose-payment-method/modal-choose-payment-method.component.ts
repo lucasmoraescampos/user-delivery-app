@@ -1,5 +1,8 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { IonSlides, ModalController } from '@ionic/angular';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { CardService } from 'src/app/services/card.service';
 import { ModalCardComponent } from '../modal-card/modal-card.component';
 
 @Component({
@@ -7,7 +10,7 @@ import { ModalCardComponent } from '../modal-card/modal-card.component';
   templateUrl: './modal-choose-payment-method.component.html',
   styleUrls: ['./modal-choose-payment-method.component.scss'],
 })
-export class ModalChoosePaymentMethodComponent implements OnInit {
+export class ModalChoosePaymentMethodComponent implements OnInit, OnDestroy {
 
   @ViewChild(IonSlides) slides: IonSlides;
 
@@ -15,15 +18,27 @@ export class ModalChoosePaymentMethodComponent implements OnInit {
 
   @Input() company: any;
 
+  public loading: boolean;
+
   public segment: number;
 
   public options: any;
 
+  public cards: any[];
+  
+  public selectedPaymentMethod: any;
+
+  private unsubscribe = new Subject();
+
   constructor(
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private cardSrv: CardService
   ) { }
 
   ngOnInit() {
+
+    this.initCards();
+    
     if (this.company.allow_payment_online) {
       this.segment = 0;
       this.options =  {
@@ -36,6 +51,12 @@ export class ModalChoosePaymentMethodComponent implements OnInit {
         initialSlide: 1
       }
     }
+
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
   
   ionViewDidEnter() {
@@ -47,6 +68,7 @@ export class ModalChoosePaymentMethodComponent implements OnInit {
   }
 
   public segmentChanged(ev: any) {
+    this.selectedPaymentMethod = null;
     this.slides.slideTo(ev.detail.value);
   }
 
@@ -58,7 +80,29 @@ export class ModalChoosePaymentMethodComponent implements OnInit {
       cssClass: 'modal-sm'
     });
 
+    modal.onDidDismiss()
+      .then(res => {
+        if (res.data) {
+          this.cards.unshift(res.data);
+        }
+      });
+
     return await modal.present();
 
   }
+
+  public initCards() {
+    this.loading = true;
+    this.cardSrv.getAll()
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe(res => {
+        this.loading = false;
+        this.cards = res.data;
+      });
+  }
+
+  public confirmPaymentMethod() {
+    
+  }
 }
+

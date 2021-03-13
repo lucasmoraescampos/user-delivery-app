@@ -5,8 +5,8 @@
   "homepage": "https://ionicframework.com/",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --ssl",
-    "build": "ng build",
+    "start": "ionic serve --port=8101 --ssl",
+    "build": "ionic build --prod",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -24,6 +24,7 @@
     "@angular/router": "~11.0.5",
     "@capacitor/core": "2.4.6",
     "@ionic/angular": "^5.5.2",
+    "animate.css": "^4.1.1",
     "br-mask": "0.0.10",
     "firebase": "^8.2.7",
     "ngx-loading": "^8.0.0",

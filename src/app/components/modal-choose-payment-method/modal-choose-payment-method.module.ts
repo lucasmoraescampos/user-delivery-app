@@ -5,6 +5,7 @@ import { IonicModule } from '@ionic/angular';
 import { CustomScrollModule } from 'src/app/directives/custom-scroll/custom-scroll.module';
 import { FormsModule } from '@angular/forms';
 import { ModalCardModule } from '../modal-card/modal-card.module';
+import { NgxLoadingModule } from 'ngx-loading';
 
 @NgModule({
   declarations: [ModalChoosePaymentMethodComponent],
@@ -13,7 +14,8 @@ import { ModalCardModule } from '../modal-card/modal-card.module';
     IonicModule,
     FormsModule,
     CustomScrollModule,
-    ModalCardModule
+    ModalCardModule,
+    NgxLoadingModule
   ]
 })
 export class ModalChoosePaymentMethodModule { }

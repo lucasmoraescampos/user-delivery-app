@@ -18,49 +18,125 @@
 
 </ion-header>
 
-<ion-content>
+<ion-content customScroll>
 
-  <ion-grid>
+  <ion-grid [formGroup]="formGroup">
 
     <ion-row>
 
       <ion-col size="12">
 
-        <ion-label class="stacked">Número do cartão</ion-label>
+        <ion-label [class.invalid]="submitAttempt && (formControl.number.errors || !paymentMethod)" class="stacked">Número do cartão</ion-label>
 
-        <ion-input></ion-input>
+        <ion-input [class.invalid]="submitAttempt && (formControl.number.errors || !paymentMethod)" formControlName="number" inputmode="numeric" maxLength="19" [brmasker]="{ mask: '0000 0000 0000 0000', type: 'num' }" enterkeyhint="go" (keyup.enter)="expiration.setFocus()" (ionChange)="changeNumber($event)">
+
+          <img class="animate__animated animate__backInRight" [src]="paymentMethod?.thumbnail" *ngIf="paymentMethod">
+
+        </ion-input>
+
+        <ion-note class="validation-error" *ngIf="submitAttempt && formControl.number.errors?.required">
+
+          <ion-icon name="information-circle-outline"></ion-icon>
+              
+          Informe o número do cartão.
+
+        </ion-note>
+
+        <ion-note class="validation-error" *ngIf="submitAttempt && formControl.number.errors?.minlength">
+
+          <ion-icon name="information-circle-outline"></ion-icon>
+              
+          Número incompleto.
+
+        </ion-note>
+
+        <ion-note class="validation-error" *ngIf="submitAttempt && !formControl.number.errors && !paymentMethod">
+
+          <ion-icon name="information-circle-outline"></ion-icon>
+              
+          Número inválido.
+
+        </ion-note>
 
       </ion-col>
 
       <ion-col size="6">
 
-        <ion-label class="stacked">Validade</ion-label>
+        <ion-label [class.invalid]="submitAttempt && formControl.expiration.errors" class="stacked">Validade</ion-label>
 
-        <ion-input placeholder="MM/AAAA"></ion-input>
+        <ion-input [class.invalid]="submitAttempt && formControl.expiration.errors" formControlName="expiration" inputmode="numeric" maxLength="7" [brmasker]="{ mask: '00/0000', type: 'num' }" placeholder="MM/AAAA" enterkeyhint="go" (keyup.enter)="securityCode.setFocus()" #expiration></ion-input>
+
+        <ion-note class="validation-error" *ngIf="submitAttempt && formControl.expiration.errors?.required">
+
+          <ion-icon name="information-circle-outline"></ion-icon>
+              
+          Informe a validade do cartão.
+
+        </ion-note>
+
+        <ion-note class="validation-error" *ngIf="submitAttempt && formControl.expiration.errors?.date">
+
+          <ion-icon name="information-circle-outline"></ion-icon>
+              
+          {{ formControl.expiration.errors.message }}
+
+        </ion-note>
 
       </ion-col>
 
       <ion-col size="6">
 
-        <ion-label class="stacked">CVV</ion-label>
+        <ion-label [class.invalid]="submitAttempt && formControl.security_code.errors" class="stacked">CVV</ion-label>
 
-        <ion-input></ion-input>
+        <ion-input [class.invalid]="submitAttempt && formControl.security_code.errors" formControlName="security_code" inputmode="numeric" maxLength="4" [brmasker]="{ mask: '0000', type: 'num' }" enterkeyhint="go" (keyup.enter)="holderName.setFocus()" #securityCode></ion-input>
+
+        <ion-note class="validation-error" *ngIf="submitAttempt && formControl.security_code.errors?.required">
+
+          <ion-icon name="information-circle-outline"></ion-icon>
+              
+          Informe o código de segurança do cartão.
+
+        </ion-note>
 
       </ion-col>
 
       <ion-col size="12">
 
-        <ion-label class="stacked">Nome do titular</ion-label>
+        <ion-label [class.invalid]="submitAttempt && formControl.holder_name.errors" class="stacked">Nome do titular</ion-label>
 
-        <ion-input></ion-input>
+        <ion-input [class.invalid]="submitAttempt && formControl.holder_name.errors" formControlName="holder_name" maxLength="150" enterkeyhint="go" (keyup.enter)="documentNumber.setFocus()" #holderName></ion-input>
+
+        <ion-note class="validation-error" *ngIf="submitAttempt && formControl.holder_name.errors?.required">
+
+          <ion-icon name="information-circle-outline"></ion-icon>
+              
+          Informe o nome do titular do cartão.
+
+        </ion-note>
 
       </ion-col>
 
       <ion-col size="12">
 
-        <ion-label class="stacked">CPF/CNPJ do titular</ion-label>
+        <ion-label [class.invalid]="submitAttempt && formControl.document_number.errors" class="stacked">CPF/CNPJ do titular</ion-label>
 
-        <ion-input></ion-input>
+        <ion-input [class.invalid]="submitAttempt && formControl.document_number.errors" formControlName="document_number" maxLength="18" [brmasker]="{ person: true }" enterkeyhint="done" (keyup.enter)="save()" #documentNumber></ion-input>
+
+        <ion-note class="validation-error" *ngIf="submitAttempt && formControl.document_number.errors?.required">
+
+          <ion-icon name="information-circle-outline"></ion-icon>
+              
+          Informe o CPF/CNPJ do titular do cartão.
+
+        </ion-note>
+
+        <ion-note class="validation-error" *ngIf="submitAttempt && formControl.document_number.errors?.document_number">
+
+          <ion-icon name="information-circle-outline"></ion-icon>
+              
+          CPF/CNPJ inválido.
+
+        </ion-note>
 
       </ion-col>
 
@@ -69,3 +145,11 @@
   </ion-grid>
 
 </ion-content>
+
+<ion-footer class="ion-padding">
+
+  <ion-button expand="block" (click)="save()">Salvar</ion-button>
+
+</ion-footer>
+
+<ngx-loading [show]="loading"></ngx-loading>
