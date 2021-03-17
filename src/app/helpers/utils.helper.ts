@@ -1,5 +1,19 @@
 export class UtilsHelper {
 
+    public static numberToMoney(value: number) {
+        return Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2 }).format(value);
+    }
+
+    public static moneyToNumber(value: string) {
+
+        value = value.replace('.', '');
+
+        value = value.replace(',', '.');
+
+        return Number(value);
+
+    }
+
     public static validateEmail(email: string) {
         if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
             return true;

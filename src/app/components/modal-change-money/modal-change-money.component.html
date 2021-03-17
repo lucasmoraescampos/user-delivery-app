@@ -1,0 +1,87 @@
+<ion-header class="ion-no-border" mode="ios">
+
+  <ion-toolbar>
+
+    <ion-buttons class="animate__animated animate__fadeIn" slot="start" *ngIf="slideActiveIndex == 1">
+
+      <ion-button (click)="back()">
+
+        <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
+
+      </ion-button>
+
+    </ion-buttons>
+
+    <ion-title>Dinheiro</ion-title>
+
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content mode="ios">
+
+  <ion-slides class="swiper-no-swiping">
+
+    <ion-slide>
+
+      <h6 class="ion-padding">Você vai precisar de troco?</h6>
+
+    </ion-slide>
+
+    <ion-slide>
+
+      <ion-grid>
+
+        <ion-row>
+
+          <ion-col size="12">
+
+            <ion-label>Seu pedido deu <strong>{{ total | money }}</strong></ion-label>
+
+            <ion-label>Digite quanto vai pagar em dinheiro para que o entregador leve o seu troco.</ion-label>
+
+            <ion-input class="animate__animated animate__fadeIn" inputmode="numeric" [autofocus]="true"
+              [brmasker]="{ money: true, thousand: '.' }" [(ngModel)]="value" *ngIf="slideActiveIndex == 1">
+            </ion-input>
+
+          </ion-col>
+
+        </ion-row>
+
+      </ion-grid>
+
+    </ion-slide>
+
+  </ion-slides>
+
+</ion-content>
+
+<ion-footer>
+
+  <ion-grid>
+
+    <ion-row>
+
+      <ion-col class="animate__animated animate__fadeIn" size="6" *ngIf="slideActiveIndex == 0">
+
+        <ion-button expand="block" (click)="not()">Não</ion-button>
+
+      </ion-col>
+
+      <ion-col class="animate__animated animate__fadeIn" size="6" *ngIf="slideActiveIndex == 0">
+
+        <ion-button expand="block" (click)="yes()">Sim</ion-button>
+
+      </ion-col>
+
+      <ion-col class="animate__animated animate__fadeIn" size="12" *ngIf="slideActiveIndex == 1">
+
+        <ion-button expand="block" (click)="confirm()">Confirmar</ion-button>
+
+      </ion-col>
+
+    </ion-row>
+
+  </ion-grid>
+
+</ion-footer>

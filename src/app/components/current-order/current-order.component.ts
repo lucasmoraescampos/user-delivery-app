@@ -3,7 +3,9 @@ import { ModalController } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ArrayHelper } from 'src/app/helpers/array.helper';
+import { UtilsHelper } from 'src/app/helpers/utils.helper';
 import { CurrentOrder } from 'src/app/models/current-order.model';
+import { AlertService } from 'src/app/services/alert.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { OrderService } from 'src/app/services/order.service';
 import { ModalAuthComponent } from '../modal-auth/modal-auth.component';
@@ -18,8 +20,6 @@ import { ModalProductComponent } from '../modal-product/modal-product.component'
 })
 export class CurrentOrderComponent implements OnInit, OnDestroy {
 
-  @Input() company: any;
-
   @Input() products: any[];
 
   public user: any;
@@ -33,7 +33,8 @@ export class CurrentOrderComponent implements OnInit, OnDestroy {
   constructor(
     private orderSrv: OrderService,
     private authSrv: AuthService,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private alertSrv: AlertService
   ) { }
 
   ngOnInit() {
@@ -44,6 +45,30 @@ export class CurrentOrderComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.unsubscribe.next();
     this.unsubscribe.complete();
+  }
+
+  public async edit(index: number) {
+
+    const productOrder = this.order.products[index];
+
+    const productIndex = ArrayHelper.getIndexByKey(this.products, 'id', productOrder.id);
+
+    const modal = await this.modalCtrl.create({
+      component: ModalProductComponent,
+      backdropDismiss: false,
+      cssClass: 'modal-lg',
+      componentProps: {
+        productOrderIndex: index,
+        product: this.products[productIndex]
+      }
+    });
+
+    return await modal.present();
+
+  }
+
+  public remove(index: number) {
+    this.orderSrv.removeProductCurrentOrder(index);
   }
 
   public async chooseAddress() {
@@ -83,7 +108,7 @@ export class CurrentOrderComponent implements OnInit, OnDestroy {
         backdropDismiss: false,
         componentProps: {
           user: this.user,
-          company: this.company
+          total: this.subtotal + this.order.company.delivery_price
         }
       });
 
@@ -93,28 +118,25 @@ export class CurrentOrderComponent implements OnInit, OnDestroy {
 
   }
 
-  public async edit(index: number) {
+  public request() {
 
-    const productOrder = this.order.products[index];
+    if (this.subtotal < this.order.company.min_order_value) {
 
-    const productIndex = ArrayHelper.getIndexByKey(this.products, 'id', productOrder.id);
+      const min_order_value = UtilsHelper.numberToMoney(this.order.company.min_order_value);
 
-    const modal = await this.modalCtrl.create({
-      component: ModalProductComponent,
-      backdropDismiss: false,
-      cssClass: 'modal-lg',
-      componentProps: {
-        productOrderIndex: index,
-        product: this.products[productIndex]
-      }
-    });
+      this.alertSrv.show({
+        icon: 'error',
+        message: `O pedido mínimo para essa empresa é de R$ ${min_order_value}, não inclusa a taxa de entrega.`,
+        confirmButtonText: 'Entendi',
+        showCancelButton: false
+      });
 
-    return await modal.present();
+    }
 
-  }
+    else {
+      
+    }
 
-  public remove(index: number) {
-    this.orderSrv.removeProductCurrentOrder(index);
   }
 
   private initUser() {

@@ -27,19 +27,43 @@ ion-content {
                     font-size: 60px;
                 }
 
+                ion-col:last-child {
+                    margin-bottom: 8px;
+                }
+
                 ion-card {
-                    margin: 2px;
+                    margin: 0;
+                    border: 0.55px solid var(--ion-color-light-shade);
+                    box-shadow: none;
 
-                    ion-icon.history {
-                        font-size: 22px;
+                    &.active {
+                        border: 0.55px solid var(--ion-color-primary);
                     }
 
-                    h6 {
-                        font-weight: 500;
+                    &:hover {
+                        border: 0.55px solid #fff;
+                        box-shadow: var(--ion-color-light-shade) 0px 4px 16px;
                     }
 
-                    p {
-                        color: var(--ion-color-medium);
+                    ion-item {
+                        --inner-padding-end: 0;
+
+                        ion-icon {
+                            font-size: 22px;
+                        }
+
+                        h6 {
+                            font-weight: 500;
+                        }
+
+                        p {
+                            color: var(--ion-color-medium);
+                        }
+
+                        ion-button {
+                            width: 50px;
+                            height: 100%;
+                        }
                     }
                 }
 
@@ -72,13 +96,31 @@ ion-content {
                     position: absolute;
                     top: 0px;
                     z-index: 999999999;
-                    width: 65%;
+                    width: 100%;
+                    padding: 16px 16px 10px;
+                }
+
+                ion-list {
+                    position: absolute;
+                    z-index: 99999;
+                    top: 60px;
+                    left: 16px;
+                    width: calc(100% - 32px);
+                    box-shadow: 0 0 10px var(--ion-color-medium);
+
+                    ion-item {
+                        font-size: 10pt;
+
+                        &:last-child {
+                            --border-width: 0;
+                        }
+                    }
                 }
 
                 ion-button {
                     position: absolute;
-                    bottom: 32px;
-                    width: 60%;
+                    bottom: 16px;
+                    min-width: 50%;
                 }
 
                 ion-fab {

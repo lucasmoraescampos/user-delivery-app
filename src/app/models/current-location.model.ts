@@ -1,11 +1,14 @@
 export interface CurrentLocation {
     id?: number;
-    postal_code: string;
     street_name: string;
     street_number: string;
-    district: string;
     complement?: string;
+    district: string;
     city: string;
     uf: string;
-    country?: string;
+    postal_code: string;
+    country: string;
+    latitude: string;
+    longitude: string;
+    type?: 1 | 2;
 }

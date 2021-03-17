@@ -13,8 +13,6 @@ import { environment } from 'src/environments/environment';
 })
 export class AuthService {
 
-  public user: any;
-
   private url: string = environment.apiUrl;
 
   private currentUserSubject: BehaviorSubject<any>;
@@ -28,6 +26,10 @@ export class AuthService {
     this.currentUserSubject = new BehaviorSubject<any>(JSON.parse(localStorage.getItem(ConfigHelper.Storage.CurrentUser)));
     this.currentUser = this.currentUserSubject.asObservable();
   }
+
+  public getCurrentUser() {
+    return this.currentUserSubject.value;
+  } 
 
   public signInWithFacebook() {
     const provider = new firebase.auth.FacebookAuthProvider();

@@ -96,6 +96,7 @@ export class HomePage implements OnInit, OnDestroy {
       backdropDismiss: false,
       cssClass: 'modal-lg',
       componentProps: {
+        company: this.company,
         product: product
       }
     });

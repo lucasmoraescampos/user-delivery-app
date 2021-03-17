@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { ArrayHelper } from 'src/app/helpers/array.helper';
+import { AlertService } from 'src/app/services/alert.service';
 import { OrderService } from 'src/app/services/order.service';
 
 @Component({
@@ -12,6 +13,8 @@ export class ModalProductComponent implements OnInit {
 
   @Input() productOrderIndex: number;
 
+  @Input() company: any;
+
   @Input() product: any;
 
   public selectedComplements: any[] = [];
@@ -22,7 +25,8 @@ export class ModalProductComponent implements OnInit {
 
   constructor(
     private modalCtrl: ModalController,
-    private orderSrv: OrderService
+    private orderSrv: OrderService,
+    private alertSrv: AlertService
   ) { }
 
   ngOnInit() {
@@ -178,19 +182,48 @@ export class ModalProductComponent implements OnInit {
 
   public add() {
 
-    this.orderSrv.addProductCurrentOrder({
-      id: this.product.id,
-      name: this.product.name,
-      description: this.product.description,
-      price: this.product.price,
-      rebate: this.product.rebate,
-      qty: this.qty,
-      note: this.note,
-      image: this.product.image,
-      complements: this.selectedComplements
-    });
+    const order = this.orderSrv.getCurrentOrder();
 
-    this.modalCtrl.dismiss();
+    if (order.company && order.company.id != this.company.id) {
+
+      this.alertSrv.show({
+        icon: 'warning',
+        message: 'Você só pode adicionar itens de uma empresa por vez. Deseja esvaziar a sacola e adicionar este item?',
+        confirmButtonText: 'Esvaziar sacola e adicionar',
+        onConfirm: () => {
+
+          this.orderSrv.clear();
+
+          this.add();
+          
+        }
+      });
+
+    }
+
+    else {
+
+      if (order.company == null) {
+
+        this.orderSrv.setCompany(this.company);
+  
+      }
+
+      this.orderSrv.addProductCurrentOrder({
+        id: this.product.id,
+        name: this.product.name,
+        description: this.product.description,
+        price: this.product.price,
+        rebate: this.product.rebate,
+        qty: this.qty,
+        note: this.note,
+        image: this.product.image,
+        complements: this.selectedComplements
+      });
+
+      this.modalCtrl.dismiss();
+
+    }
 
   }
 

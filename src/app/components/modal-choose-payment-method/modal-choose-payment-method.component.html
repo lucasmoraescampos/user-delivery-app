@@ -70,7 +70,7 @@
 
         </ion-item>
 
-        <ion-radio-group [(ngModel)]="selectedPaymentMethod" [allowEmptySelection]="true">
+        <ion-radio-group [allowEmptySelection]="true" [value]="selectedCard" (ionChange)="changeCard($event)">
 
           <ion-item lines="full" *ngFor="let card of cards">
 
@@ -98,15 +98,15 @@
 
       <ion-list>
 
-        <ion-radio-group [(ngModel)]="selectedPaymentMethod" [allowEmptySelection]="true">
+        <ion-radio-group [allowEmptySelection]="true" [value]="selectedPaymentMethod" (ionChange)="changePaymentMethod($event)">
 
-          <ion-item lines="full" *ngFor="let paymentMethod of company.payment_methods">
+          <ion-item lines="full" *ngFor="let paymentMethod of order.company.payment_methods">
 
             <img slot="start" [src]="paymentMethod.icon">
 
             <ion-label class="ion-text-wrap">{{ paymentMethod.name }}</ion-label>
 
-            <ion-radio slot="end" [value]="paymentMethod" mode="md"></ion-radio>
+            <ion-radio slot="end" mode="md" [value]="paymentMethod"></ion-radio>
 
           </ion-item>
 
@@ -122,7 +122,9 @@
 
 <ion-footer class="ion-padding" *ngIf="(segment == 0 && cards?.length > 0) || segment == 1">
 
-  <ion-button expand="block" (click)="confirmPaymentMethod()" [disabled]="!selectedPaymentMethod">Confirmar</ion-button>
+  <ion-button expand="block" (click)="confirmPaymentMethod()" [disabled]="selectedCard == undefined" *ngIf="segment == 0">Confirmar</ion-button>
+
+  <ion-button expand="block" (click)="confirmPaymentMethod()" [disabled]="selectedPaymentMethod == undefined" *ngIf="segment == 1">Confirmar</ion-button>
 
 </ion-footer>
 

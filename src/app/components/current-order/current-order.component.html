@@ -1,138 +1,192 @@
 <ion-card>
 
-  <ion-card-header *ngIf="order?.products.length > 0">
+  <div class="empty-bag" *ngIf="order?.products.length == 0">
 
-    <ion-label class="ion-no-margin">
+    <ion-thumbnail>
 
-      <h6>Seu pedido em</h6>
+      <img src="../../../assets/image/empty-bag.png">
 
-      <p>{{ company?.name }}</p>
+    </ion-thumbnail>
 
-    </ion-label>
+    <h6>Sua sacola está vazia</h6>
 
-  </ion-card-header>
+    <p>Adicione itens</p>
 
-  <ion-card-content>
+  </div>
 
-    <div class="empty-bag" *ngIf="order?.products.length == 0">
+  <ion-list class="header" *ngIf="order?.products.length > 0">
 
-      <ion-thumbnail>
+    <ion-item lines="full">
 
-        <img src="../../../assets/image/empty-bag.png">
+      <ion-label>
 
-      </ion-thumbnail>
+        <h6>Seu pedido em</h6>
 
-      <h6>Sua sacola está vazia</h6>
+        <p>{{ order.company?.name }}</p>
 
-      <p>Adicione itens</p>
+      </ion-label>
 
-    </div>
+    </ion-item>
 
-    <ion-list *ngIf="order?.products.length > 0">
+  </ion-list>
 
-      <ion-item lines="full" *ngFor="let product of order.products; let i=index">
+  <ion-list class="content">
 
-        <ion-grid class="ion-no-padding">
+    <ion-item lines="full" *ngFor="let product of order.products; let i=index">
 
-          <ion-row>
+      <ion-grid class="ion-no-padding">
 
-            <ion-col class="ion-no-padding" size="8">
+        <ion-row>
 
-              <ion-label class="ion-text-wrap">
+          <ion-col class="ion-no-padding" size="8">
 
-                <h6>{{ product.qty }}x {{ product.name }}</h6>
+            <ion-label class="ion-text-wrap">
 
-              </ion-label>
+              <h6>{{ product.qty }}x {{ product.name }}</h6>
 
-            </ion-col>
+            </ion-label>
 
-            <ion-col class="ion-no-padding" size="4">
+          </ion-col>
 
-              <ion-label class="ion-text-wrap ion-text-end">
+          <ion-col class="ion-no-padding" size="4">
 
-                <h6>{{ (product.price - product.rebate) * product.qty | money }}</h6>
+            <ion-label class="ion-text-wrap ion-text-end">
 
-              </ion-label>
+              <h6>{{ (product.price - product.rebate) * product.qty | money }}</h6>
 
-            </ion-col>
+            </ion-label>
 
-          </ion-row>
+          </ion-col>
 
-          <ion-row class="complements" *ngIf="product.complements.length > 0">
+        </ion-row>
 
-            <ion-col class="ion-no-padding" size="8">
+        <ion-row class="complements" *ngIf="product.complements.length > 0">
 
-              <ion-label class="ion-text-wrap">
+          <ion-col class="ion-no-padding" size="8">
 
-                <ng-container *ngFor="let complement of product.complements; let i=index">
+            <ion-label class="ion-text-wrap">
 
-                  <ng-container *ngFor="let subcomplement of complement.subcomplements; let j=index">
+              <ng-container *ngFor="let complement of product.complements; let i=index">
 
-                    <p>{{ subcomplement.qty }}x {{ subcomplement.description }}</p>
+                <ng-container *ngFor="let subcomplement of complement.subcomplements; let j=index">
 
-                  </ng-container>
-
-                </ng-container>
-
-              </ion-label>
-
-            </ion-col>
-
-            <ion-col class="ion-no-padding" size="4">
-
-              <ion-label class="ion-text-wrap ion-text-end">
-
-                <ng-container *ngFor="let complement of product.complements; let i=index">
-
-                  <ng-container *ngFor="let subcomplement of complement.subcomplements; let j=index">
-
-                    <p>{{ subcomplement.price * subcomplement.qty | money }}</p>
-
-                  </ng-container>
+                  <p>{{ subcomplement.qty }}x {{ subcomplement.description }}</p>
 
                 </ng-container>
 
-              </ion-label>
+              </ng-container>
 
-            </ion-col>
+            </ion-label>
 
-          </ion-row>
+          </ion-col>
 
-          <ion-row class="note" *ngIf="product.note">
+          <ion-col class="ion-no-padding" size="4">
 
-            <ion-col class="ion-no-padding" size="12">
+            <ion-label class="ion-text-wrap ion-text-end">
 
-              <ion-label class="ion-text-wrap">
+              <ng-container *ngFor="let complement of product.complements; let i=index">
 
-                <p>Obs.: {{ product.note }}</p>
+                <ng-container *ngFor="let subcomplement of complement.subcomplements; let j=index">
 
-              </ion-label>
+                  <p>{{ subcomplement.price * subcomplement.qty | money }}</p>
 
-            </ion-col>
+                </ng-container>
 
-          </ion-row>
+              </ng-container>
 
-          <ion-row>
+            </ion-label>
 
-            <ion-col class="ion-no-padding" size="12">
+          </ion-col>
 
-              <ion-button class="edit" color="primary" fill="clear" (click)="edit(i)">Editar</ion-button>
+        </ion-row>
 
-              <ion-button class="remove" color="primary" fill="clear" (click)="remove(i)">Remover</ion-button>
+        <ion-row class="note" *ngIf="product.note">
 
-            </ion-col>
+          <ion-col class="ion-no-padding" size="12">
 
-          </ion-row>
+            <ion-label class="ion-text-wrap">
 
-        </ion-grid>
+              <p>Obs.: {{ product.note }}</p>
 
-      </ion-item>
+            </ion-label>
 
-    </ion-list>
+          </ion-col>
 
-  </ion-card-content>
+        </ion-row>
 
-  <ion-footer *ngIf="order?.products.length > 0">
+        <ion-row>
+
+          <ion-col class="ion-no-padding" size="12">
+
+            <ion-button class="edit" color="primary" fill="clear" (click)="edit(i)">Editar</ion-button>
+
+            <ion-button class="remove" color="primary" fill="clear" (click)="remove(i)">Remover</ion-button>
+
+          </ion-col>
+
+        </ion-row>
+
+      </ion-grid>
+
+    </ion-item>
+
+  </ion-list>
+
+  <ion-list class="footer" mode="ios" *ngIf="order?.products.length > 0">
+
+    <ion-item lines="full" button="true" detail="false" (click)="chooseAddress()" *ngIf="order.location">
+
+      <img slot="start" src="../../../assets/icon/map.svg">
+
+      <ion-label>
+
+        <h6>{{ order.location.street_name }}, {{ order.location.street_number }}</h6>
+
+        <p>{{ order.location.district }}, {{ order.location.city }} - {{ order.location.uf }}</p>
+
+      </ion-label>
+
+      <ion-button slot="end" fill="clear">Trocar</ion-button>
+
+    </ion-item>
+
+    <ion-item lines="full" button="true" detail="false" (click)="choosePaymentMethod()" *ngIf="order.payment_type">
+
+      <ng-container *ngIf="order.payment_type == 1">
+
+        <img slot="start" [src]="order.card.icon">
+
+        <ion-label>
+
+          <h6>{{ order.card.number | slice:0:4 }} {{ order.card.number | slice:4:8 }} {{ order.card.number | slice:8:12 }} {{ order.card.number | slice:12 }}</h6>
+
+          <p>{{ order.card.holder_name }}</p>
+
+          <p>Pague online</p>
+
+        </ion-label>
+
+      </ng-container>
+
+      <ng-container *ngIf="order.payment_type == 2">
+
+        <img slot="start" [src]="order.payment_method.icon">
+
+        <ion-label>
+
+          <h6>{{ order.payment_method.name }}</h6>
+
+          <p *ngIf="order.payment_method.change_money">Troco para {{ subtotal + order.company?.delivery_price + order.payment_method.change_money | money }}</p>
+
+          <p>Pague na entrega</p>
+
+        </ion-label>
+
+      </ng-container>
+
+      <ion-button slot="end" fill="clear">Trocar</ion-button>
+
+    </ion-item>
 
     <ion-grid>
 
@@ -158,9 +212,9 @@
 
             <p>{{ subtotal | money }}</p>
 
-            <p>{{ company?.delivery_price | money }}</p>
+            <p>{{ order.company?.delivery_price | money }}</p>
 
-            <h6>{{ subtotal + company?.delivery_price | money }}</h6>
+            <h6>{{ subtotal + order.company?.delivery_price | money }}</h6>
 
           </ion-label>
 
@@ -168,11 +222,13 @@
 
         <ion-col size="12" *ngIf="order.products.length > 0">
 
-          <ion-button class="btn-bottom" expand="block" (click)="chooseAddress()" *ngIf="!order.location">Escolher
-            endereço</ion-button>
+          <ion-button expand="block" (click)="chooseAddress()" *ngIf="!order.location">Escolher endereço</ion-button>
 
-          <ion-button class="btn-bottom" expand="block" (click)="choosePaymentMethod()" *ngIf="order.location">Escolher
-            forma de pagamento</ion-button>
+          <ion-button expand="block" (click)="choosePaymentMethod()" *ngIf="order.location && !order.payment_type">
+            Escolher forma de pagamento</ion-button>
+
+          <ion-button expand="block" (click)="request()" *ngIf="order.location && order.payment_type">Fazer
+            pedido</ion-button>
 
         </ion-col>
 
@@ -180,6 +236,6 @@
 
     </ion-grid>
 
-  </ion-footer>
+  </ion-list>
 
 </ion-card>

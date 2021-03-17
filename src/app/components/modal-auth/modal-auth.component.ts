@@ -7,6 +7,7 @@ import { UtilsHelper } from 'src/app/helpers/utils.helper';
 import { AlertService } from 'src/app/services/alert.service';
 import { ApiService } from 'src/app/services/api.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { LocationService } from 'src/app/services/location.service';
 import { OrderService } from 'src/app/services/order.service';
 
 @Component({
@@ -48,7 +49,8 @@ export class ModalAuthComponent implements OnInit, OnDestroy {
     private authSrv: AuthService,
     private orderSrv: OrderService,
     private alertSrv: AlertService,
-    private apiSrv: ApiService
+    private apiSrv: ApiService,
+    private locationSrv: LocationService
   ) { }
 
   ngOnInit() {
@@ -388,50 +390,163 @@ export class ModalAuthComponent implements OnInit, OnDestroy {
   }
 
   private authenticateWithProvider(token: string) {
+
     this.loading = true;
+
     this.authSrv.authenticateWithProvider(token)
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(res => {
+
         this.loading = false;
+
         if (res.success) {
-          this.orderSrv.setUserId(res.data.id);
-          this.modalCtrl.dismiss(true);
+
+          const order = this.orderSrv.getCurrentOrder();
+          
+          if (order.location) {
+
+            this.loading = true;
+
+            this.locationSrv.create(order.location)
+              .pipe(takeUntil(this.unsubscribe))
+              .subscribe(res => {
+
+                this.loading = false;
+
+                const order = this.orderSrv.getCurrentOrder();
+
+                order.location.id = res.data.id;
+
+                this.orderSrv.setLocation(order.location);
+
+                this.modalCtrl.dismiss(true);
+                
+              });
+
+          }
+
+          else {
+          
+            this.modalCtrl.dismiss(true);
+
+          }
+
         }
+
       });
+
   }
 
   private authenticate(data: any) {
+
     this.loading = true;
+
     this.authSrv.authenticate(data)
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(res => {
+
         this.loading = false;
+
         if (res.success) {
-          this.orderSrv.setUserId(res.data.id);
-          this.modalCtrl.dismiss(true);
+
+          const order = this.orderSrv.getCurrentOrder();
+          
+          if (order.location) {
+
+            this.loading = true;
+
+            this.locationSrv.create(order.location)
+              .pipe(takeUntil(this.unsubscribe))
+              .subscribe(res => {
+
+                this.loading = false;
+
+                const order = this.orderSrv.getCurrentOrder();
+
+                order.location.id = res.data.id;
+
+                this.orderSrv.setLocation(order.location);
+
+                this.modalCtrl.dismiss(true);
+
+              });
+
+          }
+
+          else {
+          
+            this.modalCtrl.dismiss(true);
+
+          }
+
         }
+
         else {
+
           this.inputCodeError = res.message;
+
         }
+
       });
+
   }
 
   private signUp(data: any) {
+
     this.loading = true;
+
     data.phone = data.phone.replace(/[^0-9]/g, '');
+
     this.authSrv.signUp(data)
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(res => {
+
         this.loading = false;
+
         if (res.success) {
+
           this.signUpError = '';
-          this.orderSrv.setUserId(res.data.id);
-          this.modalCtrl.dismiss(true);
+          
+          const order = this.orderSrv.getCurrentOrder();
+          
+          if (order.location) {
+
+            this.loading = true;
+
+            this.locationSrv.create(order.location)
+              .pipe(takeUntil(this.unsubscribe))
+              .subscribe(res => {
+
+                this.loading = false;
+
+                const order = this.orderSrv.getCurrentOrder();
+
+                order.location.id = res.data.id;
+
+                this.orderSrv.setLocation(order.location);
+
+                this.modalCtrl.dismiss(true);
+
+              });
+
+          }
+          
+          else {
+          
+            this.modalCtrl.dismiss(true);
+
+          }
+
         }
+
         else {
+
           this.signUpError = res.message;
+
         }
+
       });
+      
   }
 
   private checkDuplicity(data: any, callback: any) {

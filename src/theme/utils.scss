@@ -17,11 +17,6 @@ ion-popover.popover-dropdown .popover-wrapper {
     }
 }
 
-ion-modal.modal-lg .modal-wrapper {
-    min-width: calc(100% - 200px);
-    min-height: calc(100% - 200px);
-}
-
 span.ellipse {
     margin-left: 4px;
     margin-right: 4px;
@@ -30,6 +25,10 @@ span.ellipse {
     &::before {
         content: "•";
     }
+}
+
+ion-searchbar {
+    --border-radius: 5px !important;
 }
 
 ion-segment-button {
@@ -49,6 +48,17 @@ ion-grid {
         --ion-grid-column-padding-xl: 8px;
         --ion-grid-column-padding-xs: 8px;
     }
+}
+
+ion-modal.modal-lg .modal-wrapper {
+    min-width: calc(100% - 200px);
+    min-height: calc(100% - 200px);
+}
+
+ion-modal.modal-xs .modal-wrapper {
+    width: 350px;
+    height: 250px;
+    --border-radius: 10px;
 }
 
 @media (min-width: 768px) {

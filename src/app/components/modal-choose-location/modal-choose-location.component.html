@@ -36,7 +36,7 @@
 
     <ion-slide class="locations">
 
-      <ion-grid class="ion-padding-horizontal">
+      <ion-grid>
 
         <ion-row>
 
@@ -60,21 +60,53 @@
 
           </ion-col>
 
-          <ion-col size="12" [hidden]="true">
+          <ion-col size="12" *ngFor="let location of locations; let i=index">
 
-            <ion-card button="true">
+            <ion-card [class.active]="location.id == currentLocation?.id" button="true" (click)="selectLocation(location)">
 
               <ion-item lines="none">
 
-                <ion-icon class="history" slot="start" src="../../../assets/icon/history.svg"></ion-icon>
+                <ion-icon slot="start" name="home-outline" *ngIf="location.type == 1"></ion-icon>
 
-                <ion-label>
+                <ion-icon slot="start" name="business-outline" *ngIf="location.type == 2"></ion-icon>
 
-                  <h6>Casa</h6>
+                <ion-icon slot="start" src="../../../assets/icon/history.svg" *ngIf="!location.type"></ion-icon>
 
-                  <p>R. 207, 120, Esquina com a 11ª</p>
+                <ion-label *ngIf="location.type">
+
+                  <h6 *ngIf="location.type == 1">Casa</h6>
+
+                  <h6 *ngIf="location.type == 2">Trabalho</h6>
+
+                  <p>
+                    
+                    {{ location.street_name }}, {{ location.street_number }}
+                    
+                    <span *ngIf="location.complement">, {{ location.complement }}</span>
+                  
+                  </p>
 
                 </ion-label>
+
+                <ion-label *ngIf="!location.type">
+
+                  <h6>{{ location.street_name }}, {{ location.street_number }}</h6>
+
+                  <p>
+                    
+                    <span *ngIf="location.complement">{{ location.complement }}, </span>
+
+                    {{ location.district }}, {{ location.city }} - {{ location.uf }}
+                  
+                  </p>
+
+                </ion-label>
+
+                <ion-button slot="end" fill="clear" (click)="$event.stopPropagation(); options(i)">
+
+                  <ion-icon slot="icon-only" name="ellipsis-vertical"></ion-icon>
+
+                </ion-button>
 
               </ion-item>
 
@@ -84,7 +116,7 @@
 
         </ion-row>
 
-        <ion-row class="auth">
+        <ion-row class="auth" *ngIf="authenticated === false">
           
           <ion-col class="ion-text-center" size="12">
 
@@ -204,6 +236,32 @@
             
           </ion-col>
 
+          <ion-col size="12">
+
+            <h6>Favoritar como:</h6>
+
+          </ion-col>
+
+          <ion-col size="6">
+
+            <ion-button expand="block" [color]="formControl.type.value == 1 ? 'primary' : 'light'" (click)="favorite(1)">
+
+              <ion-icon slot="start" name="home-outline"></ion-icon> Casa
+
+            </ion-button>
+
+          </ion-col>
+
+          <ion-col size="6">
+
+            <ion-button expand="block" [color]="formControl.type.value == 2 ? 'primary' : 'light'" (click)="favorite(2)">
+
+              <ion-icon slot="start" name="business-outline"></ion-icon> Trabalho
+
+            </ion-button>
+
+          </ion-col>
+
         </ion-row>
 
       </ion-grid>
@@ -231,3 +289,5 @@
   </ion-grid>
 
 </ion-footer>
+
+<ngx-loading [show]="loading"></ngx-loading>

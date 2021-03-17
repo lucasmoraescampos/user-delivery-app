@@ -6,6 +6,7 @@ import { CustomScrollModule } from 'src/app/directives/custom-scroll/custom-scro
 import { FormsModule } from '@angular/forms';
 import { ModalCardModule } from '../modal-card/modal-card.module';
 import { NgxLoadingModule } from 'ngx-loading';
+import { ModalChangeMoneyModule } from '../modal-change-money/modal-change-money.module';
 
 @NgModule({
   declarations: [ModalChoosePaymentMethodComponent],
@@ -15,7 +16,8 @@ import { NgxLoadingModule } from 'ngx-loading';
     FormsModule,
     CustomScrollModule,
     ModalCardModule,
-    NgxLoadingModule
+    NgxLoadingModule,
+    ModalChangeMoneyModule
   ]
 })
 export class ModalChoosePaymentMethodModule { }

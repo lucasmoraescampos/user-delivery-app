@@ -4,6 +4,7 @@ import { ModalChooseLocationComponent } from './modal-choose-location.component'
 import { IonicModule } from '@ionic/angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CustomScrollModule } from 'src/app/directives/custom-scroll/custom-scroll.module';
+import { NgxLoadingModule } from 'ngx-loading';
 
 @NgModule({
   declarations: [ModalChooseLocationComponent],
@@ -12,7 +13,8 @@ import { CustomScrollModule } from 'src/app/directives/custom-scroll/custom-scro
     IonicModule,
     FormsModule,
     ReactiveFormsModule,
-    CustomScrollModule
+    CustomScrollModule,
+    NgxLoadingModule
   ]
 })
 export class ModalChooseLocationModule { }
