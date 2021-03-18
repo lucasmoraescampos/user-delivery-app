@@ -28,7 +28,7 @@ export class MercadoPagoService {
 
   };
 
-  public createToken(card: any, callback: Function) {
+  public createToken(card: Card, callback: Function) {
 
     const form = this.createForm(card);
 
@@ -42,7 +42,7 @@ export class MercadoPagoService {
 
   }
 
-  private createForm(card: any) {
+  private createForm(card: Card) {
 
     const form = document.createElement('form');
 
@@ -104,4 +104,14 @@ export class MercadoPagoService {
 
     return form;
   }
+}
+
+interface Card {
+  number: string,
+  holder_name: string;
+  expiration_month: string;
+  expiration_year: string;
+  security_code: string;
+  document_type: string;
+  document_number: string;
 }

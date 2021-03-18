@@ -3,7 +3,9 @@ import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/fo
 import { ModalController } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { ArrayHelper } from 'src/app/helpers/array.helper';
 import { UtilsHelper } from 'src/app/helpers/utils.helper';
+import { AlertService } from 'src/app/services/alert.service';
 import { CardService } from 'src/app/services/card.service';
 import { MercadoPagoService } from 'src/app/services/mercado-pago.service';
 
@@ -15,7 +17,7 @@ import { MercadoPagoService } from 'src/app/services/mercado-pago.service';
 export class ModalCardComponent implements OnInit, OnDestroy {
 
   public loading: boolean;
-  
+
   public paymentMethod: any;
 
   public submitAttempt: boolean;
@@ -28,7 +30,8 @@ export class ModalCardComponent implements OnInit, OnDestroy {
     private modaltrl: ModalController,
     private formBuilder: FormBuilder,
     private mercadoPagoSrv: MercadoPagoService,
-    private cardSrv: CardService
+    private cardSrv: CardService,
+    private alertSrv: AlertService
   ) { }
 
   ngOnInit() {
@@ -82,18 +85,18 @@ export class ModalCardComponent implements OnInit, OnDestroy {
       security_code: ['', Validators.required],
       holder_name: ['', Validators.required],
       document_number: ['', [
-          Validators.required,
-          function (control: AbstractControl) {
-            if (control.value.length > 0) {
-              if (!UtilsHelper.validateDocumentNumber(control.value)) {
-                return { document_number: true };
-              }
-              else {
-                return null;
-              }
+        Validators.required,
+        function (control: AbstractControl) {
+          if (control.value.length > 0) {
+            if (!UtilsHelper.validateDocumentNumber(control.value)) {
+              return { document_number: true };
+            }
+            else {
+              return null;
             }
           }
-        ]
+        }
+      ]
       ]
     });
 
@@ -128,7 +131,7 @@ export class ModalCardComponent implements OnInit, OnDestroy {
     else {
       this.paymentMethod = null;
     }
-    
+
   }
 
   public save() {
@@ -139,26 +142,81 @@ export class ModalCardComponent implements OnInit, OnDestroy {
 
       this.loading = true;
 
+      const number = this.formControl.number.value.replace(/[^0-9]/g, '');
+
       const expiration = this.formControl.expiration.value.split('/');
 
-      const data = {
-        number: this.formControl.number.value.replace(/[^0-9]/g, ''),
+      const document_number = this.formControl.document_number.value.replace(/[^0-9]/g, '');
+
+      this.mercadoPagoSrv.createToken({
+        number: number,
+        holder_name: this.formControl.holder_name.value,
         expiration_month: expiration[0],
         expiration_year: expiration[1],
         security_code: this.formControl.security_code.value,
-        holder_name: this.formControl.holder_name.value,
-        document_number: this.formControl.document_number.value.replace(/[^0-9]/g, ''),
-        icon: this.paymentMethod.thumbnail
-      }
+        document_type: document_number.length == 11 ? 'CPF' : 'CNPJ',
+        document_number: document_number,
+      }, (status: any, response: any) => {
 
-      this.cardSrv.create(data)
-        .pipe(takeUntil(this.unsubscribe))
-        .subscribe(res => {
-          this.loading = false;
-          if (res.success) {
-            this.modaltrl.dismiss(res.data);
+        if (status == 200 || status == 201) {
+
+          const data = {
+            number: number,
+            expiration_month: expiration[0],
+            expiration_year: expiration[1],
+            security_code: this.formControl.security_code.value,
+            holder_name: this.formControl.holder_name.value,
+            document_number: document_number,
+            payment_method_id: this.paymentMethod.id
           }
-        });
+
+          this.cardSrv.create(data)
+            .pipe(takeUntil(this.unsubscribe))
+            .subscribe(res => {
+              this.loading = false;
+              if (res.success) {
+                this.modaltrl.dismiss(res.data);
+              }
+            });
+
+        }
+
+        else {
+
+          this.loading = false;
+
+          let message = 'Há algo de errado com os dados do cartão. Por favor, verifique os dados digitados.';
+
+          if (ArrayHelper.exist(response.cause, 'code', 'E301')) {
+            message = 'Há algo de errado com o número do cartão. Por favor, digite novamente.';
+          }
+
+          else if (ArrayHelper.exist(response.cause, 'code', 'E302')) {
+            message = 'Há algo de errado com o código de segurança do cartão. Por favor, digite novamente.';
+          }
+
+          else if (ArrayHelper.exist(response.cause, 'code', '316')) {
+            message = 'Por favor, digite um nome válido para o titular do cartão. Por favor, digite novamente.';
+          }
+
+          else if (ArrayHelper.exist(response.cause, 'code', '322') || ArrayHelper.exist(response.cause, 'code', '323') || ArrayHelper.exist(response.cause, 'code', '324')) {
+            message = 'Há algo de errado com o CPF/CNPJ do titular do cartão. Por favor, digite novamente.';
+          }
+
+          else if (ArrayHelper.exist(response.cause, 'code', '325') || ArrayHelper.exist(response.cause, 'code', '326')) {
+            message = 'Há algo de errado com a data de validade do cartão. Por favor, digite novamente.';
+          }
+          
+          this.alertSrv.show({
+            icon: 'error',
+            message: message,
+            confirmButtonText: 'Ok, entendi',
+            showCancelButton: false
+          });
+
+        }
+        
+      });
 
     }
 
