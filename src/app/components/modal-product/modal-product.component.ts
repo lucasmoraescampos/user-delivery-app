@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { ArrayHelper } from 'src/app/helpers/array.helper';
+import { ObjectHelper } from 'src/app/helpers/object.helper';
 import { AlertService } from 'src/app/services/alert.service';
 import { OrderService } from 'src/app/services/order.service';
 
@@ -33,13 +34,13 @@ export class ModalProductComponent implements OnInit {
 
     if (this.productOrderIndex !== undefined) {
 
-      const productOrder = this.orderSrv.getCurrentOrder().products[this.productOrderIndex];
+      const order = ObjectHelper.clone(this.orderSrv.getCurrentOrder());
 
-      this.selectedComplements = productOrder.complements;
+      this.selectedComplements = order.products[this.productOrderIndex].complements;
 
-      this.note = productOrder.note;
+      this.note = order.products[this.productOrderIndex].note;
 
-      this.qty = productOrder.qty;
+      this.qty = order.products[this.productOrderIndex].qty;
 
     }
 
@@ -59,6 +60,46 @@ export class ModalProductComponent implements OnInit {
 
   }
 
+  public get checkRequiredComplements() {
+
+    for (let i = 0; i < this.product.complements.length; i++) {
+
+      let complement = this.product.complements[i];
+
+      if (complement.required) {
+
+        const selectedComplementIndex = ArrayHelper.getIndexByKey(this.selectedComplements, 'id', complement.id);
+
+        if (selectedComplementIndex != -1) {
+
+          let qty = 0;
+
+          this.selectedComplements[selectedComplementIndex].subcomplements.forEach((subcomplement: any) => {
+            qty += subcomplement.qty;
+          });
+
+          if (qty < complement.qty_min) {
+
+            return false;
+
+          }
+
+        }
+
+        else {
+
+          return false;
+
+        }
+
+      }
+
+    }
+
+    return true;
+
+  }
+
   public dismiss() {
     this.modalCtrl.dismiss();
   }
@@ -67,13 +108,13 @@ export class ModalProductComponent implements OnInit {
 
     const complementIndex = ArrayHelper.getIndexByKey(this.selectedComplements, 'id', subcomplement.complement_id);
 
-    if (complementIndex > -1) {
+    if (complementIndex != -1) {
 
       const subcomplements = this.selectedComplements[complementIndex].subcomplements;
-      
+
       const subcomplementIndex = ArrayHelper.getIndexByKey(subcomplements, 'id', subcomplement.id);
 
-      if (subcomplementIndex > -1) {
+      if (subcomplementIndex != -1) {
         return subcomplements[subcomplementIndex].qty;
       }
 
@@ -156,6 +197,8 @@ export class ModalProductComponent implements OnInit {
 
     }
 
+    this.checkDisableAddComplement(subcomplement.complement_id);
+
   }
 
   public checkSubcomplement(complement: any, event: any) {
@@ -175,53 +218,68 @@ export class ModalProductComponent implements OnInit {
           price: event.detail.value.price
         }]
       });
-      
+
     }
 
   }
 
   public add() {
 
-    const order = this.orderSrv.getCurrentOrder();
+    if (this.checkRequiredComplements) {
+        
+      const order = this.orderSrv.getCurrentOrder();
 
-    if (order.company && order.company.id != this.company.id) {
+      if (order.company && order.company.id != this.company.id) {
 
-      this.alertSrv.show({
-        icon: 'warning',
-        message: 'Você só pode adicionar itens de uma empresa por vez. Deseja esvaziar a sacola e adicionar este item?',
-        confirmButtonText: 'Esvaziar sacola e adicionar',
-        onConfirm: () => {
+        this.alertSrv.show({
+          icon: 'warning',
+          message: 'Você só pode adicionar itens de uma empresa por vez. Deseja esvaziar a sacola e adicionar este item?',
+          confirmButtonText: 'Esvaziar sacola e adicionar',
+          onConfirm: () => {
 
-          this.orderSrv.clear();
+            this.orderSrv.clear();
 
-          this.add();
-          
+            this.add();
+
+          }
+        });
+
+      }
+
+      else {
+
+        if (order.company == null) {
+
+          this.orderSrv.setCompany(this.company);
+
         }
-      });
+
+        this.orderSrv.addProductCurrentOrder({
+          id: this.product.id,
+          name: this.product.name,
+          description: this.product.description,
+          price: this.product.price,
+          rebate: this.product.rebate,
+          qty: this.qty,
+          note: this.note,
+          image: this.product.image,
+          complements: this.selectedComplements
+        });
+
+        this.modalCtrl.dismiss();
+
+      }
 
     }
 
     else {
 
-      if (order.company == null) {
-
-        this.orderSrv.setCompany(this.company);
-  
-      }
-
-      this.orderSrv.addProductCurrentOrder({
-        id: this.product.id,
-        name: this.product.name,
-        description: this.product.description,
-        price: this.product.price,
-        rebate: this.product.rebate,
-        qty: this.qty,
-        note: this.note,
-        image: this.product.image,
-        complements: this.selectedComplements
+      this.alertSrv.show({
+        icon: 'warning',
+        message: 'É preciso escolher todos os itens obrigatórios antes de adicionar o produto à sacola.',
+        confirmButtonText: 'Ok, entendi',
+        showCancelButton: false
       });
-
-      this.modalCtrl.dismiss();
 
     }
 
@@ -242,6 +300,42 @@ export class ModalProductComponent implements OnInit {
     });
 
     this.modalCtrl.dismiss();
+
+  }
+
+  private checkDisableAddComplement(id: number) {
+
+    const selectedComplementIndex = ArrayHelper.getIndexByKey(this.selectedComplements, 'id', id);
+
+    if (selectedComplementIndex != -1) {
+
+      const complementIndex = ArrayHelper.getIndexByKey(this.product.complements, 'id', id);
+
+      const buttons: NodeList = document.querySelectorAll(`.complement${id} ion-item ion-button:last-child`)
+
+      let qty = 0;
+
+      this.selectedComplements[selectedComplementIndex].subcomplements.forEach((subcomplement: any) => {
+        qty += subcomplement.qty;
+      });
+
+      if (qty < this.product.complements[complementIndex].qty_max) {
+
+        buttons.forEach((button: any) => {
+          button.disabled = false;
+        });
+
+      }
+
+      else {
+
+        buttons.forEach((button: any) => {
+          button.disabled = true;
+        });
+
+      }
+
+    }
 
   }
 

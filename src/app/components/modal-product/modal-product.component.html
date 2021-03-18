@@ -68,9 +68,15 @@
                     
                     <h6>{{ complement.title }}</h6>
 
-                    <p *ngIf="complement.qty_max == 1">Escolha {{ complement.qty_max }} opção</p>
+                    <p *ngIf="complement.qty_max == 1">Escolha 1 opção</p>
 
-                    <p *ngIf="complement.qty_max > 1">Escolha {{ complement.qty_max }} opções</p>
+                    <p *ngIf="complement.qty_max > 1">
+
+                      <span *ngIf="complement.required">Escolha de {{ complement.qty_min }} até {{ complement.qty_max }} opções</span>
+
+                      <span *ngIf="!complement.required">Escolha até {{ complement.qty_max }} opções</span>
+
+                    </p>
                   
                   </ion-label>
 
@@ -92,7 +98,7 @@
 
                     <ion-radio slot="end" mode="md" [value]="subcomplement" *ngIf="complement.qty_max == 1"></ion-radio>
 
-                    <app-quantity [min]="0" [value]="subcomplementQty(subcomplement)" *ngIf="complement.qty_max > 1" (changeQty)="changeSubcomplement(subcomplement, $event)"></app-quantity>
+                    <app-quantity [class]="'complement' + complement.id" [min]="0" [value]="subcomplementQty(subcomplement)" *ngIf="complement.qty_max > 1" (changeQty)="changeSubcomplement(subcomplement, $event)"></app-quantity>
 
                   </ion-item>
 
@@ -136,7 +142,7 @@
 
       <ion-col size="8">
 
-        <ion-card class="add" color="primary" button="true" (click)="productOrderIndex === undefined ? add() : update()">
+        <ion-card [class.disabled]="!checkRequiredComplements" color="primary" button="true" (click)="productOrderIndex === undefined ? add() : update()">
 
           <ion-card-content>
 

@@ -141,13 +141,12 @@ export class OrderService {
 
   public clear() {
 
-    const order: CurrentOrder = {
-      company: null,
-      location: null,
-      products: [],
-      type: null,
-      payment_type: null
-    };
+    const order = this.currentOrderSubject.value;
+    
+    order.company = null;
+    order.products = [];
+    order.type = 1;
+    order.payment_type = null;
 
     this.currentOrderSubject.next(order);
     
@@ -165,7 +164,7 @@ export class OrderService {
         company: null,
         location: null,
         products: [],
-        type: null,
+        type: 1,
         payment_type: null
       });
 

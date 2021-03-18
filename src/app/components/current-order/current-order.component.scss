@@ -32,6 +32,7 @@ ion-card {
             --padding-top: 8px;
             --padding-bottom: 8px;
             --border-color: #ebecef;
+            --background-hover: #fff;
 
             ion-label {
                 margin: 0;
@@ -44,13 +45,13 @@ ion-card {
                     h6 {
                         font-size: 0.875rem;
                         font-weight: 500;
-                        color: var(--ion-color-dark);
+                        color: var(--ion-color-dark-tint);
                     }
 
                     p {
-                        font-size: 1.375rem;
+                        font-size: 1.125rem;
                         font-weight: 600;
-                        color: var(--ion-color-dark-tint);
+                        color: var(--ion-color-dark);
                     }
                 }
             }
@@ -58,9 +59,9 @@ ion-card {
 
         &.content {
             padding: 0 16px;
-            max-height: calc(100% - 62.2px - 279.8px);
+            max-height: calc(100% - 61px - 303.8px);
             overflow-y: auto;
-    
+
             ion-item {
                 --padding-start: 0;
                 --inner-padding-end: 0;
@@ -68,13 +69,13 @@ ion-card {
                 &:last-child {
                     --border-width: 0;
                 }
-    
+
                 ion-label {
                     h6 {
                         font-size: 1rem;
                         font-weight: 600;
                     }
-    
+
                     p {
                         font-size: 0.9rem;
                         font-weight: 500;
@@ -85,20 +86,19 @@ ion-card {
                 ion-button {
                     font-size: 1rem;
                     line-height: 1em;
-                    font-weight: 600;
-                    height: 20px;
-                    margin-top: 3px;
-    
+                    height: 1rem;
+                    font-weight: 500;
+
                     &.edit {
-                        width: 46px;
+                        width: 46.08px;
                     }
-    
+
                     &.remove {
                         margin-left: 32px;
-                        width: 74px;
+                        width: 70.84px;
                     }
                 }
-    
+
                 ion-row.complements,
                 ion-row.note {
                     margin-top: 8px;
@@ -108,12 +108,43 @@ ion-card {
 
         &.footer {
             ion-item {
-                --min-height: 36px;
-                
+                --min-height: 0;
+
                 &:first-child {
-                    --border-width: 0.55px 0;
+                    --border-width: 0.55px 0 0;
                 }
-                
+
+                &.type {
+                    --padding-bottom: 0;
+
+                    ion-button {
+                        --color: var(--ion-color-medium);
+                        --padding-start: 0;
+                        --padding-end: 0;
+                        font-size: 0.9rem;
+                        line-height: 0.9rem;
+                        border-bottom: 2px solid #fff;
+
+                        ion-label {
+                            margin-bottom: 8px;
+                        }
+
+                        &.active {
+                            --color: var(--ion-color-primary);
+                            font-weight: 600;
+                            border-bottom: 2px solid var(--ion-color-primary);
+                        }
+
+                        &:hover {
+                            opacity: 1;
+
+                            &:not(.active) {
+                                border-bottom: 2px solid var(--ion-color-medium);
+                            }
+                        }
+                    }
+                }
+
                 img {
                     width: 30px;
                 }
@@ -125,7 +156,7 @@ ion-card {
                         font-size: 0.9rem;
                         font-weight: 600;
                     }
-    
+
                     p {
                         font-size: 0.85rem;
                         font-weight: 500;
@@ -134,30 +165,32 @@ ion-card {
                 }
 
                 ion-button {
-                    font-weight: 600;
+                    font-weight: 500;
                 }
             }
 
             ion-grid {
-                padding: 0 8px;
-    
+                padding: 8px 16px;
+
                 ion-col {
+                    padding: 0;
+
                     h6 {
                         font-size: 1rem;
                         line-height: 1.375rem;
                         font-weight: 600;
                         color: var(--ion-color-dark);
                     }
-    
+
                     p {
                         font-size: 0.9rem;
                         line-height: 1.375rem;
                         font-weight: 500;
                         color: var(--ion-color-dark-tint);
                     }
-    
+
                     ion-button {
-                        margin-bottom: 8px;
+                        margin: 8px 0;
                     }
                 }
             }
@@ -180,4 +213,3 @@ ion-card {
         }
     }
 }
-

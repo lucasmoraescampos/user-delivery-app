@@ -1,6 +1,6 @@
 <ion-card>
 
-  <div class="empty-bag" *ngIf="order?.products.length == 0">
+  <div class="empty-bag animate__animated animate__fadeIn" *ngIf="order?.products.length == 0">
 
     <ion-thumbnail>
 
@@ -16,7 +16,7 @@
 
   <ion-list class="header" *ngIf="order?.products.length > 0">
 
-    <ion-item lines="full">
+    <ion-item class="animate__animated animate__fadeIn" lines="full">
 
       <ion-label>
 
@@ -32,7 +32,8 @@
 
   <ion-list class="content">
 
-    <ion-item lines="full" *ngFor="let product of order.products; let i=index">
+    <ion-item class="animate__animated animate__fadeIn" lines="full"
+      *ngFor="let product of order.products; let i=index">
 
       <ion-grid class="ion-no-padding">
 
@@ -60,7 +61,7 @@
 
         </ion-row>
 
-        <ion-row class="complements" *ngIf="product.complements.length > 0">
+        <ion-row class="complements animate__animated animate__fadeIn" *ngIf="product.complements.length > 0">
 
           <ion-col class="ion-no-padding" size="8">
 
@@ -134,7 +135,24 @@
 
   <ion-list class="footer" mode="ios" *ngIf="order?.products.length > 0">
 
-    <ion-item lines="full" button="true" detail="false" (click)="chooseAddress()" *ngIf="order.location">
+    <ion-item class="type" lines="none">
+
+      <ion-button [class.active]="order.type == 1" class="active ion-margin-end" fill="clear" (click)="changeType(1)">
+
+        <ion-label>Entrega</ion-label>
+
+      </ion-button>
+
+      <ion-button [class.active]="order.type == 2" fill="clear" (click)="changeType(2)">
+
+        <ion-label>Retirada</ion-label>
+
+      </ion-button>
+
+    </ion-item>
+
+    <ion-item class="animate__animated animate__fadeIn" lines="full" button="true" detail="false"
+      (click)="chooseAddress()" *ngIf="order.type == 1 && order.location">
 
       <img slot="start" src="../../../assets/icon/map.svg">
 
@@ -150,7 +168,23 @@
 
     </ion-item>
 
-    <ion-item lines="full" button="true" detail="false" (click)="choosePaymentMethod()" *ngIf="order.payment_type">
+    <ion-item class="animate__animated animate__fadeIn" lines="full" *ngIf="order.type == 2">
+
+      <img slot="start" src="../../../assets/icon/store-location.svg">
+
+      <ion-label>
+
+        <h6>{{ order.company.street_name }}, {{ order.company.street_number }}</h6>
+
+        <p>{{ order.company.district }} <span *ngIf="order.company.complement">, {{ order.company.complement }}</span>
+        </p>
+
+      </ion-label>
+
+    </ion-item>
+
+    <ion-item class="animate__animated animate__fadeIn" lines="full" button="true" detail="false"
+      (click)="choosePaymentMethod()" *ngIf="order.payment_type">
 
       <ng-container *ngIf="order.payment_type == 1">
 
@@ -158,7 +192,8 @@
 
         <ion-label>
 
-          <h6>{{ order.card.number | slice:0:4 }} {{ order.card.number | slice:4:8 }} {{ order.card.number | slice:8:12 }} {{ order.card.number | slice:12 }}</h6>
+          <h6>{{ order.card.number | slice:0:4 }} {{ order.card.number | slice:4:8 }} {{ order.card.number | slice:8:12
+            }} {{ order.card.number | slice:12 }}</h6>
 
           <p>{{ order.card.holder_name }}</p>
 
@@ -176,7 +211,8 @@
 
           <h6>{{ order.payment_method.name }}</h6>
 
-          <p *ngIf="order.payment_method.change_money">Troco para {{ subtotal + order.company?.delivery_price + order.payment_method.change_money | money }}</p>
+          <p *ngIf="order.payment_method.change_money">Troco para {{ subtotal + order.company?.delivery_price +
+            order.payment_method.change_money | money }}</p>
 
           <p>Pague na entrega</p>
 
@@ -196,11 +232,11 @@
 
           <ion-label class="ion-text-wrap">
 
-            <p>Subtotal</p>
+            <p class="animate__animated animate__fadeIn">Subtotal</p>
 
-            <p>Taxa de entrega</p>
+            <p class="animate__animated animate__fadeIn" *ngIf="order.type == 1">Taxa de entrega</p>
 
-            <h6>Total</h6>
+            <h6 class="animate__animated animate__fadeIn">Total</h6>
 
           </ion-label>
 
@@ -210,11 +246,12 @@
 
           <ion-label class="ion-text-wrap ion-text-end">
 
-            <p>{{ subtotal | money }}</p>
+            <p class="animate__animated animate__fadeIn">{{ subtotal | money }}</p>
 
-            <p>{{ order.company?.delivery_price | money }}</p>
+            <p class="animate__animated animate__fadeIn" *ngIf="order.type == 1">{{ order.company?.delivery_price |
+              money }}</p>
 
-            <h6>{{ subtotal + order.company?.delivery_price | money }}</h6>
+            <h6 class="animate__animated animate__fadeIn">{{ total | money }}</h6>
 
           </ion-label>
 
@@ -222,13 +259,16 @@
 
         <ion-col size="12" *ngIf="order.products.length > 0">
 
-          <ion-button expand="block" (click)="chooseAddress()" *ngIf="!order.location">Escolher endereço</ion-button>
+          <ion-button class="animate__animated animate__fadeIn" expand="block" (click)="chooseAddress()"
+            *ngIf="order.type == 1 && !order.location">Escolher endereço</ion-button>
 
-          <ion-button expand="block" (click)="choosePaymentMethod()" *ngIf="order.location && !order.payment_type">
-            Escolher forma de pagamento</ion-button>
+          <ion-button class="animate__animated animate__fadeIn" expand="block" (click)="choosePaymentMethod()"
+            *ngIf="((order.type == 1 && order.location) || (order.type == 2)) && !order.payment_type">Escolher forma de
+            pagamento</ion-button>
 
-          <ion-button expand="block" (click)="request()" *ngIf="order.location && order.payment_type">Fazer
-            pedido</ion-button>
+          <ion-button class="animate__animated animate__fadeIn" expand="block" (click)="request()"
+            *ngIf="((order.type == 1 && order.location) || (order.type == 2)) && order.payment_type">Fazer pedido
+          </ion-button>
 
         </ion-col>
 

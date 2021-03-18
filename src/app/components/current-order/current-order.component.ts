@@ -28,6 +28,8 @@ export class CurrentOrderComponent implements OnInit, OnDestroy {
 
   public subtotal: number = 0;
 
+  public total: number = 0;
+
   private unsubscribe = new Subject();
 
   constructor(
@@ -69,6 +71,22 @@ export class CurrentOrderComponent implements OnInit, OnDestroy {
 
   public remove(index: number) {
     this.orderSrv.removeProductCurrentOrder(index);
+  }
+
+  public changeType(type: 1 | 2) {
+    if (type == 2 && this.order.company.allow_withdrawal_local == false) {
+
+      this.alertSrv.show({
+        icon: 'error',
+        message: 'Essa empresa não está permitindo retiradas no momento.',
+        confirmButtonText: 'Ok, entendi',
+        showCancelButton: false
+      });
+
+    }
+    else {
+      this.orderSrv.setType(type);
+    }
   }
 
   public async chooseAddress() {
@@ -127,7 +145,7 @@ export class CurrentOrderComponent implements OnInit, OnDestroy {
       this.alertSrv.show({
         icon: 'error',
         message: `O pedido mínimo para essa empresa é de R$ ${min_order_value}, não inclusa a taxa de entrega.`,
-        confirmButtonText: 'Entendi',
+        confirmButtonText: 'Ok, entendi',
         showCancelButton: false
       });
 
@@ -172,6 +190,18 @@ export class CurrentOrderComponent implements OnInit, OnDestroy {
           this.subtotal *= product.qty;
 
         });
+
+        if (order.type == 1) {
+
+          this.total = this.subtotal + order.company?.delivery_price;
+
+        }
+
+        else {
+
+          this.total = this.subtotal;
+
+        }
 
       });
 

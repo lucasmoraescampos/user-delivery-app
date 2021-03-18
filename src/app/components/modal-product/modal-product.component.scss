@@ -92,9 +92,13 @@ ion-content {
 }
 
 ion-footer {
-    ion-card.add {
+    ion-card {
         margin: 0;
         border-radius: 5px;
+
+        &.disabled {
+            opacity: 0.5;
+        }
 
         ion-card-content {
             padding: 12.75px;
