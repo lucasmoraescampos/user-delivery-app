@@ -8,6 +8,8 @@ export const environment = {
 
   apiUrl: 'http://api.meupedido.localhost',
 
+  socketUrl: 'http://localhost:1337',
+
   imagesUrl: 'http://images.meupedido.localhost',
 
   firebase: {

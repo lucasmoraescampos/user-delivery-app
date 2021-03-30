@@ -7,6 +7,9 @@ import { UtilsHelper } from 'src/app/helpers/utils.helper';
 import { CurrentOrder } from 'src/app/models/current-order.model';
 import { AlertService } from 'src/app/services/alert.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { CardService } from 'src/app/services/card.service';
+import { LoadingService } from 'src/app/services/loading.service';
+import { MercadoPagoService } from 'src/app/services/mercado-pago.service';
 import { OrderService } from 'src/app/services/order.service';
 import { ModalAuthComponent } from '../modal-auth/modal-auth.component';
 import { ModalChooseLocationComponent } from '../modal-choose-location/modal-choose-location.component';
@@ -36,7 +39,10 @@ export class CurrentOrderComponent implements OnInit, OnDestroy {
     private orderSrv: OrderService,
     private authSrv: AuthService,
     private modalCtrl: ModalController,
-    private alertSrv: AlertService
+    private alertSrv: AlertService,
+    private loadingSrv: LoadingService,
+    private mercadoPagoSrv: MercadoPagoService,
+    private cardSrv: CardService
   ) { }
 
   ngOnInit() {
@@ -152,8 +158,139 @@ export class CurrentOrderComponent implements OnInit, OnDestroy {
     }
 
     else {
+
+      this.loadingSrv.show();
+
+      const data: any = {
+        type: this.order.type,
+        payment_type: this.order.payment_type,
+        company_id: this.order.company.id,
+        products: []
+      }
+
+      this.order.products.forEach(product => {
+
+        const _product: any = {
+          id: product.id,
+          qty: product.qty,
+          note: product.note
+        }
+
+        if (product?.complements) {
+
+          _product.complements = [];
+
+          product.complements.forEach(complement => {
+
+            const _complement = {
+              id: complement.id,
+              subcomplements: []
+            }
+
+            complement.subcomplements.forEach(subcomplement => {
+
+              _complement.subcomplements.push({
+                id: subcomplement.id,
+                qty: subcomplement.qty
+              })
+              
+            });
+
+            _product.complements.push(_complement);
+
+          });
+
+        }
+
+        data.products.push(_product);
+
+      });
+
+      if (this.order.type == 1) { // TYPE DELIVERY
+        data.location_id = this.order.location.id;
+      }
+
+      if (this.order.payment_type == 1) { // PAYMENT ONLINE
+
+        data.card_id = this.order.card.id;
+
+        this.mercadoPagoSrv.getPaymentMethod(this.order.card.number, (status: any, response: any) => {
+
+          data.payment_method_id = response[0].id;
+
+          this.cardSrv.getById(this.order.card.id)
+            .pipe(takeUntil(this.unsubscribe))
+            .subscribe(res => {
+
+              if (res.success) {
+
+                this.mercadoPagoSrv.createToken({
+                  number: res.data.number,
+                  holder_name: res.data.holder_name,
+                  expiration_month: res.data.expiration_month,
+                  expiration_year: res.data.expiration_year,
+                  security_code: res.data.security_code,
+                  document_type: res.data.document_type,
+                  document_number: res.data.document_number,
+                }, (status: any, response: any) => {
+
+                  data.card_token = response.id;
+
+                  this.sendRequest(data);
+
+                });
+                
+              }
+
+            });
+
+        });
+
+      }
+
+      if (this.order.payment_type == 2) { // PAYMENT DELIVERY
+
+        data.payment_method_id = this.order.payment_method.id;
+
+        data.change_money = this.order.payment_method.change_money;
+
+        this.sendRequest(data);
+
+      }
       
     }
+
+  }
+
+  private sendRequest(data: any) {
+
+    this.orderSrv.create(data)
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe(res => {
+
+        this.loadingSrv.hide();
+
+        if (res.success) {
+
+          this.alertSrv.toast({
+            icon: 'success',
+            message: 'Pedido realizado com sucesso.'
+          });
+
+        }
+
+        else {
+
+          this.alertSrv.show({
+            icon: 'error',
+            message: res.message,
+            confirmButtonText: 'Ok, entendi',
+            showCancelButton: false
+          });
+
+        }
+
+      });
 
   }
 

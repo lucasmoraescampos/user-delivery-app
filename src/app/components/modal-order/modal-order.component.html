@@ -1,0 +1,280 @@
+<ion-header mode="ios">
+
+  <ion-toolbar>
+
+    <ion-title>Detalhes do pedido</ion-title>
+
+    <ion-buttons slot="end">
+
+      <ion-button class="close" fill="clear" (click)="dismiss()">
+
+        <ion-icon slot="icon-only" color="medium" name="close"></ion-icon>
+
+      </ion-button>
+
+    </ion-buttons>
+
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content>
+
+  <ion-list>
+
+    <ion-item lines="none">
+
+      <ion-label class="ion-no-margin">
+
+        <h5>{{ order.company.name }}</h5>
+
+        <ion-progress-bar type="indeterminate" *ngIf="order.status < 4"></ion-progress-bar>
+
+        <ion-progress-bar value="1" *ngIf="order.status == 4"></ion-progress-bar>
+
+        <p *ngIf="order.status == 0">Aguardando confirmação</p>
+
+        <p *ngIf="order.status == 1">Preparando o pedido</p>
+
+        <p *ngIf="order.status == 2">Aguardando o entregador</p>
+
+        <p *ngIf="order.status == 3">Entregando o pedido</p>
+
+        <p *ngIf="order.status == 4">Pedido finalizado</p>
+
+      </ion-label>
+
+    </ion-item>
+
+  </ion-list>
+
+  <ion-list>
+
+    <ion-item class="products" lines="full" *ngFor="let product of order.products">
+
+      <ion-grid class="ion-no-padding">
+
+        <ion-row>
+
+          <ion-col class="ion-no-padding" size="9">
+
+            <h6>{{ product.qty }}x {{ product.name }}</h6>
+
+          </ion-col>
+
+          <ion-col class="ion-no-padding" size="3">
+
+            <h6 class="ion-text-end">{{ product.price - product.rebate | money }}</h6>
+
+          </ion-col>
+
+        </ion-row>
+
+        <ion-row class="complements" *ngFor="let complement of product.complements">
+
+          <ng-container *ngFor="let subcomplement of complement.subcomplements">
+
+            <ion-col class="ion-no-padding" size="9">
+
+              <p>{{ subcomplement.qty }} {{ subcomplement.description }}</p>
+
+            </ion-col>
+
+            <ion-col class="ion-no-padding" size="3">
+
+              <p class="ion-text-end">{{ subcomplement.price | money }}</p>
+
+            </ion-col>
+
+          </ng-container>
+
+        </ion-row>
+
+        <ion-row *ngIf="product.note">
+
+          <p>Observação: {{ product.note }}</p>
+
+        </ion-row>
+
+      </ion-grid>
+
+    </ion-item>
+
+  </ion-list>
+
+  <ion-list>
+
+    <ion-item lines="full">
+
+      <ion-grid class="ion-no-padding">
+
+        <ion-row>
+
+          <ion-col class="ion-no-padding" size="6">
+
+            <p>Subtotal</p>
+
+          </ion-col>
+
+          <ion-col class="ion-no-padding" size="6">
+
+            <p class="ion-text-end">{{ order.price | money }}</p>
+
+          </ion-col>
+
+        </ion-row>
+
+        <ion-row>
+
+          <ion-col class="ion-no-padding" size="6">
+
+            <p>Taxa de entrega</p>
+
+          </ion-col>
+
+          <ion-col class="ion-no-padding" size="6">
+
+            <p class="ion-text-end">{{ order.delivery_price | money }}</p>
+
+          </ion-col>
+
+        </ion-row>
+
+        <ion-row>
+
+          <ion-col class="ion-no-padding" size="6">
+
+            <h5>Total</h5>
+
+          </ion-col>
+
+          <ion-col class="ion-no-padding" size="6">
+
+            <h5 class="ion-text-end">{{ order.total_price | money }}</h5>
+
+          </ion-col>
+
+        </ion-row>
+
+      </ion-grid>
+
+    </ion-item>
+
+  </ion-list>
+
+  <ion-list>
+
+    <ion-item lines="full">
+
+      <ion-label class="ion-no-margin ion-text-wrap">
+
+        <h6>Endereço de entrega</h6>
+
+        <p>{{ order.delivery_location.street_name }}, {{ order.delivery_location.street_number }}, {{
+          order.delivery_location.district }}, {{ order.delivery_location.city }} - {{ order.delivery_location.uf }}</p>
+
+        <p *ngIf="order.delivery_location.complement">{{ order.delivery_location.complement }}</p>
+
+      </ion-label>
+
+    </ion-item>
+
+  </ion-list>
+
+  <ion-list>
+
+    <ion-item lines="full">
+
+      <ion-grid class="ion-no-padding">
+
+        <ion-row>
+
+          <ion-col class="ion-no-padding" size="12">
+
+            <h6>Mais informações</h6>
+
+          </ion-col>
+
+        </ion-row>
+
+        <ion-row>
+
+          <ion-col class="ion-no-padding" size="6">
+
+            <p>Nº do pedido</p>
+
+          </ion-col>
+
+          <ion-col class="ion-no-padding" size="6">
+
+            <p class="ion-text-end"><span *ngIf="order.number < 1000">000</span>{{ order.number }}</p>
+
+          </ion-col>
+
+        </ion-row>
+
+        <ion-row>
+
+          <ion-col class="ion-no-padding" size="6">
+
+            <p>Data do pedido</p>
+
+          </ion-col>
+
+          <ion-col class="ion-no-padding" size="6">
+
+            <p class="ion-text-end date">{{ (order.created_at | date).replace('.', '') }} às {{ order.created_at |
+              date:'H:mm' }}</p>
+
+          </ion-col>
+
+        </ion-row>
+
+        <ion-row>
+
+          <ion-col class="ion-no-padding" size="6">
+
+            <p>Previsão de entrega</p>
+
+          </ion-col>
+
+          <ion-col class="ion-no-padding" size="6">
+
+            <p class="ion-text-end date">{{ (order.delivery_forecast | date).replace('.', '') }} às {{
+              order.delivery_forecast | date:'H:mm' }}</p>
+
+          </ion-col>
+
+        </ion-row>
+
+        <ion-row>
+
+          <ion-col class="ion-no-padding" size="6">
+
+            <p>Pagamento</p>
+
+          </ion-col>
+
+          <ion-col class="ion-no-padding" size="6">
+
+            <p class="ion-text-end">
+
+              <span *ngIf="order.payment_type == 1">Pagamento online</span>
+
+              <span *ngIf="order.payment_type == 2">Pagamento na entrega</span>
+
+              <span class="ellipse"></span> {{ order.payment_method.name }}
+
+            </p>
+
+          </ion-col>
+
+        </ion-row>
+
+      </ion-grid>
+
+    </ion-item>
+
+  </ion-list>
+
+</ion-content>

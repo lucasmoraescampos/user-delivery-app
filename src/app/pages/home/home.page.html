@@ -1,10 +1,10 @@
-<ion-header mode="ios">
+<ion-header class="animate__animated animate__fadeIn" mode="ios">
 
   <ion-toolbar>
 
-    <ion-title class="ion-no-padding">
+    <ion-title>
 
-      <ion-button class="location" fill="clear" (click)="location()">
+      <ion-button fill="clear" (click)="location()">
 
         <div>
 
@@ -26,21 +26,15 @@
 
     <ion-buttons slot="end">
 
-      <ion-menu-button></ion-menu-button>
+      <ion-button class="user" color="primary" (click)="user ? profile($event) : signin()">
 
-      <ion-button class="btn-signin" (click)="signin()" *ngIf="!user">
-
-        <ion-icon src="../../../assets/icon/log-in.svg"></ion-icon>
-
-        Entrar
+        <ion-icon slot="icon-only" name="person-outline"></ion-icon>
 
       </ion-button>
 
-      <ion-button class="btn-bag">
+      <ion-button class="bag" color="primary">
 
-        <ion-icon src="../../../assets/icon/bag.svg"></ion-icon>
-
-        Sacola
+        <ion-icon slot="icon-only" name="bag-handle-outline"></ion-icon>
 
       </ion-button>
 
@@ -60,103 +54,107 @@
 
 </ion-header>
 
-<ion-content mode="ios" color="light" scrollY="false">
+<ion-content class="animate__animated animate__fadeIn" mode="ios" color="light" scrollY="false">
 
-  <ion-grid class="ion-no-padding" *ngIf="company">
+  <div class="ion-scroll">
 
-    <ion-row>
+    <ion-grid class="ion-no-padding" *ngIf="company">
 
-      <ion-col class="ion-no-padding menu" size-lg="12" size-xl="8">
+      <ion-row>
 
-        <img class="banner" [src]="company?.banner ? company.banner : bannerDefault">
+        <ion-col class="ion-no-padding menu" size-lg="12" size-xl="8">
 
-        <ion-list class="company-info">
+          <img class="banner" [src]="company?.banner ? company.banner : bannerDefault">
 
-          <ion-item lines="none" color="light">
-            
-            <ion-thumbnail slot="start">
-      
-              <img [src]="company.image">
-      
-            </ion-thumbnail>
-      
-            <ion-label class="ion-text-wrap">
-      
-              <h6>
-      
-                {{ company.name }}
-      
-                <span *ngIf="company.evaluation">
-      
-                  <ion-icon name="star"></ion-icon> {{ company.evaluation }}
-      
-                </span>
-      
-              </h6>
-      
-              <p>Entrega: {{ company.waiting_time }} min <span class="ellipse"></span> {{ company.delivery_price | money }}</p>
-            
-              <p>Pedido mínimo: {{ company.min_order_value | money }}</p>
-      
-            </ion-label>
-      
-          </ion-item>
-      
-        </ion-list>
+          <ion-list class="company-info">
 
-        <ion-grid>
+            <ion-item lines="none" color="light">
+              
+              <ion-thumbnail slot="start">
+        
+                <img [src]="company.image">
+        
+              </ion-thumbnail>
+        
+              <ion-label class="ion-text-wrap">
+        
+                <h6>
+        
+                  {{ company.name }}
+        
+                  <span *ngIf="company.evaluation">
+        
+                    <ion-icon name="star"></ion-icon> {{ company.evaluation }}
+        
+                  </span>
+        
+                </h6>
+        
+                <p>Entrega: {{ company.waiting_time }} min <span class="ellipse"></span> {{ company.delivery_price | money }}</p>
+              
+                <p>Pedido mínimo: {{ company.min_order_value | money }}</p>
+        
+              </ion-label>
+        
+            </ion-item>
+        
+          </ion-list>
 
-          <ion-row *ngFor="let item of menu">
+          <ion-grid>
 
-            <ion-col size="12">
+            <ion-row *ngFor="let item of menu">
 
-              <h4>{{ item.name }}</h4>
+              <ion-col size="12">
 
-            </ion-col>
+                <h4>{{ item.name }}</h4>
 
-            <ion-col size-sm="12" size-md="6" *ngFor="let product of item.products">
+              </ion-col>
 
-              <ion-card button="true" (click)="modalProduct(product)">
+              <ion-col size-sm="12" size-md="6" *ngFor="let product of item.products">
 
-                <ion-item lines="none">
+                <ion-card button="true" (click)="modalProduct(product)">
 
-                  <ion-thumbnail slot="start">
+                  <ion-item lines="none">
 
-                    <img [src]="product.image">
+                    <ion-thumbnail slot="start">
 
-                  </ion-thumbnail>
+                      <img [src]="product.image">
 
-                  <ion-label class="ion-text-wrap">
+                    </ion-thumbnail>
 
-                    <h5>{{ product.name }}</h5>
+                    <ion-label class="ion-text-wrap">
 
-                    <p>{{ product.description }}</p>
+                      <h5>{{ product.name }}</h5>
 
-                    <h6>{{ product.price - product.rebate | money }} <span *ngIf="product.rebate">{{ product.rebate |
-                        money }}</span></h6>
+                      <p>{{ product.description }}</p>
 
-                  </ion-label>
+                      <h6>{{ product.price - product.rebate | money }} <span *ngIf="product.rebate">{{ product.rebate |
+                          money }}</span></h6>
 
-                </ion-item>
+                    </ion-label>
 
-              </ion-card>
+                  </ion-item>
 
-            </ion-col>
+                </ion-card>
 
-          </ion-row>
+              </ion-col>
 
-        </ion-grid>
+            </ion-row>
 
-      </ion-col>
+          </ion-grid>
 
-      <ion-col class="ion-no-padding order" size="4">
+        </ion-col>
 
-        <app-current-order [products]="products"></app-current-order>
+        <ion-col class="ion-no-padding order" size="4">
 
-      </ion-col>
+          <app-current-order [products]="products"></app-current-order>
 
-    </ion-row>
+        </ion-col>
 
-  </ion-grid>
+      </ion-row>
+
+    </ion-grid>
+
+  </div>
 
 </ion-content>

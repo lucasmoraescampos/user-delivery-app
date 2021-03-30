@@ -1,0 +1,25 @@
+<ion-header class="animate__animated animate__fadeIn" mode="ios">
+
+  <ion-toolbar>
+
+    <ion-buttons slot="start">
+
+      <ion-button (click)="back()">
+  
+        <ion-icon slot="icon-only" name="chevron-back"></ion-icon>
+  
+      </ion-button>
+      
+    </ion-buttons>
+
+    <ion-title>Olá, {{ user?.name.split(' ')[0] }}</ion-title>
+
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content class="animate__animated animate__fadeIn">
+
+  <app-list-profile detail="true"></app-list-profile>
+
+</ion-content>

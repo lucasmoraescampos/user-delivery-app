@@ -4,7 +4,6 @@ import { ModalCardComponent } from './modal-card.component';
 import { IonicModule } from '@ionic/angular';
 import { BrMaskerModule } from 'br-mask';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CustomScrollModule } from 'src/app/directives/custom-scroll/custom-scroll.module';
 import { NgxLoadingModule } from 'ngx-loading';
 
 @NgModule({
@@ -15,7 +14,6 @@ import { NgxLoadingModule } from 'ngx-loading';
     FormsModule,
     ReactiveFormsModule,
     BrMaskerModule,
-    CustomScrollModule,
     NgxLoadingModule
   ]
 })

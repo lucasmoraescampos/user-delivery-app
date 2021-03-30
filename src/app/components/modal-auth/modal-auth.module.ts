@@ -4,7 +4,6 @@ import { IonicModule } from '@ionic/angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ModalAuthComponent } from './modal-auth.component';
 import { BrMaskerModule } from 'br-mask';
-import { CustomScrollModule } from 'src/app/directives/custom-scroll/custom-scroll.module';
 import { NgxLoadingModule } from 'ngx-loading';
 import { InputCodeModule } from '../input-code/input-code.module';
 
@@ -16,7 +15,6 @@ import { InputCodeModule } from '../input-code/input-code.module';
     FormsModule,
     BrMaskerModule,
     ReactiveFormsModule,
-    CustomScrollModule,
     NgxLoadingModule,
     InputCodeModule
   ]

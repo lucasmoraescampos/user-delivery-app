@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { LoadingService } from './services/loading.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
@@ -8,28 +8,30 @@ import { Subject } from 'rxjs';
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
 
   public loading: boolean;
 
   private unsubscribe = new Subject();
-  
+
   constructor(
-    private loadingSrv: LoadingService
-  ) {}
+    private loadingSrv: LoadingService,
+  ) { }
 
   ngOnInit() {
-
-    this.loadingSrv.status.pipe(takeUntil(this.unsubscribe))
-      .subscribe(status => {
-        this.loading = status;
-      });
-
+    this.initLoading();
   }
 
   ngOnDestroy() {
     this.unsubscribe.next();
     this.unsubscribe.complete();
+  }
+
+  private initLoading() {
+    this.loadingSrv.status.pipe(takeUntil(this.unsubscribe))
+      .subscribe(status => {
+        this.loading = status;
+      });
   }
 
 }

@@ -107,7 +107,7 @@ export class MercadoPagoService {
 }
 
 interface Card {
-  number: string,
+  number: string;
   holder_name: string;
   expiration_month: string;
   expiration_year: string;

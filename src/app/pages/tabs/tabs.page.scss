@@ -1,0 +1,36 @@
+ion-card.bag {
+    box-shadow: none;
+    border-radius: 0;
+    margin: 0;
+    width: 100%;
+
+    ion-card-content {
+        padding: 14px 16px;
+
+        ion-grid,
+        ion-col {
+            padding: 0;
+
+            ion-icon {
+                font-size: 22px;
+                margin-bottom: -6px;
+                margin-left: -2px;
+            }
+
+            ion-label {
+                font-size: 0.9rem;
+            }
+        }
+    }
+}
+
+ion-tabs ion-tab-bar {
+    --color: var(--ion-color-dark);
+}
+
+@media (min-width: 992px) {
+    ion-card.bag,
+    ion-tabs ion-tab-bar {
+        display: none;
+    }
+}

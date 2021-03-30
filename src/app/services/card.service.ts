@@ -18,6 +18,10 @@ export class CardService {
     return this.http.get<HttpResult>(`${this.url}/user/card`);
   }
 
+  public getById(id: number) {
+    return this.http.get<HttpResult>(`${this.url}/user/card/${id}`);
+  }
+
   public create(data: any) {
     return this.http.post<HttpResult>(`${this.url}/user/card`, data);
   }

@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { ModalChooseLocationComponent } from './modal-choose-location.component';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CustomScrollModule } from 'src/app/directives/custom-scroll/custom-scroll.module';
 import { NgxLoadingModule } from 'ngx-loading';
 
 @NgModule({
@@ -13,7 +12,6 @@ import { NgxLoadingModule } from 'ngx-loading';
     IonicModule,
     FormsModule,
     ReactiveFormsModule,
-    CustomScrollModule,
     NgxLoadingModule
   ]
 })

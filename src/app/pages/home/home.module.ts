@@ -4,12 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { HomePageRoutingModule } from './home-routing.module';
 import { HomePage } from './home.page';
-import { CustomScrollModule } from 'src/app/directives/custom-scroll/custom-scroll.module';
 import { ModalChooseLocationModule } from 'src/app/components/modal-choose-location/modal-choose-location.module';
 import { MoneyModule } from 'src/app/pipes/money.module';
 import { ModalProductModule } from 'src/app/components/modal-product/modal-product.module';
 import { CurrentOrderModule } from 'src/app/components/current-order/current-order.module';
 import { ModalAuthModule } from 'src/app/components/modal-auth/modal-auth.module';
+import { ListProfileModule } from 'src/app/components/list-profile/list-profile.module';
 
 @NgModule({
   imports: [
@@ -17,12 +17,12 @@ import { ModalAuthModule } from 'src/app/components/modal-auth/modal-auth.module
     FormsModule,
     IonicModule,
     HomePageRoutingModule,
-    CustomScrollModule,
     ModalChooseLocationModule,
     MoneyModule,
     ModalProductModule,
     CurrentOrderModule,
-    ModalAuthModule
+    ModalAuthModule,
+    ListProfileModule
   ],
   declarations: [HomePage]
 })

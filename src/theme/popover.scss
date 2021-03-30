@@ -1,0 +1,17 @@
+ion-popover {
+    ion-backdrop {
+        cursor: auto !important;
+    }
+
+    &.popover-profile .popover-wrapper {
+        --box-shadow: 0 4px 8px rgb(0 0 0 / 10%);
+        --width: 320px;
+        --max-height: 100%;
+
+        .popover-content {
+            left: auto !important;
+            right: 11.5px;
+            border-radius: 4px;
+        }
+    }
+}

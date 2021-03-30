@@ -1,8 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ModalController } from '@ionic/angular';
+import { ModalController, PopoverController } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { ListProfileComponent } from 'src/app/components/list-profile/list-profile.component';
 import { ModalAuthComponent } from 'src/app/components/modal-auth/modal-auth.component';
 import { ModalChooseLocationComponent } from 'src/app/components/modal-choose-location/modal-choose-location.component';
 import { ModalProductComponent } from 'src/app/components/modal-product/modal-product.component';
@@ -37,6 +38,7 @@ export class HomePage implements OnInit, OnDestroy {
 
   constructor(
     private modalCtrl: ModalController,
+    private popoverCtrl: PopoverController,
     private alertSrv: AlertService,
     private loadingSrv: LoadingService,
     private companySrv: CompanyService,
@@ -83,6 +85,18 @@ export class HomePage implements OnInit, OnDestroy {
       component: ModalAuthComponent,
       backdropDismiss: false,
       cssClass: 'modal-sm'
+    });
+  
+    return await modal.present();
+    
+  }
+
+  public async profile(event: any) {
+
+    const modal = await this.popoverCtrl.create({
+      component: ListProfileComponent,
+      cssClass: 'popover-profile',
+      event: event
     });
   
     return await modal.present();

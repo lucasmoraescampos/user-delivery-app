@@ -1,12 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { ArrayHelper } from '../helpers/array.helper';
 import { ConfigHelper } from '../helpers/config.helper';
 import { CompanyOrder } from '../models/company-order.model';
 import { CurrentLocation } from '../models/current-location.model';
 import { CurrentOrder } from '../models/current-order.model';
+import { HttpResult } from '../models/http-result.model';
 import { ProductOrder } from '../models/product-order.model';
 
 @Injectable({
@@ -28,6 +30,46 @@ export class OrderService {
 
   public getCurrentOrder() {
     return this.currentOrderSubject.value;
+  }
+
+  public getSubtotal() {
+
+    let subtotal = 0;
+
+    this.currentOrderSubject.value.products.forEach((product: any) => {
+
+      subtotal += product.price;
+
+      product.complements.forEach((complement: any) => {
+
+        complement.subcomplements.forEach((subcomplement: any) => {
+
+          subtotal += (subcomplement.price * subcomplement.qty);
+
+        });
+
+      });
+
+      subtotal *= product.qty;
+
+    });
+
+    return subtotal;
+
+  }
+
+  public getAll() {
+    return this.http.get<HttpResult>(`${this.url}/user/order`);
+  }
+
+  public create(data: any) {
+    return this.http.post<HttpResult>(`${this.url}/user/order`, data)
+      .pipe(map(res => {
+        if (res.success) {
+          this.clear();
+        }
+        return res;
+      }));
   }
 
   public addProductCurrentOrder(product: ProductOrder) {
@@ -142,14 +184,14 @@ export class OrderService {
   public clear() {
 
     const order = this.currentOrderSubject.value;
-    
+
     order.company = null;
     order.products = [];
     order.type = 1;
     order.payment_type = null;
 
     this.currentOrderSubject.next(order);
-    
+
     localStorage.setItem(ConfigHelper.Storage.CurrentOrder, JSON.stringify(order));
 
   }
@@ -179,7 +221,7 @@ export class OrderService {
       this.currentOrder = this.currentOrderSubject.asObservable();
 
     }
-    
+
   }
 
 }

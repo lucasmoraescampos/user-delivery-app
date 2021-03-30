@@ -1,0 +1,69 @@
+<ion-header class="animate__animated animate__fadeIn" mode="ios">
+
+  <ion-toolbar>
+
+    <ion-buttons slot="start">
+
+      <ion-button (click)="back()">
+
+        <ion-icon slot="icon-only" name="chevron-back"></ion-icon>
+
+      </ion-button>
+
+    </ion-buttons>
+
+    <ion-title>Pedidos</ion-title>
+
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content class="animate__animated animate__fadeIn" mode="ios" scrollY="false">
+
+  <div class="ion-scroll">
+
+    <ion-grid>
+
+      <ion-row>
+
+        <ion-col size-sm="12" size-md="6" *ngFor="let order of orders">
+
+          <ion-card button="true" (click)="modalOrder(order)">
+
+            <ion-item lines="none">
+
+              <ion-badge class="date" color="light">
+
+                <h6>{{ order.created_at | date:'d' }}</h6>
+
+                <p>{{ (order.created_at | date:'MMM').replace('.', '') }}</p>
+
+              </ion-badge>
+
+              <ion-label>
+
+                <h6>{{ order.company.name }}</h6>
+
+                <p>
+
+                  <span class="product" *ngFor="let product of order.products">{{ product.qty }}x {{ product.name }}</span>
+
+                </p>
+
+                <ion-badge class="status" color="medium" *ngIf="order.status == 0">Aguardando</ion-badge>
+
+              </ion-label>
+
+            </ion-item>
+
+          </ion-card>
+
+        </ion-col>
+
+      </ion-row>
+
+    </ion-grid>
+
+  </div>
+
+</ion-content>

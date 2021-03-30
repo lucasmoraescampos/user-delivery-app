@@ -7,11 +7,15 @@ import { map } from 'rxjs/operators';
 import { AngularFireAuth } from "@angular/fire/auth";
 import firebase from 'firebase/app';
 import { environment } from 'src/environments/environment';
+import * as socketIOClient from 'socket.io-client';
+import * as sailsIOClient from 'sails.io.js';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+
+  private io: sailsIOClient.Client;
 
   private url: string = environment.apiUrl;
 
@@ -23,13 +27,23 @@ export class AuthService {
     private angularFireAuth: AngularFireAuth,
     private http: HttpClient
   ) {
+
     this.currentUserSubject = new BehaviorSubject<any>(JSON.parse(localStorage.getItem(ConfigHelper.Storage.CurrentUser)));
+
     this.currentUser = this.currentUserSubject.asObservable();
+
+    this.io = sailsIOClient(socketIOClient);
+
+    this.io.sails.url = environment.socketUrl;
+
   }
 
   public getCurrentUser() {
     return this.currentUserSubject.value;
-  } 
+  }
+
+
+  // firebase methods
 
   public signInWithFacebook() {
     const provider = new firebase.auth.FacebookAuthProvider();
@@ -43,6 +57,9 @@ export class AuthService {
     }
     return this.angularFireAuth.signInWithPopup(provider);
   }
+
+
+  // rest methods
 
   public signUp(data: any) {
     return this.http.post<HttpResult>(`${this.url}/user/sign-up`, data)
@@ -78,6 +95,17 @@ export class AuthService {
         }
         return res;
       }));
+  }
+
+
+  // socket methods
+
+  public on(callback: (data: any) => any) {
+    this.io.socket.on('user', callback);
+  }
+
+  public join(callback?: sailsIOClient.RequestCallback) {
+    this.io.socket.post('/user/join', callback);
   }
 
 }
