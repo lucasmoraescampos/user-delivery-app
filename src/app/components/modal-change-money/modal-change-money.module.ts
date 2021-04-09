@@ -4,7 +4,7 @@ import { ModalChangeMoneyComponent } from './modal-change-money.component';
 import { IonicModule } from '@ionic/angular';
 import { BrMaskerModule } from 'br-mask';
 import { FormsModule } from '@angular/forms';
-import { MoneyModule } from 'src/app/pipes/money.module';
+import { MoneyModule } from 'src/app/pipes/money/money.module';
 
 @NgModule({
   declarations: [ModalChangeMoneyComponent],

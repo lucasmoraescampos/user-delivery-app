@@ -22,12 +22,11 @@ const routes: Routes = [
       },
       {
         path: ':slug',
-        loadChildren: () => import('../home/home.module').then(m => m.HomePageModule)
+        loadChildren: () => import('../company/company.module').then(m => m.CompanyPageModule)
       },
       {
         path: '',
-        redirectTo: '/burguer-king-porangatu',
-        pathMatch: 'full'
+        loadChildren: () => import('../home/home.module').then(m => m.HomePageModule)
       }
     ]
   }

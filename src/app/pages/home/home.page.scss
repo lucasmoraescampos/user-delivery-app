@@ -1,332 +1,86 @@
-ion-header {
-    ion-toolbar {
-        --min-height: 60px;
-        --border-width: 1px;
-    }
-
-    ion-buttons {
-        ion-button {
-            --padding-start: 8px;
-            --padding-end: 8px;
-            margin: 0 8px;
-            display: none;
-
-            ion-icon {
-                font-size: 24px;
-            }
-        }
-    }
-
-    ion-title {
-        ion-button {
-            --color: var(--ion-color-dark);
-
-            p {
-                margin: 0;
-                font-size: 0.75rem;
-                line-height: 1rem;
-                text-transform: uppercase;
-                color: var(--ion-color-medium);
-            }
-
-            ion-label {
-                font-size: 1rem;
-                line-height: 1.5rem;
-                max-width: 170px;
-                overflow: hidden;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-                letter-spacing: -0.03em;
-            }
-
-            ion-icon.location {
-                font-size: 15px;
-                margin-right: 5px;
-                margin-bottom: -2px;
-            }
-
-            ion-icon.chevron {
-                margin-left: 5px;
-                font-size: 12px;
-                margin-bottom: -1px;
-            }
-        }
-    }
-}
-
 ion-content {
-    ion-col {
-        &.menu {
-            img.banner {
-                width: 100%;
-                height: 180px;
-                object-fit: cover;
-            }
+    ion-slides.categories {
+        padding: 8px;
 
-            h4 {
-                font-size: 1.125rem;
-                font-weight: 500;
-            }
+        ion-slide {
+            padding: 8px;
+            display: block;
+            cursor: pointer;
 
-            ion-list.company-info {
-                ion-item {
-                    --padding-start: 16px;
-                    --inner-padding-end: 16px;
+            ion-thumbnail {
+                --size: 100%;
+                transition: transform 0.3s;
 
-                    ion-thumbnail {
-                        --border-radius: 100%;
-                        margin-right: 16px;
-                        width: 65px;
-                        height: 65px;
-                    }
-
-                    ion-label {
-                        margin: 16px 0;
-
-                        h6 {
-                            margin: 0;
-                            font-size: 1.125rem;
-                            line-height: 24px;
-                            font-weight: 500;
-
-                            span {
-                                color: var(--ion-color-warning);
-                                font-size: 20px;
-                                line-height: 20px;
-                            }
-                        }
-
-                        p {
-                            font-size: 14px;
-                            line-height: 18px;
-                        }
-                    }
+                &:hover {
+                    transform: scale(1.07);
                 }
             }
 
-            ion-card {
+            h6 {
                 margin: 0;
+                font-size: 0.9rem;
+            }
+        }
+    }
+
+    ion-slides.companies {
+        padding: 16px;
+
+        ion-slide {
+            ion-card {
+                width: 100%;
+                margin: 0;
+                border-radius: 5px;
+                border: 0.55px solid var(--ion-color-light-tint);
+                box-shadow: 0 4px 8px var(--ion-color-light-shade);
+                
+                ion-badge {
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    border-radius: 0;
+                    border-bottom-left-radius: 5px;
+                    font-weight: 500;
+                    z-index: 999;
+                }
 
                 ion-item {
-                    --min-height: 132px;
-                    --padding-start: 16px;
-                    --inner-padding-end: 16px;
+                    --padding-top: 16px;
+                    --padding-bottom: 16px;
                 }
 
                 ion-thumbnail {
-                    --border-radius: 10px;
-                    width: 100px;
-                    height: 100px;
+                    --border-radius: 100%;
+                    width: 85px;
+                    height: 85px;
                 }
 
-                ion-label {
+                h6 {
+                    font-size: 1.125rem;
+                    line-height: 1.5rem;
+                    font-weight: 500;
                     margin: 0;
+                }
 
-                    h5 {
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                        -webkit-box-orient: vertical;
-                        display: -webkit-box;
-                        -webkit-line-clamp: 2;
-                        font-size: 1rem;
-                        line-height: 1.25rem;
-                        height: 2.5rem;
-                        font-weight: 500;
-                        margin-bottom: 3px;
-                    }
+                p {
+                    font-size: 0.9rem;
+                    line-height: 1.325rem;
+                    color: var(--ion-color-medium);
+                    margin: 0;
+                }
 
-                    p {
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                        -webkit-box-orient: vertical;
-                        display: -webkit-box;
-                        -webkit-line-clamp: 2;
-                        color: var(--ion-color-medium-shade);
-                        font-size: 0.75rem;
-                        line-height: 1rem;
-                        height: 2rem;
-                        margin-bottom: 5px;
-                    }
+                span.stars {
+                    color: var(--ion-color-warning);
+                    font-weight: 600;
 
-                    h6 {
-                        font-size: 1rem;
-                        line-height: 1.25rem;
-
-                        color: var(--ion-color-success);
-
-                        span {
-                            font-size: 0.75rem;
-                            text-decoration: line-through;
-                            color: var(--ion-color-medium-shade);
-                            margin-left: 5px;
-                        }
+                    ion-icon {
+                        margin-bottom: -2px;
                     }
                 }
-            }
-        }
 
-        &.order {
-            position: fixed;
-            top: 60px;
-            right: 0;
-            height: calc(100vh - 60px);
-            display: none;
-        }
-    }
-}
-
-@media (pointer: fine) {
-    ion-header {
-        ion-toolbar.filter-mobile {
-            display: none;
-        }
-    }
-
-    ion-content {
-        ion-col {
-            &.menu {
-                &::-webkit-scrollbar {
-                    width: 0;
+                span.free {
+                    color: var(--ion-color-success);
                 }
-            }
-        }
-    }
-
-    div.ion-scroll {
-        &::-webkit-scrollbar {
-            width: 0;
-        }
-    }
-}
-
-// @media (min-width: 576px) {
-//     ion-content {
-//         ion-col {
-//             &.menu {
-//                 ion-list.company-info {
-//                     ion-item {
-//                         ion-thumbnail {
-//                             width: 70px;
-//                             height: 70px;
-//                         }
-
-//                         ion-label {
-//                             h6 {
-//                                 font-size: 1.225rem;
-//                                 line-height: 30px;
-//                                 font-weight: 600;
-//                             }
-//                         }
-//                     }
-//                 }
-//             }
-//         }
-//     }
-// }
-
-// @media (min-width: 768px) {
-//     ion-content {
-//         ion-col {
-//             &.menu {
-//                 h4 {
-//                     font-size: 1.125rem;
-//                     font-weight: 500;
-//                 }
-
-//                 ion-list.company-info {
-//                     ion-item {
-//                         ion-thumbnail {
-//                             width: 75px;
-//                             height: 75px;
-//                         }
-
-//                         ion-label {
-//                             h6 {
-//                                 font-size: 1.5rem;
-//                                 line-height: 32px;
-//                                 font-weight: 600;
-//                             }
-//                         }
-//                     }
-//                 }
-
-//                 ion-card {
-//                     ion-item {
-//                         --min-height: 148px;
-//                     }
-
-//                     ion-thumbnail {
-//                         width: 116px;
-//                         height: 116px;
-//                     }
-
-//                     ion-label {
-//                         h5 {
-//                             font-size: 1.125rem;
-//                             line-height: 1.5rem;
-//                             height: 3rem;
-//                         }
-
-//                         p {
-//                             font-size: 0.875rem;
-//                             line-height: 1.25rem;
-//                             height: 2.5rem;
-//                         }
-//                     }
-//                 }
-//             }
-//         }
-//     }
-// }
-
-@media (min-width: 992px) {
-    ion-header {
-        ion-button.user,
-        ion-button.bag {
-            display: block !important;
-        }
-    }
-
-    //     ion-content {
-    //         ion-col {
-    //             &.menu {
-    //                 h4 {
-    //                     font-size: 1.5rem;
-    //                     font-weight: 500;
-    //                 }
-
-    //                 ion-list.company-info {
-    //                     ion-item {
-    //                         ion-thumbnail {
-    //                             width: 80px;
-    //                             height: 80px;
-    //                         }
-
-    //                         ion-label {
-    //                             h6 {
-    //                                 font-size: 1.75rem;
-    //                                 line-height: 36px;
-    //                                 font-weight: 600;
-    //                             }
-    //                         }
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //     }
-}
-
-@media (min-width: 1200px) {
-    ion-header {
-        ion-button.bag {
-            display: none !important;
-        }
-    }
-
-    ion-content {
-        ion-col {
-            &.order {
-                display: block !important;
             }
         }
     }

@@ -4,6 +4,7 @@ import { ModalChooseLocationComponent } from './modal-choose-location.component'
 import { IonicModule } from '@ionic/angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxLoadingModule } from 'ngx-loading';
+import { ModalAuthModule } from '../modal-auth/modal-auth.module';
 
 @NgModule({
   declarations: [ModalChooseLocationComponent],
@@ -12,6 +13,7 @@ import { NgxLoadingModule } from 'ngx-loading';
     IonicModule,
     FormsModule,
     ReactiveFormsModule,
+    ModalAuthModule,
     NgxLoadingModule
   ]
 })

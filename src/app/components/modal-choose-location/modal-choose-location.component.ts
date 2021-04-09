@@ -1,4 +1,4 @@
-import { Component, ElementRef, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Plugins } from '@capacitor/core';
 import { IonSlides, ModalController } from '@ionic/angular';
@@ -9,6 +9,7 @@ import { AlertService } from 'src/app/services/alert.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { LocationService } from 'src/app/services/location.service';
 import { OrderService } from 'src/app/services/order.service';
+import { ModalAuthComponent } from '../modal-auth/modal-auth.component';
 
 const { Geolocation } = Plugins;
 
@@ -24,6 +25,8 @@ export class ModalChooseLocationComponent implements OnInit, OnDestroy {
   @ViewChild('map', { static: true }) mapElement: ElementRef;
 
   @ViewChild(IonSlides) slides: IonSlides;
+
+  @Input() allowClosing: boolean = true;
 
   public slideActiveIndex: number = 0;
 
@@ -102,6 +105,22 @@ export class ModalChooseLocationComponent implements OnInit, OnDestroy {
 
   public dismiss() {
     this.modalCtrl.dismiss();
+  }
+
+  public async modalAuth() {
+
+    const modal = await this.modalCtrl.create({
+      component: ModalAuthComponent,
+      backdropDismiss: false
+    });
+
+    modal.onDidDismiss()
+      .then(() => {
+        this.initLocations();
+      });
+
+    return await modal.present();
+
   }
 
   public options(index: number) {
@@ -426,7 +445,7 @@ export class ModalChooseLocationComponent implements OnInit, OnDestroy {
       if (location == undefined) {
 
         this.geocodeLatLng(this.latLng);
-        
+
       }
 
     } catch (error) {

@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { TabsPageRoutingModule } from './tabs-routing.module';
 import { TabsPage } from './tabs.page';
-import { MoneyModule } from 'src/app/pipes/money.module';
+import { MoneyModule } from 'src/app/pipes/money/money.module';
 
 @NgModule({
   imports: [

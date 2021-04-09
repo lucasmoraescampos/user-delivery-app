@@ -14,6 +14,26 @@ export class ApiService {
     private http: HttpClient
   ) { }
 
+  public getCategories() {
+    return this.http.get<HttpResult>(`${this.url}/categories`);
+  }
+  
+  public getCompaniesByAllCategories(latitude: number, longitude: number) {
+    let query = `?latitude=${latitude}&longitude=${longitude}`;
+    return this.http.get<HttpResult>(`${this.url}/companies-by-all-categories${query}`);
+  }
+
+  public getCompaniesByCategory(latitude: number, longitude: number, category_id: number, limit?: number, offset?: number) {
+    let query = `?latitude=${latitude}&longitude=${longitude}&category_id=${category_id}`;
+    if (limit) {
+      query += `&limit=${limit}`;
+    }
+    if (offset) {
+      query += `&offset=${offset}`;
+    }
+    return this.http.get<HttpResult>(`${this.url}/companies-by-category${query}`);
+  }
+
   public checkDuplicity(data: any) {
     return this.http.post<HttpResult>(`${this.url}/check-duplicity`, data);
   }

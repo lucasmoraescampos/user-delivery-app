@@ -100,12 +100,12 @@ export class ModalAuthComponent implements OnInit, OnDestroy {
 
   public prev() {
     if (this.slideActiveIndex == 3) {
-      this.slides.slideTo(1);
       this.slideActiveIndex = 1;
+      this.slides.slideTo(1);
     }
     else {
-      this.slides.slidePrev();
       this.slideActiveIndex--;
+      this.slides.slidePrev();
     }
   }
 
@@ -113,9 +113,9 @@ export class ModalAuthComponent implements OnInit, OnDestroy {
 
     if (this.slideActiveIndex == 0) {
 
-      this.slides.slideNext();
-
       this.slideActiveIndex++;
+
+      this.slides.slideNext();   
 
     }
 
@@ -137,8 +137,8 @@ export class ModalAuthComponent implements OnInit, OnDestroy {
 
       this.checkDuplicity(data, () => {
         this.sendCode(data, () => {
-          this.slides.slideNext();
           this.slideActiveIndex++;
+          this.slides.slideNext();
         });
       });
       
@@ -178,8 +178,8 @@ export class ModalAuthComponent implements OnInit, OnDestroy {
 
           this.confirmCode(data, () => {
             clearInterval(this.interval);
-            this.slides.slideNext();
             this.slideActiveIndex++;
+            this.slides.slideNext();
           });
 
         }
@@ -206,8 +206,8 @@ export class ModalAuthComponent implements OnInit, OnDestroy {
             if (this.isNewUser) {
               this.sendCode(data, () => {
                 this.signUpError = '';
-                this.slides.slideNext();
                 this.slideActiveIndex++;
+                this.slides.slideNext();
               });
             }
             else {

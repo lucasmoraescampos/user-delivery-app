@@ -6,6 +6,10 @@
     --backdrop-opacity: var(--ion-backdrop-opacity, 0.4);
 }
 
+.searchbar-input-container.sc-ion-searchbar-ios {
+    height: 48px;
+}
+
 ion-popover.popover-dropdown .popover-wrapper {
     .popover-arrow.sc-ion-popover-ios {
         display: none;

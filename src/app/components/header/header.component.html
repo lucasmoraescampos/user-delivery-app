@@ -1,0 +1,49 @@
+<ion-header mode="ios">
+
+  <ion-toolbar>
+
+    <img slot="start" class="logo" src="http://images.meupedido.localhost/logo.png" (click)="home()">
+
+    <div class="centered">
+
+      <ion-searchbar placeholder="Buscar produtos e empresas"></ion-searchbar>
+
+      <ion-button fill="clear" (click)="location()">
+
+        <div>
+
+          <p>Entregar em</p>
+
+          <ion-icon class="location" slot="start" name="location-sharp" color="primary"></ion-icon>
+
+          <ion-label *ngIf="order.location">{{ order.location.street_name }}, {{ order.location.street_number }}</ion-label>
+
+          <ion-label *ngIf="!order.location">Escolha um endereço</ion-label>
+
+          <ion-icon class="chevron" slot="end" name="chevron-down-outline" color="medium"></ion-icon>
+
+        </div>
+
+      </ion-button>
+
+    </div>
+
+    <ion-buttons slot="end">
+
+      <ion-button class="user" color="primary" (click)="profile($event)">
+
+        <ion-icon slot="icon-only" src="../../../assets/icon/user.svg"></ion-icon>
+
+      </ion-button>
+
+      <ion-button class="bag" color="primary">
+
+        <ion-icon slot="icon-only" src="../../../assets/icon/bag.svg"></ion-icon>
+
+      </ion-button>
+
+    </ion-buttons>
+
+  </ion-toolbar>
+
+</ion-header>

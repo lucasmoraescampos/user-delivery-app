@@ -1,159 +1,92 @@
-<ion-header class="animate__animated animate__fadeIn" mode="ios">
+<app-header></app-header>
 
-  <ion-toolbar>
-
-    <ion-title>
-
-      <ion-button fill="clear" (click)="location()">
-
-        <div>
-
-          <p>Entregar em</p>
-
-          <ion-icon class="location" slot="start" name="location-sharp" color="primary"></ion-icon>
-
-          <ion-label *ngIf="order.location">{{ order.location.street_name }}, {{ order.location.street_number }}</ion-label>
-
-          <ion-label *ngIf="!order.location">Escolha um endereço</ion-label>
-
-          <ion-icon class="chevron" slot="end" name="chevron-down-outline" color="medium"></ion-icon>
-
-        </div>
-
-      </ion-button>
-
-    </ion-title>
-
-    <ion-buttons slot="end">
-
-      <ion-button class="user" color="primary" (click)="user ? profile($event) : signin()">
-
-        <ion-icon slot="icon-only" name="person-outline"></ion-icon>
-
-      </ion-button>
-
-      <ion-button class="bag" color="primary">
-
-        <ion-icon slot="icon-only" name="bag-handle-outline"></ion-icon>
-
-      </ion-button>
-
-    </ion-buttons>
-
-  </ion-toolbar>
-
-  <ion-toolbar mode="md" class="filter-mobile">
-
-    <ion-segment scrollable (ionChange)="segmentChanged($event)">
-
-      <ion-segment-button [value]="item.id" *ngFor="let item of menu">{{ item.name }}</ion-segment-button>
-
-    </ion-segment>
-
-  </ion-toolbar>
-
-</ion-header>
-
-<ion-content class="animate__animated animate__fadeIn" mode="ios" color="light" scrollY="false">
+<ion-content class="animate__animated animate__fadeIn" mode="ios">
 
   <div class="ion-scroll">
 
-    <ion-grid class="ion-no-padding" *ngIf="company">
+    <ion-slides class="animate__animated animate__bounceInRight categories" [options]="categorySlideOptions" *ngIf="categories?.length > 0">
 
-      <ion-row>
+      <ion-slide *ngFor="let category of categories">
 
-        <ion-col class="ion-no-padding menu" size-lg="12" size-xl="8">
+        <ion-thumbnail>
 
-          <img class="banner" [src]="company?.banner ? company.banner : bannerDefault">
+          <img [src]="category.image">
 
-          <ion-list class="company-info">
+        </ion-thumbnail>
 
-            <ion-item lines="none" color="light">
-              
+        <h6>{{ category.name }}</h6>
+
+      </ion-slide>
+
+    </ion-slides>
+
+    <ion-list *ngFor="let category of categories">
+
+      <ion-list-header class="animate__animated animate__bounceInRight" *ngIf="category.companies.length > 0">{{ category.name }}</ion-list-header>
+
+      <ion-slides class="animate__animated animate__bounceInRight companies" [options]="companiesSlideOptions" *ngIf="category.companies.length > 0">
+
+        <ion-slide *ngFor="let company of category.companies">
+
+          <ion-card button="true" (click)="openCompany(company.slug)">
+
+            <ion-badge color="dark" *ngIf="!company.open">Fechado</ion-badge>
+
+            <ion-item lines="none">
+
               <ion-thumbnail slot="start">
-        
+
                 <img [src]="company.image">
-        
+
               </ion-thumbnail>
-        
-              <ion-label class="ion-text-wrap">
-        
-                <h6>
-        
-                  {{ company.name }}
-        
-                  <span *ngIf="company.evaluation">
-        
-                    <ion-icon name="star"></ion-icon> {{ company.evaluation }}
-        
+
+              <ion-label>
+
+                <h6>{{ company.name }}</h6>
+
+                <p>
+
+                  <span class="stars">
+
+                    <ion-icon name="star"></ion-icon>
+                    
+                    <span *ngIf="company.evaluation">&nbsp;{{ company.evaluation }}</span>
+
+                    <span *ngIf="!company.evaluation">&nbsp;Novo</span>
+
                   </span>
-        
-                </h6>
-        
-                <p>Entrega: {{ company.waiting_time }} min <span class="ellipse"></span> {{ company.delivery_price | money }}</p>
-              
-                <p>Pedido mínimo: {{ company.min_order_value | money }}</p>
-        
+
+                  <span class="ellipse"></span>
+
+                  {{ company.distance | number:'1.0-2' }} km
+
+                  <span class="ellipse"></span>
+
+                  {{ company.waiting_time }} min
+
+                </p>
+
+                <p>
+
+                  Entrega
+                  
+                  <span *ngIf="company.delivery_price">&nbsp;R$ {{ company.delivery_price | number:'1.2-2' }}</span>
+
+                  <span class="free" *ngIf="!company.delivery_price">&nbsp;Grátis</span>
+
+                </p>
+
               </ion-label>
-        
+
             </ion-item>
-        
-          </ion-list>
 
-          <ion-grid>
+          </ion-card>
 
-            <ion-row *ngFor="let item of menu">
+        </ion-slide>
 
-              <ion-col size="12">
+      </ion-slides>
 
-                <h4>{{ item.name }}</h4>
-
-              </ion-col>
-
-              <ion-col size-sm="12" size-md="6" *ngFor="let product of item.products">
-
-                <ion-card button="true" (click)="modalProduct(product)">
-
-                  <ion-item lines="none">
-
-                    <ion-thumbnail slot="start">
-
-                      <img [src]="product.image">
-
-                    </ion-thumbnail>
-
-                    <ion-label class="ion-text-wrap">
-
-                      <h5>{{ product.name }}</h5>
-
-                      <p>{{ product.description }}</p>
-
-                      <h6>{{ product.price - product.rebate | money }} <span *ngIf="product.rebate">{{ product.rebate |
-                          money }}</span></h6>
-
-                    </ion-label>
-
-                  </ion-item>
-
-                </ion-card>
-
-              </ion-col>
-
-            </ion-row>
-
-          </ion-grid>
-
-        </ion-col>
-
-        <ion-col class="ion-no-padding order" size="4">
-
-          <app-current-order [products]="products"></app-current-order>
-
-        </ion-col>
-
-      </ion-row>
-
-    </ion-grid>
+    </ion-list>
 
   </div>
 

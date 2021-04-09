@@ -8,7 +8,7 @@ export interface CurrentLocation {
     uf: string;
     postal_code: string;
     country: string;
-    latitude: string;
-    longitude: string;
+    latitude: number;
+    longitude: number;
     type?: 1 | 2;
 }
