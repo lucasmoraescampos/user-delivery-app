@@ -11,6 +11,7 @@ import { ModalChooseLocationModule } from 'src/app/components/modal-choose-locat
 import { ModalProductModule } from 'src/app/components/modal-product/modal-product.module';
 import { MoneyModule } from 'src/app/pipes/money/money.module';
 import { HeaderModule } from 'src/app/components/header/header.module';
+import { CardProductModule } from 'src/app/components/card-product/card-product.module';
 
 @NgModule({
   imports: [
@@ -24,7 +25,8 @@ import { HeaderModule } from 'src/app/components/header/header.module';
     CurrentOrderModule,
     ModalAuthModule,
     ListProfileModule,
-    HeaderModule
+    HeaderModule,
+    CardProductModule
   ],
   declarations: [CompanyPage]
 })

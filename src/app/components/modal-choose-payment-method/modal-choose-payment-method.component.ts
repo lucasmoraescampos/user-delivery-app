@@ -68,7 +68,7 @@ export class ModalChoosePaymentMethodComponent implements OnInit, OnDestroy {
     this.slides.slideTo(ev.detail.value);
   }
 
-  public changeCard(event: CustomEvent) {
+  public changeCard(event: any) {
 
     this.selectedCard = event.detail.value;
 
@@ -78,7 +78,7 @@ export class ModalChoosePaymentMethodComponent implements OnInit, OnDestroy {
 
   }
 
-  public async changePaymentMethod(event: CustomEvent) {
+  public async changePaymentMethod(event: any) {
 
     this.selectedPaymentMethod = event.detail.value;
 

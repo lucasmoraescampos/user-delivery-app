@@ -9,8 +9,8 @@ import { ModalChooseLocationComponent } from 'src/app/components/modal-choose-lo
 import { ModalProductComponent } from 'src/app/components/modal-product/modal-product.component';
 import { CurrentOrder } from 'src/app/models/current-order.model';
 import { AlertService } from 'src/app/services/alert.service';
+import { ApiService } from 'src/app/services/api.service';
 import { AuthService } from 'src/app/services/auth.service';
-import { CompanyService } from 'src/app/services/company.service';
 import { LoadingService } from 'src/app/services/loading.service';
 import { OrderService } from 'src/app/services/order.service';
 import { environment } from 'src/environments/environment';
@@ -41,7 +41,7 @@ export class CompanyPage implements OnInit, OnDestroy {
     private popoverCtrl: PopoverController,
     private alertSrv: AlertService,
     private loadingSrv: LoadingService,
-    private companySrv: CompanyService,
+    private apiSrv: ApiService,
     private route: ActivatedRoute,
     private orderSrv: OrderService,
     private authSrv: AuthService
@@ -125,7 +125,7 @@ export class CompanyPage implements OnInit, OnDestroy {
 
     const slug = this.route.snapshot.paramMap.get('slug');
 
-    this.companySrv.getBySlug(slug)
+    this.apiSrv.getCompanyBySlug(slug)
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(res => {
         

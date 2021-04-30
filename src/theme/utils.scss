@@ -1,13 +1,5 @@
-.sc-ion-modal-md-h {
-    --backdrop-opacity: var(--ion-backdrop-opacity, 0.4);
-}
-
-.sc-ion-modal-ios-h {
-    --backdrop-opacity: var(--ion-backdrop-opacity, 0.4);
-}
-
 .searchbar-input-container.sc-ion-searchbar-ios {
-    height: 48px;
+    height: 44px;
 }
 
 ion-popover.popover-dropdown .popover-wrapper {
@@ -54,16 +46,7 @@ ion-grid {
     }
 }
 
-ion-modal.modal-lg .modal-wrapper {
-    min-width: calc(100% - 200px);
-    min-height: calc(100% - 200px);
-}
 
-ion-modal.modal-xs .modal-wrapper {
-    width: 350px;
-    height: 250px;
-    --border-radius: 10px;
-}
 
 ngx-loading {
     z-index: 9999999999;
@@ -96,11 +79,4 @@ ion-item {
 
 ion-toolbar {
     --border-color: var(--ion-color-light);
-}
-
-@media (min-width: 768px) {
-    ion-modal.modal-sm .modal-wrapper {
-        width: 500px;
-        height: 400px;
-    }
 }

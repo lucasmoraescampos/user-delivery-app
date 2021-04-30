@@ -38,6 +38,10 @@ export class AuthService {
 
   }
 
+  public isLoggedIn() {
+    return this.currentUserSubject.value != null;
+  }
+
   public getCurrentUser() {
     return this.currentUserSubject.value;
   }
@@ -97,6 +101,18 @@ export class AuthService {
       }));
   }
 
+  public logout() {
+    const token = localStorage.getItem(ConfigHelper.Storage.AccessToken);
+    return this.http.post<HttpResult>(`${this.url}/user/logout`, { token })
+      .pipe(map(res => {
+        if (res.success) {
+          localStorage.setItem(ConfigHelper.Storage.AccessToken, null);
+          localStorage.setItem(ConfigHelper.Storage.CurrentUser, null);
+          this.currentUserSubject.next(null);
+        }
+        return res;
+      }));
+  }
 
   // socket methods
 

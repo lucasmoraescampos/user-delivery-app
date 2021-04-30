@@ -1,6 +1,6 @@
 <app-header></app-header>
 
-<ion-content class="animate__animated animate__fadeIn" mode="ios" color="light" scrollY="false">
+<ion-content mode="ios" scrollY="false">
 
   <div class="ion-scroll">
 
@@ -8,80 +8,72 @@
 
       <ion-row>
 
-        <ion-col class="ion-no-padding menu" size-lg="12" size-xl="8">
+        <ion-col class="menu ion-no-padding" size-lg="12" size-xl="8">
 
-          <img class="banner" [src]="company?.banner ? company.banner : bannerDefault">
+          <img class="banner animate__animated animate__fadeIn" [src]="company?.banner ? company.banner : bannerDefault">
 
-          <ion-list class="company-info">
+          <ion-list class="company-info animate__animated animate__fadeIn">
 
-            <ion-item lines="none" color="light">
-              
+            <ion-item lines="none">
+
               <ion-thumbnail slot="start">
-        
+
                 <img [src]="company.image">
-        
+
               </ion-thumbnail>
-        
+
               <ion-label class="ion-text-wrap">
-        
+
                 <h6>
-        
-                  {{ company.name }}
-        
-                  <span *ngIf="company.evaluation">
-        
-                    <ion-icon name="star"></ion-icon> {{ company.evaluation }}
-        
-                  </span>
-        
+
+                  {{ company.name }}&nbsp;
+
+                  <ion-icon name="star"></ion-icon>
+
+                  <span *ngIf="company.evaluation">&nbsp;{{ company.evaluation }}</span>
+
+                  <span *ngIf="!company.evaluation">&nbsp;Novo</span>
+
                 </h6>
-        
-                <p>Entrega: {{ company.waiting_time }} min <span class="ellipse"></span> {{ company.delivery_price | money }}</p>
-              
+
+                <p>
+
+                  Entrega: {{ company.waiting_time }} min
+
+                  <span class="ellipse"></span>
+
+                  {{ company.delivery_price | money }}
+
+                </p>
+
                 <p>Pedido mínimo: {{ company.min_order_value | money }}</p>
-        
+
               </ion-label>
-        
+
             </ion-item>
-        
+
           </ion-list>
 
           <ion-grid>
 
             <ion-row *ngFor="let item of menu">
 
-              <ion-col size="12">
+              <ion-col size="12" *ngIf="item.products.length > 0">
 
-                <h4>{{ item.name }}</h4>
+                <h5>{{ item.name }}</h5>
 
               </ion-col>
 
-              <ion-col size-sm="12" size-md="6" *ngFor="let product of item.products">
+              <ion-col class="animation-order" [style]="{ '--animation-order': i % 10 }" size-sm="12" size-md="6" *ngFor="let product of item.products; let i=index;">
 
-                <ion-card button="true" (click)="modalProduct(product)">
-
-                  <ion-item lines="none">
-
-                    <ion-thumbnail slot="start">
-
-                      <img [src]="product.image">
-
-                    </ion-thumbnail>
-
-                    <ion-label class="ion-text-wrap">
-
-                      <h5>{{ product.name }}</h5>
-
-                      <p>{{ product.description }}</p>
-
-                      <h6>{{ product.price - product.rebate | money }} <span *ngIf="product.rebate">{{ product.rebate |
-                          money }}</span></h6>
-
-                    </ion-label>
-
-                  </ion-item>
-
-                </ion-card>
+                <app-card-product
+                  [image]="product.image"
+                  [name]="product.name"
+                  [description]="product.description"
+                  [price]="product.price"
+                  [rebate]="product.rebate"
+                  (click)="modalProduct(product)">
+                </app-card-product>
 
               </ion-col>
 
@@ -91,9 +83,9 @@
 
         </ion-col>
 
-        <ion-col class="ion-no-padding order" size="4">
+        <ion-col class="animate__animated animate__bounceInRight ion-no-padding order" size="4">
 
-          <app-current-order [products]="products"></app-current-order>
+          <app-current-order></app-current-order>
 
         </ion-col>
 

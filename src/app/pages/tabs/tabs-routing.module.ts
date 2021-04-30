@@ -9,6 +9,10 @@ const routes: Routes = [
     component: TabsPage,
     children: [
       {
+        path: 'home',
+        loadChildren: () => import('../home/home.module').then(m => m.HomePageModule)
+      },
+      {
         path: 'search',
         loadChildren: () => import('../search/search.module').then(m => m.TabSearchPageModule)
       },
@@ -21,12 +25,16 @@ const routes: Routes = [
         loadChildren: () => import('../profile/profile.module').then(m => m.TabProfilePageModule)
       },
       {
+        path: 'category/:slug',
+        loadChildren: () => import('../category/category.module').then( m => m.CategoryPageModule)
+      },
+      {
         path: ':slug',
         loadChildren: () => import('../company/company.module').then(m => m.CompanyPageModule)
       },
       {
-        path: '',
-        loadChildren: () => import('../home/home.module').then(m => m.HomePageModule)
+        path: '**',
+        redirectTo: '/home'
       }
     ]
   }

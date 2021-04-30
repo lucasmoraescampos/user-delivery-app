@@ -1,6 +1,6 @@
-import { Component, ElementRef, Input, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Plugins } from '@capacitor/core';
+import { PermissionType, Plugins } from '@capacitor/core';
 import { IonSlides, ModalController } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -11,7 +11,7 @@ import { LocationService } from 'src/app/services/location.service';
 import { OrderService } from 'src/app/services/order.service';
 import { ModalAuthComponent } from '../modal-auth/modal-auth.component';
 
-const { Geolocation } = Plugins;
+const { Geolocation, Permissions } = Plugins;
 
 declare const google: any;
 
@@ -28,6 +28,8 @@ export class ModalChooseLocationComponent implements OnInit, OnDestroy {
 
   @Input() allowClosing: boolean = true;
 
+  public permissionState: 0 | 1 | 2;
+
   public slideActiveIndex: number = 0;
 
   public currentLocation: any;
@@ -38,8 +40,6 @@ export class ModalChooseLocationComponent implements OnInit, OnDestroy {
 
   public authenticated: boolean;
 
-  public search: string;
-
   public addresses: any[];
 
   public updateLocationId: number;
@@ -48,7 +48,7 @@ export class ModalChooseLocationComponent implements OnInit, OnDestroy {
 
   public formGroup: FormGroup;
 
-  private latLng: any;
+  public latLng: any;
 
   private marker: any;
 
@@ -58,12 +58,9 @@ export class ModalChooseLocationComponent implements OnInit, OnDestroy {
 
   private infoWindow = new google.maps.InfoWindow();
 
-  private googleAutocomplete = new google.maps.places.AutocompleteService();
-
   private unsubscribe = new Subject();
 
   constructor(
-    private ngZone: NgZone,
     private modalCtrl: ModalController,
     private formBuilder: FormBuilder,
     private orderSrv: OrderService,
@@ -87,6 +84,8 @@ export class ModalChooseLocationComponent implements OnInit, OnDestroy {
     });
 
     this.initLocations();
+
+    this.initPermissionState();
 
   }
 
@@ -170,49 +169,21 @@ export class ModalChooseLocationComponent implements OnInit, OnDestroy {
 
   }
 
-  public searchChanged() {
+  public autocompleteChanged(event: any) {
 
-    if (this.search.trim().length < 3) {
+    if (event) {
 
-      this.addresses = [];
+      this.latLng = event.location;
 
-    }
+      this.marker.setPosition(this.latLng);
 
-    else {
+      this.map.panTo(this.latLng);
 
-      const latLng = new google.maps.LatLng(this.latLng);
+      this.serializeAddress(event.address_components);
 
-      this.googleAutocomplete.getPlacePredictions({
-        input: this.search,
-        location: latLng,
-        radius: 10000
-      }, (predictions: any) => {
-
-        this.ngZone.run(() => {
-
-          this.addresses = [];
-
-          predictions.forEach((prediction: any) => {
-
-            this.addresses.push(prediction.description);
-
-          });
-
-        });
-
-      });
+      this.infoWindow.setContent(event.formatted_address);
 
     }
-
-  }
-
-  public selectAddress(address: string) {
-
-    this.search = address;
-
-    this.addresses = [];
-
-    this.geocodeAddress(address);
 
   }
 
@@ -220,14 +191,11 @@ export class ModalChooseLocationComponent implements OnInit, OnDestroy {
 
     const coordinates = await Geolocation.getCurrentPosition({ enableHighAccuracy: true });
 
-    this.latLng = {
-      lat: coordinates.coords.latitude,
-      lng: coordinates.coords.longitude
-    };
+    this.latLng = new google.maps.LatLng(coordinates.coords.latitude, coordinates.coords.longitude);
 
     this.marker.setPosition(this.latLng);
 
-    this.map.setCenter(this.latLng);
+    this.map.panTo(this.latLng);
 
     this.geocodeLatLng(this.latLng);
 
@@ -240,13 +208,60 @@ export class ModalChooseLocationComponent implements OnInit, OnDestroy {
 
   public next() {
 
-    this.slideActiveIndex++;
+    if (this.slideActiveIndex == 0) {
 
-    this.slides.slideNext();
+      if (this.permissionState == 0) {
 
-    if (this.slideActiveIndex == 1 && this.map == undefined) {
+        this.alertSrv.custom({
+          imageUrl: './assets/icon/place.svg',
+          title: 'Permitir localização',
+          message: 'Para descobrir empresas que entregam na sua região',
+          confirmButtonText: 'Permitir',
+          onConfirm: () => {
+            Geolocation.getCurrentPosition({ enableHighAccuracy: true })
+              .then(coordinates => {
+                this.latLng = new google.maps.LatLng(coordinates.coords.latitude, coordinates.coords.longitude);
+                this.initMap();
+                this.slideActiveIndex++;
+                this.slides.slideNext();
+                this.permissionState = 1;
+              })
+              .catch(() => {
+                this.permissionState = 2;
+              });
+          }
+        });
 
-      this.initMap();
+      }
+
+      else if (this.permissionState == 2) {
+
+        this.alertSrv.custom({
+          imageUrl: './assets/icon/ban-location.svg',
+          title: 'Não temos acesso à sua localização',
+          message: 'Você pode mudar o acesso à sua localização nos ajustes do seu dispositivo',
+          confirmButtonText: 'Entendi'
+        });
+
+      }
+
+      else {
+
+        this.slideActiveIndex++;
+
+        this.slides.slideNext();
+
+        this.map.panTo(this.latLng);
+
+      }
+
+    }
+
+    else {
+
+      this.slideActiveIndex++;
+
+      this.slides.slideNext();
 
     }
 
@@ -273,9 +288,9 @@ export class ModalChooseLocationComponent implements OnInit, OnDestroy {
 
       location.postal_code = location.postal_code.replace(/[^0-9]/g, '');
 
-      location.latitude = this.latLng.lat;
+      location.latitude = this.latLng.lat();
 
-      location.longitude = this.latLng.lng;
+      location.longitude = this.latLng.lng();
 
       if (this.updateLocationId) {
 
@@ -304,7 +319,7 @@ export class ModalChooseLocationComponent implements OnInit, OnDestroy {
 
       }
 
-      else {
+      else if (this.authSrv.isLoggedIn()) {
 
         this.locationSrv.create(location)
           .pipe(takeUntil(this.unsubscribe))
@@ -326,138 +341,11 @@ export class ModalChooseLocationComponent implements OnInit, OnDestroy {
 
       }
 
-    }
-
-  }
-
-  private initLocations() {
-
-    const user = this.authSrv.getCurrentUser();
-
-    if (user) {
-
-      this.authenticated = true;
-
-      this.loading = true;
-
-      this.locationSrv.getAll()
-        .pipe(takeUntil(this.unsubscribe))
-        .subscribe(res => {
-          this.loading = false;
-          this.locations = res.data;
-        });
-
-      const order = this.orderSrv.getCurrentOrder();
-
-      if (order) {
-        this.currentLocation = order.location;
-      }
-
-    }
-
-    else {
-
-      this.authenticated = false;
-
-    }
-
-  }
-
-  private async initMap(location?: any) {
-
-    this.loading = true;
-
-    try {
-
-      if (location) {
-
-        this.updateLocationId = location.id;
-
-        this.latLng = {
-          lat: location.latitude,
-          lng: location.longitude
-        };
-
-        this.formGroup.patchValue({
-          id: location.id,
-          street_name: location.street_name,
-          street_number: location.street_number,
-          complement: location.complement,
-          district: location.district,
-          city: location.city,
-          uf: location.uf,
-          postal_code: location.postal_code,
-          country: location.country,
-          latitude: location.latitude,
-          longitude: location.longitude,
-          type: location.type
-        });
-
-        this.loading = false;
-
-      }
-
       else {
 
-        this.updateLocationId = null;
-
-        const coordinates = await Geolocation.getCurrentPosition({ enableHighAccuracy: true });
-
-        this.latLng = {
-          lat: coordinates.coords.latitude,
-          lng: coordinates.coords.longitude
-        };
+        this.selectLocation(location);
 
       }
-
-      const mapOptions = {
-        center: this.latLng,
-        zoom: 18,
-        zoomControl: false,
-        mapTypeId: google.maps.MapTypeId.ROADMAP,
-        mapTypeControl: false,
-        streetViewControl: false,
-        fullscreenControl: false
-      };
-
-      this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
-
-      this.marker = new google.maps.Marker({
-        map: this.map,
-        draggable: true,
-        animation: google.maps.Animation.DROP,
-        position: this.latLng
-      });
-
-      this.marker.addListener('dragend', (data: any) => {
-
-        this.latLng = {
-          lat: data.latLng.lat(),
-          lng: data.latLng.lng()
-        };
-
-        this.map.setCenter(this.latLng);
-
-        this.geocodeLatLng(this.latLng);
-
-      });
-
-      if (location == undefined) {
-
-        this.geocodeLatLng(this.latLng);
-
-      }
-
-    } catch (error) {
-
-      this.alertSrv.show({
-        icon: 'error',
-        message: 'Não foi possível obter localização, verifique se o seu GPS está ativado ou se o sistema possui permissão para acessar sua localização.',
-        showCancelButton: false,
-        onConfirm: () => {
-          this.modalCtrl.dismiss();
-        }
-      });
 
     }
 
@@ -465,42 +353,7 @@ export class ModalChooseLocationComponent implements OnInit, OnDestroy {
 
   private geocodeLatLng(latLng: any) {
 
-    this.loading = true;
-
     this.geocoder.geocode({ location: latLng }, (results: any) => {
-
-      this.loading = false;
-
-      this.serializeAddress(results[0].address_components);
-
-      setTimeout(() => {
-
-        this.infoWindow.setContent(results[0].formatted_address);
-
-        this.infoWindow.open(this.map, this.marker);
-
-      }, 500);
-
-    });
-
-  }
-
-  private geocodeAddress(address: any) {
-
-    this.loading = true;
-
-    this.geocoder.geocode({ address: address }, (results: any) => {
-
-      this.loading = false;
-
-      this.latLng = {
-        lat: results[0].geometry.location.lat(),
-        lng: results[0].geometry.location.lng()
-      }
-
-      this.marker.setPosition(this.latLng);
-
-      this.map.setCenter(this.latLng);
 
       this.serializeAddress(results[0].address_components);
 
@@ -517,53 +370,29 @@ export class ModalChooseLocationComponent implements OnInit, OnDestroy {
   }
 
   private serializeAddress(address_components: any[]) {
-
     address_components.forEach((component: any) => {
-
       if (component.types.indexOf('street_number') != -1) {
-
         this.formGroup.patchValue({ street_number: component.long_name });
-
       }
-
       else if (component.types.indexOf('route') != -1) {
-
         this.formGroup.patchValue({ street_name: component.long_name });
-
       }
-
       else if (component.types.indexOf('sublocality_level_1') != -1) {
-
         this.formGroup.patchValue({ district: component.long_name });
-
       }
-
       else if (component.types.indexOf('administrative_area_level_2') != -1) {
-
         this.formGroup.patchValue({ city: component.long_name });
-
       }
-
       else if (component.types.indexOf('administrative_area_level_1') != -1) {
-
         this.formGroup.patchValue({ uf: component.short_name });
-
       }
-
       else if (component.types.indexOf('country') != -1) {
-
         this.formGroup.patchValue({ country: component.long_name });
-
       }
-
       else if (component.types.indexOf('postal_code') != -1) {
-
         this.formGroup.patchValue({ postal_code: component.short_name });
-
       }
-
     });
-
   }
 
   private updateLocation(index: number) {
@@ -599,6 +428,150 @@ export class ModalChooseLocationComponent implements OnInit, OnDestroy {
 
       }
     });
+
+  }
+
+  private initPermissionState() {
+    Permissions.query({ name: PermissionType.Geolocation })
+      .then(res => {
+        if (res.state == 'prompt') {
+          this.permissionState = 0;
+        }
+        else if (res.state == 'denied') {
+          this.permissionState = 2;
+        }
+        else {
+          this.permissionState = 1;
+          Geolocation.getCurrentPosition({ enableHighAccuracy: true })
+              .then(coordinates => {
+                this.latLng = new google.maps.LatLng(coordinates.coords.latitude, coordinates.coords.longitude);
+                this.initMap();
+            });
+        }
+      });
+  }
+
+  private async initMap(location?: any) {
+
+    try {
+
+      if (location) {
+
+        this.updateLocationId = location.id;
+
+        this.latLng = new google.maps.LatLng(location.latitude, location.longitude);
+
+        this.formGroup.patchValue({
+          id: location.id,
+          street_name: location.street_name,
+          street_number: location.street_number,
+          complement: location.complement,
+          district: location.district,
+          city: location.city,
+          uf: location.uf,
+          postal_code: location.postal_code,
+          country: location.country,
+          latitude: location.latitude,
+          longitude: location.longitude,
+          type: location.type
+        });
+
+      }
+
+      else {
+
+        this.updateLocationId = null;
+
+      }
+
+      const mapOptions = {
+        center: this.latLng,
+        zoom: 17,
+        zoomControl: false,
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        mapTypeControl: false,
+        streetViewControl: false,
+        fullscreenControl: false
+      };
+
+      this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
+
+      this.marker = new google.maps.Marker({
+        map: this.map,
+        draggable: true,
+        animation: google.maps.Animation.DROP,
+        position: this.latLng
+      });
+
+      this.marker.addListener('dragend', (data: any) => {
+
+        this.latLng = data.latLng;
+
+        this.map.panTo(this.latLng);
+
+        this.geocodeLatLng(this.latLng);
+
+      });
+
+      if (location == undefined) {
+
+        this.geocodeLatLng(this.latLng);
+
+      }
+
+    } catch (error) {
+
+      this.alertSrv.show({
+        icon: 'error',
+        message: 'Não foi possível obter localização, verifique se o seu GPS está ativado ou se o sistema possui permissão para acessar sua localização.',
+        showCancelButton: false,
+        onConfirm: () => {
+          this.modalCtrl.dismiss();
+        }
+      });
+
+    }
+
+  }
+
+  private initLocations() {
+
+    this.loading = true;
+
+    this.locations = [];
+
+    const order = this.orderSrv.getCurrentOrder();
+
+    if (order) {
+      this.currentLocation = order.location;
+    }
+
+    if (this.authSrv.isLoggedIn()) {
+
+      this.authenticated = true;
+
+      this.locationSrv.getAll()
+        .pipe(takeUntil(this.unsubscribe))
+        .subscribe(res => {
+          this.loading = false;
+          this.locations = res.data;
+        });
+
+    }
+
+    else {
+
+      this.loading = false;
+      
+      this.authenticated = false;
+
+      if (order.location) {
+
+        this.locations.push(order.location);
+
+      }
+
+    }
 
   }
 

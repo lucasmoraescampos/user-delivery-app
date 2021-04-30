@@ -1,0 +1,25 @@
+ion-searchbar {
+    --background: #ffffff;
+    --box-shadow: 0 2px 6px var(--ion-color-medium-tint);
+    --icon-color: var(--ion-color-primary);
+    text-align: start;
+    padding: 0 5px;
+    margin-top: -8px;
+}
+
+ion-list {
+    position: absolute;
+    z-index: 99999;
+    top: 60px;
+    left: 14px;
+    width: calc(100% - 28px);
+    box-shadow: 0 2px 6px var(--ion-color-medium-tint);
+
+    ion-item {
+        font-size: 10pt;
+
+        &:last-child {
+            --border-width: 0;
+        }
+    }
+}

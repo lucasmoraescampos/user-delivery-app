@@ -1,6 +1,6 @@
 <ion-list>
 
-  <ion-list-header>Olá, Lucas</ion-list-header>
+  <ion-list-header>Olá, {{ user?.name.split(' ')[0] }}</ion-list-header>
 
   <ion-item [lines]="lines" button="true" [detail]="detail" (click)="navigate('/orders')">
 
@@ -26,7 +26,7 @@
 
   </ion-item>
 
-  <ion-item [lines]="lines" button="true" [detail]="detail">
+  <ion-item [lines]="lines" button="true" [detail]="detail" (click)="logout()">
 
     <ion-icon slot="start" name="log-out-outline"></ion-icon>
 

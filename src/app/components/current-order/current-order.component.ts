@@ -6,6 +6,7 @@ import { ArrayHelper } from 'src/app/helpers/array.helper';
 import { UtilsHelper } from 'src/app/helpers/utils.helper';
 import { CurrentOrder } from 'src/app/models/current-order.model';
 import { AlertService } from 'src/app/services/alert.service';
+import { ApiService } from 'src/app/services/api.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { CardService } from 'src/app/services/card.service';
 import { LoadingService } from 'src/app/services/loading.service';
@@ -23,8 +24,6 @@ import { ModalProductComponent } from '../modal-product/modal-product.component'
 })
 export class CurrentOrderComponent implements OnInit, OnDestroy {
 
-  @Input() products: any[];
-
   public user: any;
 
   public order: CurrentOrder;
@@ -40,6 +39,7 @@ export class CurrentOrderComponent implements OnInit, OnDestroy {
     private authSrv: AuthService,
     private modalCtrl: ModalController,
     private alertSrv: AlertService,
+    private apiSrv: ApiService,
     private loadingSrv: LoadingService,
     private mercadoPagoSrv: MercadoPagoService,
     private cardSrv: CardService
@@ -55,23 +55,33 @@ export class CurrentOrderComponent implements OnInit, OnDestroy {
     this.unsubscribe.complete();
   }
 
-  public async edit(index: number) {
+  public edit(index: number) {
 
-    const productOrder = this.order.products[index];
+    this.loadingSrv.show();
 
-    const productIndex = ArrayHelper.getIndexByKey(this.products, 'id', productOrder.id);
+    this.apiSrv.getProductById(this.order.products[index].id)
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe(async res => {
 
-    const modal = await this.modalCtrl.create({
-      component: ModalProductComponent,
-      backdropDismiss: false,
-      cssClass: 'modal-lg',
-      componentProps: {
-        productOrderIndex: index,
-        product: this.products[productIndex]
-      }
-    });
+        this.loadingSrv.hide();
 
-    return await modal.present();
+        if (res.success) {
+
+          const modal = await this.modalCtrl.create({
+            component: ModalProductComponent,
+            backdropDismiss: false,
+            cssClass: 'modal-lg',
+            componentProps: {
+              productOrderIndex: index,
+              product: res.data
+            }
+          });
+      
+          return await modal.present();
+
+        }
+
+      });
 
   }
 

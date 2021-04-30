@@ -2,35 +2,60 @@ ion-content {
     ion-slides {
         height: 100%;
 
-        ion-grid {
-            height: 100%;
-        }
-
         ion-slide {
-            text-align: left;
-            overflow-y: auto;
-
-            &::-webkit-scrollbar {
-                width: 4px;
+            h6 {
+                margin: 0 auto;
+                font-size: 1.125rem;
+                max-width: 200px;
             }
 
-            &::-webkit-scrollbar-track {
-                background: #fff;
+            p {
+                color: var(--ion-color-medium);
+                font-size: 1rem;
+                margin: 0;
             }
 
-            &::-webkit-scrollbar-thumb {
-                background: var(--ion-color-light-shade);
+            ion-icon.icon-map {
+                margin: 16px auto 10px;
+                font-size: 60px;
+            }
+
+            ion-button.close {
+                position: absolute;
+                top: 0;
+                right: 0;
+                z-index: 999999;
+            }
+
+            ion-grid {
+                height: 100%;
+                z-index: 9999;
+
+                .centered {
+                    position: absolute;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    width: calc(100% - 16px);
+                }
+
+                .footer {
+                    position: absolute;
+                    bottom: 8px;
+                    width: calc(100% - 16px);
+                }
+            }
+
+            ion-fab {
+                bottom: 78px;
+            }
+
+            &.permission {
+                p {
+                    margin: 10px;
+                }
             }
 
             &.locations {
-                ion-icon.icon-map {
-                    font-size: 60px;
-                }
-
-                ion-col:last-child {
-                    margin-bottom: 8px;
-                }
-
                 ion-card {
                     margin: 0;
                     border: 0.55px solid var(--ion-color-light-shade);
@@ -67,64 +92,36 @@ ion-content {
                     }
                 }
 
-                ion-row.auth {
-                    position: absolute;
-                    bottom: 16px;
-                    width: calc(100% - 32px);
-
-                    h6 {
-                        margin: 0;
-                    }
-
-                    p {
-                        color: var(--ion-color-medium);
-                        font-size: 14px;
-                        margin: 5px 0 0;
-                    }
-                }
             }
 
             &.location {
+                display: block;
+
                 .map {
-                    width: 100%;
-                    height: 100% !important;
-                }
-
-                ion-searchbar {
-                    --background: #ffffff;
-                    --box-shadow: 0 2px 4px 1px var(--ion-color-medium);
                     position: absolute;
-                    top: 0px;
-                    z-index: 999999999;
                     width: 100%;
-                    padding: 16px 16px 10px;
-                }
-
-                ion-list {
-                    position: absolute;
-                    z-index: 99999;
-                    top: 60px;
-                    left: 16px;
-                    width: calc(100% - 32px);
-                    box-shadow: 0 0 10px var(--ion-color-medium);
-
-                    ion-item {
-                        font-size: 10pt;
-
-                        &:last-child {
-                            --border-width: 0;
-                        }
-                    }
+                    height: calc(100% - 44px);
                 }
 
                 ion-button {
-                    position: absolute;
-                    bottom: 16px;
-                    min-width: 50%;
+                    margin: 0 5px;
                 }
+            }
 
-                ion-fab {
-                    bottom: 80px;
+            &.address {
+                display: block;
+                text-align: start;
+            }
+        }
+    }
+}
+
+@media (min-width: 768px) {
+    ion-content {
+        ion-slides {
+            ion-slide {
+                h6 {
+                    max-width: 100%;
                 }
             }
         }

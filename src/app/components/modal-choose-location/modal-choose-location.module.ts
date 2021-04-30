@@ -5,6 +5,7 @@ import { IonicModule } from '@ionic/angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxLoadingModule } from 'ngx-loading';
 import { ModalAuthModule } from '../modal-auth/modal-auth.module';
+import { GoogleMapsAutocompleteModule } from '../google-maps-autocomplete/google-maps-autocomplete.module';
 
 @NgModule({
   declarations: [ModalChooseLocationComponent],
@@ -14,7 +15,8 @@ import { ModalAuthModule } from '../modal-auth/modal-auth.module';
     FormsModule,
     ReactiveFormsModule,
     ModalAuthModule,
-    NgxLoadingModule
+    NgxLoadingModule,
+    GoogleMapsAutocompleteModule
   ]
 })
 export class ModalChooseLocationModule { }

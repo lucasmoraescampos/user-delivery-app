@@ -1,0 +1,33 @@
+.sc-ion-modal-md-h {
+    --backdrop-opacity: var(--ion-backdrop-opacity, 0.4);
+}
+
+.sc-ion-modal-ios-h {
+    --backdrop-opacity: var(--ion-backdrop-opacity, 0.4);
+}
+
+ion-modal.modal-lg .modal-wrapper {
+    min-width: calc(100% - 200px);
+    min-height: calc(100% - 200px);
+}
+
+ion-modal.modal-xs .modal-wrapper {
+    width: 350px;
+    height: 250px;
+    --border-radius: 10px;
+}
+
+@media (max-width: 767px) {
+    .modal-wrapper {
+        position: absolute;
+        bottom: 0;
+        height: calc(100% - 32px) !important;
+    }
+}
+
+@media (min-width: 768px) {
+    ion-modal.modal-sm .modal-wrapper {
+        width: 500px;
+        height: 400px;
+    }
+}

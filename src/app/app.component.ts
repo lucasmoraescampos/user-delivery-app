@@ -2,6 +2,9 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { LoadingService } from './services/loading.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { Plugins, StatusBarStyle } from '@capacitor/core';
+
+const { SplashScreen, StatusBar, Device } = Plugins;
 
 @Component({
   selector: 'app-root',
@@ -19,7 +22,17 @@ export class AppComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+
     this.initLoading();
+
+    SplashScreen.hide();
+
+    Device.getInfo().then(info => {
+      if (info.platform == 'android' || info.platform == 'ios') {
+        StatusBar.setStyle({ style: StatusBarStyle.Light });
+      }
+    });
+
   }
 
   ngOnDestroy() {

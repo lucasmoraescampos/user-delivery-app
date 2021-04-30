@@ -1,5 +1,14 @@
+.alert-custom-container {
+    padding: 16px !important;
+}
+
 .alert-custom-popup {
     width: 400px !important;
+    padding: 11px !important;
+}
+
+.alert-custom-image {
+    margin: 5px auto 15px !important;
 }
 
 .alert-custom-icon.swal2-error,
@@ -36,8 +45,14 @@
 
 .alert-custom-title {
     font-size: 1.125rem !important;
-    font-weight: 600 !important;
-    color: #595756 !important;
+    font-weight: 500 !important;
+    color: var(--ion-color-dark) !important;
+    padding: 0 5px !important;
+}
+
+.alert-custom-content {
+    font-size: 1rem !important;
+    color: var(--ion-color-medium) !important;
 }
 
 .alert-custom-header {

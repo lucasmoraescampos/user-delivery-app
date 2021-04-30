@@ -44,7 +44,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   public home() {
-    this.navCtrl.navigateRoot('/', {
+    this.navCtrl.navigateRoot('/home', {
       animationDirection: 'forward'
     });
   }

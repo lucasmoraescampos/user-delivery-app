@@ -116,6 +116,25 @@ export class AlertService {
     });
   }
 
+  public custom(options: AlertOptions) {
+    Swal.fire({
+      imageUrl: options.imageUrl,
+      imageWidth: 60,
+      title: options.title,
+      text: options.message,
+      showCancelButton: options.showCancelButton ?? false,
+      confirmButtonText: options.confirmButtonText ?? 'Ok',
+      cancelButtonText: options.cancelButtonText ?? 'Cancelar',
+      heightAuto: false,
+      allowOutsideClick: false,
+      customClass: this.customClass,
+    }).then(result => {
+      if (result.value) {
+        options.onConfirm();
+      }
+    });
+  }
+
   public terms(options: AlertOptions) {
     Swal.fire({
       imageUrl: '../../../assets/icon/terms.svg',
@@ -139,6 +158,7 @@ export class AlertService {
 
 interface AlertOptions {
   title?: string;
+  imageUrl?: string;
   message?: string;
   confirmButtonText?: string;
   cancelButtonText?: string;

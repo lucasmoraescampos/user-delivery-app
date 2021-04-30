@@ -4,6 +4,8 @@ export const environment = {
 
   apiUrl: 'https://api.meupedido.org',
 
+  socketUrl: 'https://socket.meupedido.org',
+
   imagesUrl: 'https://images.meupedido.org',
 
   firebase: {

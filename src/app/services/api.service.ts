@@ -23,8 +23,8 @@ export class ApiService {
     return this.http.get<HttpResult>(`${this.url}/companies-by-all-categories${query}`);
   }
 
-  public getCompaniesByCategory(latitude: number, longitude: number, category_id: number, limit?: number, offset?: number) {
-    let query = `?latitude=${latitude}&longitude=${longitude}&category_id=${category_id}`;
+  public getCompaniesByCategory(latitude: number, longitude: number, category_slug: string, limit?: number, offset?: number) {
+    let query = `?latitude=${latitude}&longitude=${longitude}&category_slug=${category_slug}`;
     if (limit) {
       query += `&limit=${limit}`;
     }
@@ -32,6 +32,14 @@ export class ApiService {
       query += `&offset=${offset}`;
     }
     return this.http.get<HttpResult>(`${this.url}/companies-by-category${query}`);
+  }
+
+  public getCompanyBySlug(slug: string) {
+    return this.http.get<HttpResult>(`${this.url}/company/${slug}`);
+  }
+
+  public getProductById(id: number) {
+    return this.http.get<HttpResult>(`${this.url}/product/${id}`);
   }
 
   public checkDuplicity(data: any) {

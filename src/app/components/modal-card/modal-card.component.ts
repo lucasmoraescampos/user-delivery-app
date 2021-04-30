@@ -115,7 +115,7 @@ export class ModalCardComponent implements OnInit, OnDestroy {
     this.modaltrl.dismiss();
   }
 
-  public changeNumber(event: CustomEvent) {
+  public changeNumber(event: any) {
 
     const cardnumber = event.detail.value.replace(/[^0-9]/g, '');
 

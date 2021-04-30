@@ -1,0 +1,100 @@
+ion-card {
+    width: 100%;
+    margin: 0;
+    border-radius: 5px;
+    border: 1px solid var(--ion-color-light);
+    box-shadow: none;
+
+    ion-item {
+        --min-height: 132px;
+        --padding-start: 16px;
+        --inner-padding-end: 16px;
+    }
+
+    ion-thumbnail {
+        --border-radius: 5px;
+        width: 100px;
+        height: 100px;
+        margin-right: 16px;
+    }
+
+    ion-label {
+        margin: 0;
+
+        h5 {
+            font-size: 0.9rem;
+            line-height: 1.2rem;
+            font-weight: 400;
+            margin: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            -webkit-box-orient: vertical;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+        }
+
+        p {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            -webkit-box-orient: vertical;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            color: var(--ion-color-medium-shade);
+            font-weight: 300;
+            font-size: 0.9rem;
+            line-height: normal;
+            margin: 5px 0 8px;
+        }
+
+        h6 {
+            font-size: 0.975rem;
+            line-height: 0.975rem;
+            color: var(--ion-color-success);
+            width: 100%;
+            height: 1rem;
+
+            span {
+                font-size: 0.75rem;
+                text-decoration: line-through;
+                color: var(--ion-color-medium-shade);
+                margin-left: 5px;
+            }
+        }
+    }
+}
+
+@media (pointer: fine) {
+    ion-card {
+        &:hover {
+            box-shadow: 0 4px 8px var(--ion-color-light-shade);
+            border: none;
+        }
+    }
+}
+
+@media (min-width: 576px) {
+    ion-card {
+        ion-label {
+            margin: 0;
+    
+            h5 {
+                font-size: 1.125rem;
+                line-height: 1.375rem;
+            }
+    
+            p {
+                font-size: 0.9rem;
+                line-height: normal;
+            }
+    
+            h6 {
+                font-size: 1rem;
+                line-height: 1rem;
+    
+                span {
+                    font-size: 0.75rem;
+                }
+            }
+        }
+    }
+}

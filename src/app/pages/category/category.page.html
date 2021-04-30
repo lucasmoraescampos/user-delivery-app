@@ -1,0 +1,38 @@
+<app-header></app-header>
+
+<ion-content mode="ios">
+
+  <div class="ion-scroll">
+
+    <ion-list>
+
+      <ion-list-header class="animate__animated animate__fadeIn">{{ category?.name }}</ion-list-header>
+
+      <ion-grid>
+
+        <ion-row>
+
+          <ion-col class="animation-order" [style]="{ '--animation-order': i % 10 }" size-sm="12" size-md="6" size-xl="4" *ngFor="let company of companies; let i=index;">
+
+            <app-card-company
+              [slug]="company.slug"
+              [open]="company.open"
+              [image]="company.image"
+              [name]="company.name"
+              [evaluation]="company.evaluation"
+              [distance]="company.distance"
+              [waiting_time]="company.waiting_time"
+              [delivery_price]="company.delivery_price">
+            </app-card-company>
+
+          </ion-col>
+
+        </ion-row>
+
+      </ion-grid>
+
+    </ion-list>
+
+  </div>
+
+</ion-content>

@@ -20,7 +20,6 @@ export class HomePage implements OnInit, OnDestroy {
   public categories: any[];
 
   public categorySlideOptions = {
-    loop: true,
     slidesPerView: 2,
     spaceBetween: 16,
     // Responsive breakpoints
@@ -99,6 +98,10 @@ export class HomePage implements OnInit, OnDestroy {
 
   ionViewDidEnter() {
     this.requestLocation();
+  }
+
+  public openCategory(slug: string) {
+    this.navCtrl.navigateForward(`category/${slug}`);
   }
 
   public openCompany(slug: string) {

@@ -2,23 +2,18 @@ import { Injectable } from '@angular/core';
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpErrorResponse } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { NavController } from '@ionic/angular';
 import { ConfigHelper } from './helpers/config.helper';
 
 @Injectable()
 export class AppInterceptor implements HttpInterceptor {
 
-    constructor(
-        private navCtrl: NavController
-    ) { }
+    constructor() { }
 
     private handleAuthError(err: HttpErrorResponse): Observable<any> {
 
         if (err.status === 401) {
 
             localStorage.clear();
-
-            this.navCtrl.navigateRoot('signin', { animationDirection: 'forward' });
 
             return of(err.message);
 
@@ -39,9 +34,10 @@ export class AppInterceptor implements HttpInterceptor {
                     Authorization: `Bearer ${token}`
                 }
             });
-            
+
         }
 
         return next.handle(request).pipe(catchError(err => this.handleAuthError(err)));
     }
+
 }

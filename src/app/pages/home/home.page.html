@@ -1,12 +1,12 @@
 <app-header></app-header>
 
-<ion-content class="animate__animated animate__fadeIn" mode="ios">
+<ion-content mode="ios">
 
   <div class="ion-scroll">
 
-    <ion-slides class="animate__animated animate__bounceInRight categories" [options]="categorySlideOptions" *ngIf="categories?.length > 0">
+    <ion-slides class="animate__animated animate__slideInRight categories" [options]="categorySlideOptions" *ngIf="categories?.length > 0">
 
-      <ion-slide *ngFor="let category of categories">
+      <ion-slide *ngFor="let category of categories" (click)="openCategory(category.slug)">
 
         <ion-thumbnail>
 
@@ -20,67 +20,24 @@
 
     </ion-slides>
 
-    <ion-list *ngFor="let category of categories">
+    <ion-list class="animation-order" [style]="{ '--animation-order': i % 10 }" *ngFor="let category of categories; let i=index;">
 
-      <ion-list-header class="animate__animated animate__bounceInRight" *ngIf="category.companies.length > 0">{{ category.name }}</ion-list-header>
+      <h5 class="animate__animated animate__fadeIn" *ngIf="category.companies.length > 0">{{ category.name }}</h5>
 
-      <ion-slides class="animate__animated animate__bounceInRight companies" [options]="companiesSlideOptions" *ngIf="category.companies.length > 0">
+      <ion-slides class="companies" [options]="companiesSlideOptions" *ngIf="category.companies.length > 0">
 
         <ion-slide *ngFor="let company of category.companies">
 
-          <ion-card button="true" (click)="openCompany(company.slug)">
-
-            <ion-badge color="dark" *ngIf="!company.open">Fechado</ion-badge>
-
-            <ion-item lines="none">
-
-              <ion-thumbnail slot="start">
-
-                <img [src]="company.image">
-
-              </ion-thumbnail>
-
-              <ion-label>
-
-                <h6>{{ company.name }}</h6>
-
-                <p>
-
-                  <span class="stars">
-
-                    <ion-icon name="star"></ion-icon>
-                    
-                    <span *ngIf="company.evaluation">&nbsp;{{ company.evaluation }}</span>
-
-                    <span *ngIf="!company.evaluation">&nbsp;Novo</span>
-
-                  </span>
-
-                  <span class="ellipse"></span>
-
-                  {{ company.distance | number:'1.0-2' }} km
-
-                  <span class="ellipse"></span>
-
-                  {{ company.waiting_time }} min
-
-                </p>
-
-                <p>
-
-                  Entrega
-                  
-                  <span *ngIf="company.delivery_price">&nbsp;R$ {{ company.delivery_price | number:'1.2-2' }}</span>
-
-                  <span class="free" *ngIf="!company.delivery_price">&nbsp;Grátis</span>
-
-                </p>
-
-              </ion-label>
-
-            </ion-item>
-
-          </ion-card>
+          <app-card-company
+            [slug]="company.slug"
+            [open]="company.open"
+            [image]="company.image"
+            [name]="company.name"
+            [evaluation]="company.evaluation"
+            [distance]="company.distance"
+            [waiting_time]="company.waiting_time"
+            [delivery_price]="company.delivery_price">
+          </app-card-company>
 
         </ion-slide>
 

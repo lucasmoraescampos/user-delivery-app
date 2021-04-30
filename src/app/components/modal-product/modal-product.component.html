@@ -6,9 +6,9 @@
 
     <ion-buttons slot="end">
 
-      <ion-button class="close" fill="clear" (click)="dismiss()">
+      <ion-button fill="clear" (click)="dismiss()">
 
-        <ion-icon slot="icon-only" color="medium" name="close"></ion-icon>
+        <ion-icon slot="icon-only" name="close"></ion-icon>
 
       </ion-button>
 
@@ -18,129 +18,133 @@
 
 </ion-header>
 
-<ion-content customScroll>
+<ion-content>
 
-  <ion-grid class="ion-padding-horizontal">
+  <div class="ion-scroll">
 
-    <ion-row>
+    <ion-grid class="ion-no-padding">
 
-      <ion-col class="image" size="12" size-md="6">
+      <ion-row>
 
-        <div>
+        <ion-col class="image" size="12" size-xl="6">
 
-          <img [src]="product?.image">
+          <div>
 
-        </div>
+            <img [src]="product?.image">
 
-      </ion-col>
+          </div>
 
-      <ion-col size="12" size-md="6">
+        </ion-col>
 
-        <ion-grid class="ion-no-padding">
+        <ion-col size="12" size-xl="6">
 
-          <ion-row>
+          <ion-grid class="ion-no-padding">
 
-            <ion-col class="ion-padding-horizontal" size="12">
+            <ion-row>
 
-              <p>{{ product?.description }}</p>
+              <ion-col size="12">
 
-              <h6 class="price">{{ product?.price - product?.rebate | money }}</h6>
-    
-            </ion-col>
+                <p>{{ product?.description }}</p>
 
-            <ion-col size="12">
-
-              <ion-thumbnail>
-
-                <img [src]="product?.image">
+                <h6 class="price">{{ product?.price - product?.rebate | money }}</h6>
       
-              </ion-thumbnail>
+              </ion-col>
 
-            </ion-col>
+              <ion-col class="thumbnail" size="12">
 
-            <ion-col class="ion-margin-vertical" size="12">
+                <ion-thumbnail>
 
-              <ion-list *ngFor="let complement of product.complements">
+                  <img [src]="product?.image">
+        
+                </ion-thumbnail>
 
-                <ion-item class="complement" lines="none" color="light">
+              </ion-col>
 
-                  <ion-label class="ion-text-wrap">
-                    
-                    <h6>{{ complement.title }}</h6>
+              <ion-col size="12">
 
-                    <p *ngIf="complement.qty_max == 1">Escolha 1 opção</p>
+                <ion-list *ngFor="let complement of product.complements">
 
-                    <p *ngIf="complement.qty_max > 1">
-
-                      <span *ngIf="complement.required">Escolha de {{ complement.qty_min }} até {{ complement.qty_max }} opções</span>
-
-                      <span *ngIf="!complement.required">Escolha até {{ complement.qty_max }} opções</span>
-
-                    </p>
-                  
-                  </ion-label>
-
-                  <ion-badge color="dark" mode="md" *ngIf="complement.required">Obrigatório</ion-badge>
-
-                </ion-item>
-
-                <ion-radio-group allowEmptySelection="true" (ionChange)="checkSubcomplement(complement, $event)">
-
-                  <ion-item class="subcomplement" lines="full" *ngFor="let subcomplement of complement.subcomplements; let i=index">
+                  <ion-item class="complement" lines="none" color="light">
 
                     <ion-label class="ion-text-wrap">
                       
-                      <h6>{{ subcomplement.description }}</h6>
+                      <h6>{{ complement.title }}</h6>
 
-                      <p *ngIf="subcomplement.price">+ {{ subcomplement.price | money }}</p>
+                      <p *ngIf="complement.qty_max == 1">Escolha 1 opção</p>
+
+                      <p *ngIf="complement.qty_max > 1">
+
+                        <span *ngIf="complement.required">Escolha de {{ complement.qty_min }} até {{ complement.qty_max }} opções</span>
+
+                        <span *ngIf="!complement.required">Escolha até {{ complement.qty_max }} opções</span>
+
+                      </p>
                     
                     </ion-label>
 
-                    <ion-radio slot="end" mode="md" [value]="subcomplement" *ngIf="complement.qty_max == 1"></ion-radio>
-
-                    <app-quantity [class]="'complement' + complement.id" [min]="0" [value]="subcomplementQty(subcomplement)" *ngIf="complement.qty_max > 1" (changeQty)="changeSubcomplement(subcomplement, $event)"></app-quantity>
+                    <ion-badge color="dark" mode="md" *ngIf="complement.required">Obrigatório</ion-badge>
 
                   </ion-item>
 
-                </ion-radio-group>
+                  <ion-radio-group allowEmptySelection="true" (ionChange)="checkSubcomplement(complement, $event)">
 
-              </ion-list>
+                    <ion-item class="subcomplement" lines="full" *ngFor="let subcomplement of complement.subcomplements; let i=index">
 
-            </ion-col>
+                      <ion-label class="ion-text-wrap">
+                        
+                        <h6>{{ subcomplement.description }}</h6>
 
-            <ion-col size="12">
+                        <p *ngIf="subcomplement.price">+ {{ subcomplement.price | money }}</p>
+                      
+                      </ion-label>
 
-              <ion-label class="stacked">Algum comentário?</ion-label>
+                      <ion-radio slot="end" mode="md" [value]="subcomplement" *ngIf="complement.qty_max == 1"></ion-radio>
 
-              <ion-textarea placeholder="Ex: Adicionar ou retirar algo" maxlength="200" [(ngModel)]="note"></ion-textarea>
+                      <app-quantity [class]="'complement' + complement.id" [min]="0" [value]="subcomplementQty(subcomplement)" *ngIf="complement.qty_max > 1" (changeQty)="changeSubcomplement(subcomplement, $event)"></app-quantity>
 
-            </ion-col>
+                    </ion-item>
 
-          </ion-row>
+                  </ion-radio-group>
 
-        </ion-grid>
+                </ion-list>
 
-      </ion-col>
+              </ion-col>
 
-    </ion-row>
+              <ion-col size="12">
 
-  </ion-grid>
+                <ion-label class="stacked">Algum comentário?</ion-label>
+
+                <ion-textarea placeholder="Ex: Adicionar ou retirar algo" maxlength="200" [(ngModel)]="note"></ion-textarea>
+
+              </ion-col>
+
+            </ion-row>
+
+          </ion-grid>
+
+        </ion-col>
+
+      </ion-row>
+
+    </ion-grid>
+
+  </div>
 
 </ion-content>
 
 <ion-footer mode="md">
 
-  <ion-grid class="ion-padding" mode="ios">
+  <ion-grid mode="ios">
 
     <ion-row>
 
-      <ion-col size="4">
+      <ion-col size="5">
 
         <app-quantity [lines]="true" [min]="1" [value]="qty" (changeQty)="changeQty($event)"></app-quantity>
 
       </ion-col>
 
-      <ion-col size="8">
+      <ion-col size="7">
 
         <ion-card [class.disabled]="!checkRequiredComplements" color="primary" button="true" (click)="productOrderIndex === undefined ? add() : update()">
 

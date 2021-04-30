@@ -1,0 +1,29 @@
+<ion-card button="true">
+
+  <ion-item lines="none">
+
+    <ion-thumbnail slot="start">
+
+      <img [src]="image">
+
+    </ion-thumbnail>
+
+    <ion-label class="ion-text-wrap">
+
+      <h5>{{ name }}</h5>
+
+      <p>{{ description }}</p>
+
+      <h6>
+
+        {{ price - rebate | money }}
+
+        <span *ngIf="rebate">{{ rebate | money }}</span>
+
+      </h6>
+
+    </ion-label>
+
+  </ion-item>
+
+</ion-card>

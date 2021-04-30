@@ -5,6 +5,7 @@ import { HomePage } from './home.page';
 import { HomePageRoutingModule } from './home-routing.module';
 import { HeaderModule } from 'src/app/components/header/header.module';
 import { ModalChooseLocationModule } from 'src/app/components/modal-choose-location/modal-choose-location.module';
+import { CardCompanyModule } from 'src/app/components/card-company/card-company.module';
 
 @NgModule({
   imports: [
@@ -12,7 +13,8 @@ import { ModalChooseLocationModule } from 'src/app/components/modal-choose-locat
     IonicModule,
     HomePageRoutingModule,
     HeaderModule,
-    ModalChooseLocationModule
+    ModalChooseLocationModule,
+    CardCompanyModule
   ],
   declarations: [HomePage]
 })

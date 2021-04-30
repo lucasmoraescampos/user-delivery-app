@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Meu Pedido</string>
+    <string name="title_activity_main">Meu Pedido</string>
+    <string name="package_name">org.meupedido</string>
+    <string name="custom_url_scheme">org.meupedido</string>
+</resources>

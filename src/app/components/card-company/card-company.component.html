@@ -1,0 +1,53 @@
+<ion-card button="true" (click)="openCompany()">
+
+  <ion-badge color="dark" *ngIf="!open">Fechado</ion-badge>
+
+  <ion-item lines="none">
+
+    <ion-thumbnail slot="start">
+
+      <img [src]="image">
+
+    </ion-thumbnail>
+
+    <ion-label>
+
+      <h6>{{ name }}</h6>
+
+      <p>
+
+        <span class="stars">
+
+          <ion-icon name="star"></ion-icon>
+          
+          <span *ngIf="evaluation">&nbsp;{{ evaluation }}&nbsp;</span>
+
+          <span *ngIf="!evaluation">&nbsp;Novo&nbsp;</span>
+
+        </span>
+
+        <span class="ellipse"></span>
+
+        {{ distance | number:'1.0-2' }} km
+
+        <span class="ellipse"></span>
+
+        {{ waiting_time }} min
+
+      </p>
+
+      <p>
+
+        Entrega
+        
+        <span *ngIf="delivery_price">&nbsp;R$ {{ delivery_price | number:'1.2-2' }}</span>
+
+        <span class="free" *ngIf="!delivery_price">&nbsp;Grátis</span>
+
+      </p>
+
+    </ion-label>
+
+  </ion-item>
+
+</ion-card>

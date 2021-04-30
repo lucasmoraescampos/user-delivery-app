@@ -1,10 +1,15 @@
 ion-header {
     h6 {
         margin: 0;
-        text-align: center;
         padding-left: 42px;
-        font-size: 0.75rem;
-        line-height: 1rem;
+        text-align: center;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        -webkit-box-orient: vertical;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        font-size: 1rem;
+        line-height: 1.225rem;
         font-weight: 600;
     }
 }
@@ -20,8 +25,9 @@ ion-content {
     }
 
     p {
-        font-size: 0.875rem;
-        line-height: 1.22rem;
+        font-size: 1rem;
+        font-weight: 300;
+        line-height: 1.125rem;
         color: var(--ion-color-medium-shade);
     }
 
@@ -36,7 +42,7 @@ ion-content {
     }
 
     ion-thumbnail {
-        --border-radius: 3px;
+        --border-radius: 5px;
         --size: 100%;
 
         img {
@@ -121,28 +127,9 @@ ion-footer {
     }
 }
 
-@media (min-width: 576px) {
-    ion-thumbnail {
-        --size: 40vh;
-        margin: 0 auto;
-    }
-}
-
-@media (min-width: 768px) {
-    ion-header {
-        h6 {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            -webkit-box-orient: vertical;
-            display: -webkit-box;
-            -webkit-line-clamp: 1;
-            font-size: 1rem;
-            line-height: 1.125rem;
-        }
-    }
-
+@media (min-width: 1200px) {
     ion-content {
-        ion-thumbnail {
+        ion-col.thumbnail {
             display: none;
         }
 
@@ -167,15 +154,6 @@ ion-footer {
         }
     }
 
-    ion-footer {
-        ion-grid {
-            width: 80%;
-            margin-right: 0;
-        }
-    }
-}
-
-@media (min-width: 1200px) {
     ion-footer {
         ion-grid {
             width: 50%;

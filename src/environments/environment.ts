@@ -6,11 +6,11 @@ export const environment = {
 
   production: false,
 
-  apiUrl: 'http://api.meupedido.localhost',
+  apiUrl: 'https://api.meupedido.org',
 
-  socketUrl: 'http://localhost:1337',
+  socketUrl: 'https://socket.meupedido.org',
 
-  imagesUrl: 'http://images.meupedido.localhost',
+  imagesUrl: 'https://images.meupedido.org',
 
   firebase: {
     apiKey: "AIzaSyD4MqNZ5Mu42i3Spt_QytbJqnf0cDoB1OM",
